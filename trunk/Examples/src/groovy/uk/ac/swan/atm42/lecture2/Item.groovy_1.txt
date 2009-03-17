@@ -1,0 +1,43 @@
+/**
+ * Lecture 2: A Groovy bean.
+ * Save as Item.groovy then execute.
+ */
+ 
+package uk.ac.swan.atm42.lecture2;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+/**
+	 A found item in an hypothetical adventure game.
+	 Used to illutsrate the differences between Java and Groovy.
+	 
+	 @author Dr Chris P. Jobling
+	 @version 1.0
+*/
+public class Item 
+{
+	String name;
+	String description;
+	
+
+	public static void main(String [] args)
+	{
+		List room = new ArrayList();
+		room.add(new Item(name: "sword", 
+		                  description: "An old and rusty sword."));
+		room.add(new Item(name: "cheese", 
+		                  description: "A lump of twenty day old cheddar."));
+		room.add(new Item(name: "broken stool", 
+		                  description: "A three-legged stool with only two legs."));
+		
+		System.out.println("This room contains");
+		for (Iterator iter = room.iterator(); iter.hasNext();)
+		{
+			Item item = (Item) iter.next();
+			System.out.println(item.name + ": " + item.description);
+		}		
+			
+	}
+}
