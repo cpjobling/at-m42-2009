@@ -1,9 +1,11 @@
 <?php
-include_once "markdown.php";
 
-$file_var = fopen("README.txt", "r") or
+require_once 'markdown.php';
+
+$readme = "README.txt";
+$handle = fopen($readme, "r") or
     die ("Error - README.txt cannot be opened");
-$my_text = fread($file-var, filesize("README.txt"))
+$my_text = fread($handle, filesize($readme));
 
 print Markdown($my_text);
 ?>
