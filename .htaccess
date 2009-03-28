@@ -1,0 +1,5 @@
+# Prevent .svn files being seen
+<Files .svn>
+	Order allow,deny
+	Deny from all
+</Files> 
