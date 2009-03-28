@@ -10,11 +10,11 @@ assert 'Hello'.equalsIgnoreCase('hello') == true
 assert 'Hello'.indexOf('lo') == 3
 assert 'Hello world'.indexOf('o', 6) == 7
 
-assert 'Hello'.matches('Hello') == true
-assert 'Hello'.matches('He') == false
+assert 'Hello'.matches(/Hello/) == true
+assert 'Hello'.matches(/He/) == false
 assert 'Hello'.replaceAll('l','L') == 'HeLLo'
 
-assert 'Hello world'.split('l') == ['He', '',  'o wor', 'd']
+assert 'Hello world'.split(/l/) == ['He', '',  'o wor', 'd']
 
 assert 'Hello'.substring(1) == 'ello'
 assert 'Hello'.substring(1, 4) == 'ell'
@@ -26,7 +26,7 @@ assert message.center(11) == '   Hello   '
 assert message.center(3) == 'Hello'
 assert message.center(11, '#') == '###Hello###'
 
-message.eachMatch('.') { ch -> println ch} // print H e l l o on seperate lines
+message.eachMatch(/./) { ch -> println ch} // print H e l l o on seperate lines
 
 assert message.getAt(0) == 'H'
 assert message.getAt(0..<3) == 'Hel'
