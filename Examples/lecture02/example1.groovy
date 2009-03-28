@@ -1,3 +1,4 @@
+// Everything is an object
 class One {
   Integer i = 1
 
