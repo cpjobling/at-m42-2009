@@ -38,7 +38,7 @@ class Console {
 		return inputTokens[inputIndex++]
 	}
 	
-	private static String getNextline() {
+	private static String getNextLine() {
 		if (inputLine == null) {
 			readInputLine()
 		}
