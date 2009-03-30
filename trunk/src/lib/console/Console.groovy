@@ -53,7 +53,7 @@ class Console {
 	}
 	
 	private static void readInputLine() {
-		inputLine = System.in.readLine()
+		inputLine = input.readLine()
 		inputTokens = inputLine.tokenize()
 		numberOfTokens = inputTokens.size()
 		inputIndex = 0
@@ -63,7 +63,7 @@ class Console {
 	
 	private static String inputLine		= null
 	private static List inputTokens		= null
-	private statis int numberOfTokens		= 0
-	private static int inputIndex			= -1
-	
+	private static int numberOfTokens   = 0
+	private static int inputIndex       = -1
+    private static input = new BufferedReader(new InputStreamReader (System.in))	
 }
