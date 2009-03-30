@@ -8,9 +8,10 @@ This folder contains all the examples from [Lecture 3](/dokuwiki/at-m42:lecture3
 
 * [example1.groovy](example1.groovy) &ndash; `List` literals.
 * [example2.groovy](example2.groovy) &ndash; `List` methods.
-* [example3.groovy](example3.groovy) &ndash; equality operators.
-* [example4.groovy](example4.groovy) &ndash; `String` indexing and slicing.
-* [example5.groovy](example5.groovy) &ndash; basic operations on `String`s.
+* [example3.groovy](example3.groovy) &ndash; `Map` literals.
+* [example4.groovy](example4.groovy) &ndash; `Map` methods.
+* [example5.groovy](example5.groovy) &ndash; Ranges
+
 * [example6.groovy](example6.groovy) &ndash; `String` methods.
 * [example7.groovy](example7.groovy) &ndash; `String` Comparison.
 * [example8.groovy](example8.groovy) &ndash; The `regex` operator
