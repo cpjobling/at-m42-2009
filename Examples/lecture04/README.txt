@@ -1,8 +1,8 @@
 AT-M42 Client Server Programming for the Java Plaform
 ======================================================
 
-Examples for Lecture 3: Lists, Maps and Ranges
-----------------------------------------------
+Examples for Lecture 4: Simple IO and Case Study 1
+---------------------------------------------------
 
 This folder contains all the examples from [Lecture 3](/dokuwiki/at-m42:lecture3).
 
@@ -12,8 +12,9 @@ This folder contains all the examples from [Lecture 3](/dokuwiki/at-m42:lecture3
 * [example4.groovy](example4.groovy) &ndash; `Map` methods.
 * [example5.groovy](example5.groovy) &ndash; `Range` methods.
 
+
 ----
 
-[Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 3](/dokuwiki/at-m42:lecture3) | [Previous Examples](../lecture02/index.php)| [All Examples](../index.php) | [Next Examples](../lecture04/index.php)
+[Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 4](/dokuwiki/at-m42:lecture4) | [Previous Examples](../lecture03/index.php)| [All Examples](../index.php) | [Next Examples](../lecture05/index.php)
   
 
