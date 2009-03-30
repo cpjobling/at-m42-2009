@@ -10,6 +10,7 @@ SET AT-M42=e:\dev\at-m42-2009
 
 REM Add JAVA_HOME\bin;GROOBY_HOME\bin;GRAILS_HOME\bin; to PATH
 set PATH=%JAVA_HOME%\bin;%GROOVY_HOME%\bin;%GRAILS_HOME%\bin;%PATH%
+set CLASSPATH=.;%AT-M42%\src\lib;%CLASSPATH%S
 
 cd %AT-M42%\Examples
 
