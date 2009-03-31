@@ -1,7 +1,7 @@
 AT-M42 Client Server Programming for the Java Plaform
 ======================================================
 
-Examples for Lecture 4: Simple IO and Case Study 1
+Examples for Lecture 5: Methods and Flow of Control
 ---------------------------------------------------
 
 This folder contains all the examples from [Lecture 4](/dokuwiki/at-m42:lecture4).
@@ -17,6 +17,6 @@ This folder contains all the examples from [Lecture 4](/dokuwiki/at-m42:lecture4
 
 ----
 
-[Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 4](/dokuwiki/at-m42:lecture4) | [Previous Examples](../lecture03/index.php)| [All Examples](../index.php) | [Next Examples](../lecture05/index.php)
+[Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 5](/dokuwiki/at-m42:lecture4) | [Previous Examples](../lecture04/index.php)| [All Examples](../index.php) | [Next Examples](../lecture06/index.php)
   
 
