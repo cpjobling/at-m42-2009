@@ -25,10 +25,12 @@ Methods
 Flow Control
 ~~~~~~~~~~~~
 
-* [example13.groovy](example13.groovy) &ndash; A simple method definition.
-* [example14.groovy](example14.groovy) &ndash; A method with variables.
-* [example15.groovy](example15.groovy) &ndash; Converting clock time.
-
+* [example13.groovy](example13.groovy) &ndash; `while` statement.
+* [example14.groovy](example14.groovy) &ndash; Sum of a series of positive integers.
+* [example15.groovy](example15.groovy) &ndash; `for` statement.
+* [example16.groovy](example16.groovy) &ndash; Looping through a `List`.
+* [example17.groovy](example17.groovy) &ndash; Looping through a `Map`.
+* [example18.groovy](example18.groovy) &ndash; Looping through a `String`.
 
 ----
 
