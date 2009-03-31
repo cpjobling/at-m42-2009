@@ -2,8 +2,8 @@
 
 // Note: Run this script from the command-line using groovy.
 // keyboard IO doesn't work in groovyConsole!
-// Also make sure that CLASSPATH includes ..\..\src\lib:
-// set CLASSPATH=..\..\src\lib;%CLASSPATH%
+// Also make sure that CLASSPATH includes ...\at-m42\src\lib:
+// E.g: set CLASSPATH=h:\work\at-m42\src\lib;%CLASSPATH%
 
 import console.*
 
