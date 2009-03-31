@@ -3,7 +3,7 @@
 import console.*
 
 def hmsToSeconds(h, m=0, s=0) {
-   def totaSeconds = (60 * h + m) * 60 + s
+   def totalSeconds = (60 * h + m) * 60 + s
    totalSeconds
 }
 
