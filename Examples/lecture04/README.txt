@@ -11,7 +11,7 @@ This folder contains all the examples from [Lecture 3](/dokuwiki/at-m42:lecture3
 * [example3.groovy](example3.groovy) &ndash; Printing lists and maps.
 * [example4.groovy](example4.groovy) &ndash; Formatted output.
 * [example5.groovy](example5.groovy) &ndash; Simple input.
-* [example5.groovy](example5.groovy) &ndash; Input using `Console` class.
+* [example6.groovy](example6.groovy) &ndash; Input using `Console` class.
 
 
 ----
