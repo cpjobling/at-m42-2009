@@ -1,4 +1,4 @@
-// A simple if statement
+// Interchange two values
 
 import console.*
 
@@ -9,9 +9,9 @@ def second = Console.readInteger()
 
   // exchange the order
 if (first > second) {
-	def temp = first
-	first = second
-	second = temp
+    def temp = first
+    first = second
+    second = temp
 }
 
 println "${first} and ${second}"
