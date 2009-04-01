@@ -22,8 +22,8 @@ Methods
 * [example11.groovy](example11.groovy) &ndash; Variables and methods in same scope.
 * [example12.groovy](example11.groovy) &ndash; `List` parameter and return.
 
-Flow Control
-~~~~~~~~~~~~
+Flow of Control
+~~~~~~~~~~~~~~~
 
 * [example13.groovy](example13.groovy) &ndash; `while` statement.
 * [example14.groovy](example14.groovy) &ndash; Sum of a series of positive integers.
@@ -31,6 +31,15 @@ Flow Control
 * [example16.groovy](example16.groovy) &ndash; Looping through a `List`.
 * [example17.groovy](example17.groovy) &ndash; Looping through a `Map`.
 * [example18.groovy](example18.groovy) &ndash; Looping through a `String`.
+* [example19.groovy](example19.groovy) &ndash; A simple `if` statement.
+* [example20.groovy](example20.groovy) &ndash; Interchange two values.
+* [example21.groovy](example21.groovy) &ndash; Unexpected switch behaviour.
+* [example22.groovy](example22.groovy) &ndash; `switch` and `break` statement.
+* [example23.groovy](example23.groovy) &ndash; `switch` and a range.
+* [example24.groovy](example24.groovy) &ndash; `List` case expressions.
+* [example25.groovy](example25.groovy) &ndash; Regular expressions for `case` labels.
+* [example26.groovy](example26.groovy) &ndash; `for` looop and `break` statement
+* [example27.groovy](example27.groovy) &ndash; `for` looop and `continue` statement
 
 ----
 
