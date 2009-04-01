@@ -14,3 +14,4 @@ def seconds = Console.readInteger()
   // now call the method
 def totalSeconds = hmsToSeconds(hours, minutes, seconds)
 println "Total number of seconds=${totalSeconds} seconds"
+
