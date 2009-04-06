@@ -27,6 +27,7 @@ Closures
 * [example16.groovy](example16.groovy) &ndash; Closures as method parameters.
 * [example17.groovy](example17.groovy) &ndash; Closures as parameters to closures.
 * [example18.groovy](example18.groovy) &ndash; Closures as return values.
+* [example19.groovy](example19.groovy) &ndash; Selection sort.
 
 Files
 ~~~~~
