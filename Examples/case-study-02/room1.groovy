@@ -41,7 +41,7 @@ def readNumberOfPlayersHoldingItem(room, item) {
 // Test cases
 
 	// initialize the items in a room
-def banquetingRoom = [
+def room = [
   'bread' : ['Chris', 'John'],
   'fork' : ['Chris'],
   'sword' : ['John', 'Sally'],
@@ -51,33 +51,33 @@ def banquetingRoom = [
 
 	// Test case: Display items in a room
 println 'Test case: Display items in a room'
-displayItems(banquetingRoom)
+displayItems(room)
 
 	// Test Case: Add a new item
 println 'Test Case: Add a new item'
-addItem(banquetingRoom, 'knife')
-displayItems(banquetingRoom)
+addItem(room, 'knife')
+displayItems(room)
 
 	// Test Case: Remove an item
 println 'Test Case: Remove an item'
-removeItem(banquetingRoom, 'knife')
-displayItems(banquetingRoom)
+removeItem(room, 'knife')
+displayItems(room)
 
 	// Test Case: player picks up an item
 println 'Test Case: player picks up an item'
-pickUpItem(banquetingRoom, 'apple', 'Chris')
-displayItems(banquetingRoom)
+pickUpItem(room, 'apple', 'Chris')
+displayItems(room)
 
 	// Test Case: player drops an item
 println 'Test Case: player drops an item'
-dropItem(banquetingRoom, 'apple', 'Chris')
-displayItems(banquetingRoom)
+dropItem(room, 'apple', 'Chris')
+displayItems(room)
 
 	// Test Case: Display the number of items being carried by a player
 println 'Test Case: Display the number of items being carried by a player'
-println "Number of items being carried by Chris: ${readNumberOfItemsBeingCarried(banquetingRoom, 'Chris')}\n"
+println "Number of items being carried by Chris: ${readNumberOfItemsBeingCarried(room, 'Chris')}\n"
 
 	// Test Case: Display the number of carriers of an item
 println 'Test Case: Display the number of carriers of an item'
-println "Number of players carrying a sword: ${readNumberOfPlayersHoldingItem(banquetingRoom, 'sword')}\n"
+println "Number of players carrying a sword: ${readNumberOfPlayersHoldingItem(room, 'sword')}\n"
 
