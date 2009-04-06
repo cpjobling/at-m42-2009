@@ -15,7 +15,7 @@ Closures
 * [example4.groovy](example4.groovy) &ndash; Closures and enclosing scope.
 * [example5.groovy](example5.groovy) &ndash; Effect of scope.
 * [example6.groovy](example6.groovy) &ndash; Leave the closure outside of the actual argument list.
-* [example7.groovy](example7.groovy) &ndash; Implicit returns.
+* [example7.groovy](example7.groovy) &ndash; `factorial(n)` with closures.
 * [example8.groovy](example8.groovy) &ndash; Parameter aliasing.
 * [example9.groovy](example9.groovy) &ndash; Interchange method.
 * [example10.groovy](example10.groovy) &ndash; Variable scope.
