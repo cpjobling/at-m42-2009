@@ -34,7 +34,7 @@ Files
 
 * [example20.groovy](example21.groovy) &ndash; Command line arguments.
 * [example21.groovy](example21.groovy) &ndash; Read and display a file, line-at-a-time.
-* [example15.groovy](example15.groovy) &ndash; `for` statement.
+* [example22.groovy](example22.groovy) &ndash; WC utility.
 * [example16.groovy](example16.groovy) &ndash; Looping through a `List`.
 * [example17.groovy](example17.groovy) &ndash; Looping through a `Map`.
 * [example18.groovy](example18.groovy) &ndash; Looping through a `String`.
