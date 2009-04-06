@@ -3,7 +3,7 @@
 import java.io.File
 
 if (args.size() != 1) {
-    println 'Usage: example21.groovy filename'
+    println 'Usage: cat.groovy filename'
 } else {
         // Print each line of the file
     new File(args[0]).eachLine { line ->
