@@ -23,7 +23,7 @@ Closures
 * [example12.groovy](example12.groovy) &ndash; Examples of methods `any` and `every`.
 * [example13.groovy](example13.groovy) &ndash; Simple uses of the `collect` method.
 * [example14.groovy](example14.groovy) &ndash; Further examples of `collect`.
-* [example15.groovy](example15.groovy) &ndash; Examples of methods `any` and `every`.
+* [example15.groovy](example15.groovy) &ndash; Factorial of 5.
 * [example16.groovy](example16.groovy) &ndash; Examples of methods `any` and `every`.
 * [example17.groovy](example17.groovy) &ndash; Examples of methods `any` and `every`.
 * [example18.groovy](example18.groovy) &ndash; Examples of methods `any` and `every`.
