@@ -40,6 +40,7 @@ Files
 * [cp.groovy](cp.groovy) &ndash; File copying.
 * [example26.groovy](example26.groovy) &ndash; File copying with a PrintWriter.
 * [sort.groovy](sort.groovy) &ndash; Sorting a file.
+* [example28.groovy](example28.groovy) &ndash; Diary report.
 
 ----
 
