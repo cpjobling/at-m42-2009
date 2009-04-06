@@ -33,11 +33,11 @@ Files
 ~~~~~
 
 * [example20.groovy](example21.groovy) &ndash; Command line arguments.
-* [example21.groovy](example21.groovy) &ndash; Read and display a file, line-at-a-time.
-* [example22.groovy](example22.groovy) &ndash; WC utility.
-* [example23.groovy](example23.groovy) &ndash; List the content of a directory file.
-* [example17.groovy](example17.groovy) &ndash; Looping through a `Map`.
-* [example18.groovy](example18.groovy) &ndash; Looping through a `String`.
+* [cat.groovy](cat.groovy) &ndash; Read and display a file, line-at-a-time.
+* [wc.groovy](wc.groovy) &ndash; WC utility.
+* [ls.groovy](ls.groovy) &ndash; List the content of a directory file.
+* [example24.groovy](example24.groovy) &ndash; Recursively traversing a directory.
+* [cp.groovy](cp.groovy) &ndash; File copying.
 * [example19.groovy](example19.groovy) &ndash; A simple `if` statement.
 * [example20.groovy](example20.groovy) &ndash; Interchange two values.
 * [example21.groovy](example21.groovy) &ndash; Unexpected switch behaviour.
