@@ -6,7 +6,7 @@ import java.io.File
 def listDir(dirFile, indent) {
     dirFile.eachFile { file ->
         (0..<indent).each { print " " }
-        println "${file.getName()}"
+        println "${file.name}"
         if (file.isDirectory()) {
             listDir(file, 2 + indent)
         }
