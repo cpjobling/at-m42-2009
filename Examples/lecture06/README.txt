@@ -17,7 +17,7 @@ Closures
 * [example6.groovy](example6.groovy) &ndash; Leave the closure outside of the actual argument list.
 * [example7.groovy](example7.groovy) &ndash; `factorial(n)` with closures.
 * [example8.groovy](example8.groovy) &ndash; Illustrations of the method `each` and a closure.
-* [example9.groovy](example9.groovy) &ndash; Interchange method.
+* [example9.groovy](example9.groovy) &ndash; Conditional elements.
 * [example10.groovy](example10.groovy) &ndash; Variable scope.
 * [example11.groovy](example11.groovy) &ndash; Variables and methods in same scope.
 * [example12.groovy](example11.groovy) &ndash; `List` parameter and return.
