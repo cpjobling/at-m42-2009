@@ -26,7 +26,7 @@ Closures
 * [example15.groovy](example15.groovy) &ndash; Factorial of 5.
 * [example16.groovy](example16.groovy) &ndash; Closures as method parameters.
 * [example17.groovy](example17.groovy) &ndash; Closures as parameters to closures.
-* [example18.groovy](example18.groovy) &ndash; Examples of methods `any` and `every`.
+* [example18.groovy](example18.groovy) &ndash; Closures as return values.
 
 Files
 ~~~~~
