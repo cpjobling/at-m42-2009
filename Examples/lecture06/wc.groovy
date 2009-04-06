@@ -7,7 +7,7 @@ def words = 0
 def lines = 0
 
 if (args.size() != 1) {
-    println 'Usage: example22.groovy filename'
+    println 'Usage: wc.groovy filename'
 } else {
         // Process the file
     new File(args[0]).eachLine { line ->
