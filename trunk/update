@@ -1,0 +1,4 @@
+#!/bin/bash
+
+ssh eechris@cpjobling.org.uk 'cd public_html/at-m42; svn update'
+
