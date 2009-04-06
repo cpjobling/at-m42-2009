@@ -39,14 +39,7 @@ Files
 * [example24.groovy](example24.groovy) &ndash; Recursively traversing a directory.
 * [cp.groovy](cp.groovy) &ndash; File copying.
 * [example26.groovy](example26.groovy) &ndash; File copying with a PrintWriter.
-* [example20.groovy](example20.groovy) &ndash; Interchange two values.
-* [example21.groovy](example21.groovy) &ndash; Unexpected switch behaviour.
-* [example22.groovy](example22.groovy) &ndash; `switch` and `break` statement.
-* [example23.groovy](example23.groovy) &ndash; `switch` and a range.
-* [example24.groovy](example24.groovy) &ndash; `List` case expressions.
-* [example25.groovy](example25.groovy) &ndash; Regular expressions for `case` labels.
-* [example26.groovy](example26.groovy) &ndash; `for` looop and `break` statement
-* [example27.groovy](example27.groovy) &ndash; `for` looop and `continue` statement
+* [sort.groovy](sort.groovy) &ndash; Sorting a file.
 
 ----
 
