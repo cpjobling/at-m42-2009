@@ -20,7 +20,13 @@ Closures
 * [example9.groovy](example9.groovy) &ndash; Conditional elements.
 * [example10.groovy](example10.groovy) &ndash; Illustrations of the `find` method and closures.
 * [example11.groovy](example11.groovy) &ndash; Illustrations of the `findAll` method and closures.
-* [example12.groovy](example11.groovy) &ndash; Examples of methods `any` and `every`.
+* [example12.groovy](example12.groovy) &ndash; Examples of methods `any` and `every`.
+* [example13.groovy](example13.groovy) &ndash; Simple uses of the `collect` method.
+* [example14.groovy](example14.groovy) &ndash; Examples of methods `any` and `every`.
+* [example15.groovy](example15.groovy) &ndash; Examples of methods `any` and `every`.
+* [example16.groovy](example16.groovy) &ndash; Examples of methods `any` and `every`.
+* [example17.groovy](example17.groovy) &ndash; Examples of methods `any` and `every`.
+* [example18.groovy](example18.groovy) &ndash; Examples of methods `any` and `every`.
 
 Files
 ~~~~~
