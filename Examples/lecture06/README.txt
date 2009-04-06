@@ -9,11 +9,11 @@ This folder contains all the examples from [Lecture 6](/dokuwiki/at-m42:lecture6
 Closures
 ~~~~~~~~~
 
-* [example1.groovy](example1.groovy) &ndash; // A closure and its invocation.
-* [example2.groovy](example2.groovy) &ndash; A method with variables.
-* [example3.groovy](example3.groovy) &ndash; Converting clock time.
-* [example4.groovy](example4.groovy) &ndash; Method parameters.
-* [example5.groovy](example5.groovy) &ndash; Default parameters.
+* [example1.groovy](example1.groovy) &ndash; A closure and its invocation.
+* [example2.groovy](example2.groovy) &ndash; Parametrized closure.
+* [example3.groovy](example3.groovy) &ndash; Implicit single parameter.
+* [example4.groovy](example4.groovy) &ndash; Closures and enclosing scope.
+* [example5.groovy](example5.groovy) &ndash; Effect of scope.
 * [example6.groovy](example6.groovy) &ndash; Method return values.
 * [example7.groovy](example7.groovy) &ndash; Implicit returns.
 * [example8.groovy](example8.groovy) &ndash; Parameter aliasing.
