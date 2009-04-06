@@ -38,7 +38,7 @@ Files
 * [ls.groovy](ls.groovy) &ndash; List the content of a directory file.
 * [example24.groovy](example24.groovy) &ndash; Recursively traversing a directory.
 * [cp.groovy](cp.groovy) &ndash; File copying.
-* [example19.groovy](example19.groovy) &ndash; A simple `if` statement.
+* [example26.groovy](example26.groovy) &ndash; File copying with a PrintWriter.
 * [example20.groovy](example20.groovy) &ndash; Interchange two values.
 * [example21.groovy](example21.groovy) &ndash; Unexpected switch behaviour.
 * [example22.groovy](example22.groovy) &ndash; `switch` and `break` statement.
