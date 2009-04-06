@@ -6,7 +6,7 @@ println "anyElement: ${anyElement}"
 
 
    // Are all values over 10?
-def allElements = [11, 12, 13, 14].any { element -> element > 10 }
+def allElements = [11, 12, 13, 14].every { element -> element > 10 }
 println "allElements: ${allElements}"
 
    // Any staff member over the age of 55?
