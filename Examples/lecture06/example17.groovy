@@ -1,6 +1,6 @@
 // Closures as parameters to closures
 
-  // Find initial lsit that conforms to predicate
+  // Find initial part of list that conforms to predicate
 def takeWhile = { predicate, list ->
     def result = []
     for (element in list) {
