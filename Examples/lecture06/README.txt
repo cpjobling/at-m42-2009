@@ -33,7 +33,7 @@ Files
 ~~~~~
 
 * [example20.groovy](example21.groovy) &ndash; Command line arguments.
-* [example14.groovy](example14.groovy) &ndash; Sum of a series of positive integers.
+* [example21.groovy](example21.groovy) &ndash; Read and display a file, line-at-a-time.
 * [example15.groovy](example15.groovy) &ndash; `for` statement.
 * [example16.groovy](example16.groovy) &ndash; Looping through a `List`.
 * [example17.groovy](example17.groovy) &ndash; Looping through a `Map`.
