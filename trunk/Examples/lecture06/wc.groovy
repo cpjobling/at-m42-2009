@@ -1,5 +1,3 @@
-// WC utility
-
 import java.io.File
 
 
