@@ -66,7 +66,7 @@ def readMenuSelection() {
 }
 
 	// initialize the items in a room
-def banquetingRoom = [
+def room = [
   'bread' : ['Chris', 'John'],
   'fork' : ['Chris'],
   'sword' : ['John', 'Sally'],
@@ -79,34 +79,32 @@ def choice = readMenuSelection()
 while (choice != 0)	{
 	switch (choice) {
 		case 1:
-			addItem(banquetingRoom, readItemName())
+			addItem(room, readItemName())
 			break
 		case 2:
-			removeItem(banquetingRoom, readItemName())
+			removeItem(room, readItemName())
 			break
 		case 3:
-			pickUpItem(banquetingRoom, 
+			pickUpItem(room, 
 				readItemName(), readPlayerName())
 			break
 		case 4:
-			dropItem(banquetingRoom, 
+			dropItem(room, 
 				readItemName(), readPlayerName())
 			break
 		case 5:
-			displayItems(banquetingRoom)
+			displayItems(room)
 			break
 		case 6:
 			def player = readPlayerName()
 			def count = 
-			    readNumberOfItemsBeingCarried(banquetingRoom,
-				    player)
+			    readNumberOfItemsBeingCarried(room, player)
 			println "\n${player} is carrying ${count} items\n"
 			break
 		case 7:
 			def item = readItemName()
 			def count = 
-			    readNumberOfPlayersHoldingItem(banquetingRoom, 
-				    item)
+			    readNumberOfPlayersHoldingItem(room, item)
 			println "\n${item} is being carried by ${count} players\n"
 			break
 		default:
