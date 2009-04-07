@@ -1,30 +1,30 @@
 // A simple adventure game
 
     // The methods
-def addItem(room, item) {
-    room[item] = []
+def addItem(location, item) {
+    location[item] = []
 }
 
-def removeItem(room, item) {
-	room.remove(item)
+def removeItem(location, item) {
+	location.remove(item)
 }
 
-def pickUpItem(room, item, player) {
-	room[item] << player
+def pickUpItem(location, item, player) {
+	location[item] << player
 }
 
-def dropItem(room, item, player) {
-	room[item].remove(player)
+def dropItem(location, item, player) {
+	location[item].remove(player)
 }
 
-def displayItems(room) {
-	println "The room contains: ${room} \n"
+def displayItems(location) {
+	println "The location contains: ${location} \n"
 }
 
-def readNumberOfItemsBeingCarried(room, player) {
+def readNumberOfItemsBeingCarried(location, player) {
 	
-	// get a List of each List of the players from the room
-	def playerNames = room.values().asList()
+	// get a List of each List of the players from the location
+	def playerNames = location.values().asList()
 	
 	// create a single list fo the players' names
 	playerNames = playerNames.flatten()
@@ -33,15 +33,15 @@ def readNumberOfItemsBeingCarried(room, player) {
 	return playerNames.count(player)
 }
 
-def readNumberOfPlayersHoldingItem(room, item) {
-   return room[item].size()
+def readNumberOfPlayersHoldingItem(location, item) {
+   return location[item].size()
 }
 
 
 // Test cases
 
-	// initialize the items in a room
-def room = [
+	// initialize the items in a location
+def location = [
   'bread' : ['Chris', 'John'],
   'fork' : ['Chris'],
   'sword' : ['John', 'Sally'],
@@ -49,35 +49,35 @@ def room = [
   'apple' : []
 ]
 
-	// Test case: Display items in a room
-println 'Test case: Display items in a room'
-displayItems(room)
+	// Test case: Display items in a location
+println 'Test case: Display items in a location'
+displayItems(location)
 
 	// Test Case: Add a new item
 println 'Test Case: Add a new item'
-addItem(room, 'knife')
-displayItems(room)
+addItem(location, 'knife')
+displayItems(location)
 
 	// Test Case: Remove an item
 println 'Test Case: Remove an item'
-removeItem(room, 'knife')
-displayItems(room)
+removeItem(location, 'knife')
+displayItems(location)
 
 	// Test Case: player picks up an item
 println 'Test Case: player picks up an item'
-pickUpItem(room, 'apple', 'Chris')
-displayItems(room)
+pickUpItem(location, 'apple', 'Chris')
+displayItems(location)
 
 	// Test Case: player drops an item
 println 'Test Case: player drops an item'
-dropItem(room, 'apple', 'Chris')
-displayItems(room)
+dropItem(location, 'apple', 'Chris')
+displayItems(location)
 
 	// Test Case: Display the number of items being carried by a player
 println 'Test Case: Display the number of items being carried by a player'
-println "Number of items being carried by Chris: ${readNumberOfItemsBeingCarried(room, 'Chris')}\n"
+println "Number of items being carried by Chris: ${readNumberOfItemsBeingCarried(location, 'Chris')}\n"
 
 	// Test Case: Display the number of carriers of an item
 println 'Test Case: Display the number of carriers of an item'
-println "Number of players carrying a sword: ${readNumberOfPlayersHoldingItem(room, 'sword')}\n"
+println "Number of players carrying a sword: ${readNumberOfPlayersHoldingItem(location, 'sword')}\n"
 

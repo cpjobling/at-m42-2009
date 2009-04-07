@@ -10,7 +10,7 @@ Classes
 ~~~~~~~~~
 
 * [example1.groovy](example1.groovy) &ndash; A simple Groovy class.
-* [example2.groovy](example2.groovy) &ndash; Parametrized closure.
+* [example2.groovy](example2.groovy) &ndash; Two object instances.
 * [example3.groovy](example3.groovy) &ndash; Implicit single parameter.
 * [example4.groovy](example4.groovy) &ndash; Closures and enclosing scope.
 * [example5.groovy](example5.groovy) &ndash; Effect of scope.
