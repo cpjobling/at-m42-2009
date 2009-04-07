@@ -9,6 +9,7 @@ Index to All the Examples from the Lectures
 * [Lecture 4](lecture04) _Simple IO and a Case Study_
 * [Lecture 5](lecture05) _Methods and Flow of Control_
 * [Lecture 6](lecture06) _Closures and Files_
+* [Lecture 7](lecture07) _Classes and Inheritence_
 
 ----
 
