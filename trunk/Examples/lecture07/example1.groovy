@@ -6,7 +6,9 @@ class Item {
 }
 
     // Create a new item instance
-def item = new Item(name : 'Magical Sword', value : 1000)
+def sword = new Item(name : 'Magical sword', value : 1000)
 
-   // display its state values
-println "Item: ${item.name} has value ${item.value}."
+   // Validate the state
+assert sword.name == 'Magical sword'
+assert sword.value == 1000
+println "Item sword: ${sword.name} has value ${sword.value}."

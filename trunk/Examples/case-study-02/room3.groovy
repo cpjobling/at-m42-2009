@@ -3,30 +3,30 @@
 import console.*
 
     // The methods
-def addItem(room, item) {
-    room[item] = []
+def addItem(location, item) {
+    location[item] = []
 }
 
-def removeItem(room, item) {
-    room.remove(item)
+def removeItem(location, item) {
+    location.remove(item)
 }
 
-def pickUpItem(room, item, player) {
-    room[item] << player
+def pickUpItem(location, item, player) {
+    location[item] << player
 }
 
-def dropItem(room, item, player) {
-    room[item].remove(player)
+def dropItem(location, item, player) {
+    location[item].remove(player)
 }
 
-def displayItems(room) {
-    println "The room contains: ${room} \n"
+def displayItems(location) {
+    println "The location contains: ${location} \n"
 }
 
-def readNumberOfItemsBeingCarried(room, player) {
+def readNumberOfItemsBeingCarried(location, player) {
     
-    // get a List of each List of the players from the room
-    def playerNames = room.values().asList()
+    // get a List of each List of the players from the location
+    def playerNames = location.values().asList()
     
     // create a single list fo the players' names
     playerNames = playerNames.flatten()
@@ -35,8 +35,8 @@ def readNumberOfItemsBeingCarried(room, player) {
     return playerNames.count(player)
 }
 
-def readNumberOfPlayersHoldingItem(room, item) {
-   return room[item].size()
+def readNumberOfPlayersHoldingItem(location, item) {
+   return location[item].size()
 }
 
 
@@ -50,8 +50,8 @@ def readPlayerName() {
     return Console.readLine()
 }
 
-    // initialize the items in a room
-def room = [
+    // initialize the items in a location
+def location = [
   'bread' : ['Chris', 'John'],
   'fork' : ['Chris'],
   'sword' : ['John', 'Sally'],
@@ -59,25 +59,25 @@ def room = [
   'apple' : []
 ]
 
-def doAddItem = { addItem(room, readItemName()) }
+def doAddItem = { addItem(location, readItemName()) }
 
-def doRemoveItem = { removeItem(room, readItemName()) }
+def doRemoveItem = { removeItem(location, readItemName()) }
 
-def doPickupItem = { pickUpItem(room, readItemName(), readPlayerName()) }
+def doPickupItem = { pickUpItem(location, readItemName(), readPlayerName()) }
 
-def doDroupItem = { dropItem(room, readItemName(), , readPlayerName()) }
+def doDroupItem = { dropItem(location, readItemName(), , readPlayerName()) }
 
-def doDisplayItems = { displayItems(room) }
+def doDisplayItems = { displayItems(location) }
 
 def doDisplayNumberOfItemsBeingCarriedByPlayer = { 
     def player = readPlayerName()
-    def count = readNumberOfItemsBeingCarried(room, player)
+    def count = readNumberOfItemsBeingCarried(location, player)
     println "\n${player} is carrying ${count} items\n"
 }
 
 def doDisplayNumberOfPlayersCarryingItem  = {  
     def item = readItemName()
-    def count = readNumberOfPlayersHoldingItem(room, item)
+    def count = readNumberOfPlayersHoldingItem(location, item)
     println "\n${item} is being carried by ${count} players\n"
 }
 
