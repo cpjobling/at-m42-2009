@@ -1,3 +1,5 @@
+// An initial model
+
 class Item {
 
     String toString() { // redefinition
@@ -41,10 +43,10 @@ class Game {
 def discworld = new Game(name : 'The Discworld')
 
   // Create some items
-def luggage = new Item(id : '111', name : 'Luggage', value : 1000,
-    description : 'Sentient pearwood with lots of little legs')
-def hat = new Item(id : '222', name : 'Pointy hat', value : 10)
-def gold = new Item(id : '333', name : 'A bag of gold', value : 100)
+def luggage = new Item(id : 1, name : 'Luggage', value : 1000,
+    description : 'Sentient pear wood with lots of little legs')
+def hat = new Item(id : 2, name : 'Pointy hat', value : 10)
+def gold = new Item(id : 3, name : 'A bag of gold', value : 100)
 
   // add them to the inventory
 discworld.addItem(luggage)
