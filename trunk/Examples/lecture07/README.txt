@@ -11,11 +11,11 @@ Classes
 
 * [example1.groovy](example1.groovy) &ndash; A simple Groovy class.
 * [example2.groovy](example2.groovy) &ndash; Two object instances.
-* [example3.groovy](example3.groovy) &ndash; Implicit single parameter.
-* [example4.groovy](example4.groovy) &ndash; Closures and enclosing scope.
-* [example5.groovy](example5.groovy) &ndash; Effect of scope.
-* [example6.groovy](example6.groovy) &ndash; Leave the closure outside of the actual argument list.
-* [example7.groovy](example7.groovy) &ndash; `factorial(n)` with closures.
+* [example3.groovy](example3.groovy) &ndash; Using the implicit getter and setter methods.
+* [example4.groovy](example4.groovy) &ndash; Class methods.
+* [example5.groovy](example5.groovy) &ndash; List of items.
+* [example6.groovy](example6.groovy) &ndash; Redefining the `toString` method.
+* [example7.groovy](example7.groovy) &ndash; A constructor method.
 * [example8.groovy](example8.groovy) &ndash; Illustrations of the method `each` and a closure.
 * [example9.groovy](example9.groovy) &ndash; Conditional elements.
 * [example10.groovy](example10.groovy) &ndash; Illustrations of the `find` method and closures.
