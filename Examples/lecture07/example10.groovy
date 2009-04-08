@@ -8,9 +8,6 @@ class WeightyItem extends Item {
 
 // ---- properties -------------------------
 
-    def name
-    def value
-    def description = ''
     def weight = 0
 }
 
