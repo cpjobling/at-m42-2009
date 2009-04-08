@@ -23,8 +23,9 @@ This folder contains all the examples from [Lecture 7](/dokuwiki/at-m42:lecture7
 
 * [example9.groovy](example9.groovy) &ndash; A weighty item.
 * [example10.groovy](example10.groovy) &ndash; Class inheritance.
-* [wc.groovy](wc.groovy) &ndash; WC utility.
-* [ls.groovy](ls.groovy) &ndash; List the content of a directory file.
+* [example11.groovy](example11.groovy) &ndash; Inherited features.
+* [example12.groovy](example12.groovy) &ndash; Polymorphism example.
+
 * [example24.groovy](example24.groovy) &ndash; Recursively traversing a directory.
 * [cp.groovy](cp.groovy) &ndash; File copying.
 * [example26.groovy](example26.groovy) &ndash; File copying with a PrintWriter.

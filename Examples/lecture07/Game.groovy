@@ -10,6 +10,7 @@ class Game {
         items[name] = item
     }
     
+   
     def increaseValueOfItem(name, amount) {
         def item = this.findItem(name)
         if (item != null) {
@@ -40,6 +41,11 @@ class Game {
         return (item == null) ? null : item.value
     }
     
+    // See example 12
+    def addItem(item) {
+    	items[item.name] = item
+    }
+ 
 // ----properties -----------------------------
 
     def name             // name of game
