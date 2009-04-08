@@ -33,6 +33,6 @@ This folder contains all the examples from [Lecture 7](/dokuwiki/at-m42:lecture7
 
 ----
 
-[Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 7](/dokuwiki/at-m42:lecture5) | [Previous Examples](../lecture06/index.php)| [All Examples](../index.php) | [Next Examples](../lecture08/index.php)
+[Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 7](/dokuwiki/at-m42:lecture5) | [Previous Examples](../lecture06/index.php) | [All Examples](../index.php) | [Next Examples](../lecture08/index.php)
   
 

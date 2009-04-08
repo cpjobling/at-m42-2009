@@ -42,6 +42,6 @@ This folder contains all the examples from [Lecture 6](/dokuwiki/at-m42:lecture6
 
 ----
 
-[Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 6](/dokuwiki/at-m42:lecture6) | [Previous Examples](../lecture05/index.php)| [All Examples](../index.php) | [Next Examples](../lecture07/index.php)
+[Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 6](/dokuwiki/at-m42:lecture6) | [Previous Examples](../lecture05/index.php) | [All Examples](../index.php) | [Next Examples](../lecture07/index.php)
   
 
