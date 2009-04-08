@@ -6,9 +6,9 @@ Case Study 3: Adventure Game with Classes
 
 This folder contains all the examples from [Case study 3](/dokuwiki/at-m42:casestudies:cs03).
 
-* [location1.groovy](location1.groovy) &ndash; A simple adventure game.
-* [location2.groovy](location2.groovy) &ndash; Text-based UI.
-* [location3.groovy](location3.groovy) &ndash; Implementation using closures.
+* [game1.groovy](game1.groovy) &ndash; An initial model.
+* [game2.groovy](game2.groovy) &ndash; Augmented Model.
+* [game3.groovy](game3.groovy) &ndash; Implementation using closures.
 
 ----
 
