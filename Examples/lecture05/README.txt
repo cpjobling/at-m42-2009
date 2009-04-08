@@ -6,8 +6,7 @@ Examples for Lecture 5: Methods and Flow of Control
 
 This folder contains all the examples from [Lecture 5](/dokuwiki/at-m42:lecture5).
 
-Methods
-~~~~~~~
+### Methods
 
 * [example1.groovy](example1.groovy) &ndash; A simple method definition.
 * [example2.groovy](example2.groovy) &ndash; A method with variables.
@@ -22,8 +21,7 @@ Methods
 * [example11.groovy](example11.groovy) &ndash; Variables and methods in same scope.
 * [example12.groovy](example11.groovy) &ndash; `List` parameter and return.
 
-Flow of Control
-~~~~~~~~~~~~~~~
+### Flow of Control
 
 * [example13.groovy](example13.groovy) &ndash; `while` statement.
 * [example14.groovy](example14.groovy) &ndash; Sum of a series of positive integers.

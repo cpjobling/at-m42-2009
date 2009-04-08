@@ -6,8 +6,7 @@ Examples for Lecture 6: Closures and Files
 
 This folder contains all the examples from [Lecture 6](/dokuwiki/at-m42:lecture6).
 
-Closures
-~~~~~~~~~
+### Closures
 
 * [example1.groovy](example1.groovy) &ndash; A closure and its invocation.
 * [example2.groovy](example2.groovy) &ndash; Parametrized closure.
@@ -29,8 +28,7 @@ Closures
 * [example18.groovy](example18.groovy) &ndash; Closures as return values.
 * [example19.groovy](example19.groovy) &ndash; Selection sort.
 
-Files
-~~~~~
+### Files
 
 * [example20.groovy](example21.groovy) &ndash; Command line arguments.
 * [cat.groovy](cat.groovy) &ndash; Read and display a file, line-at-a-time.
@@ -44,6 +42,6 @@ Files
 
 ----
 
-[Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 5](/dokuwiki/at-m42:lecture5) | [Previous Examples](../lecture04/index.php)| [All Examples](../index.php) | [Next Examples](../lecture06/index.php)
+[Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 6](/dokuwiki/at-m42:lecture6) | [Previous Examples](../lecture05/index.php)| [All Examples](../index.php) | [Next Examples](../lecture07/index.php)
   
 
