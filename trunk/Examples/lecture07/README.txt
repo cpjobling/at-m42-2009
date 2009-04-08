@@ -6,8 +6,7 @@ Examples for Lecture 7: Classes and Inheritence
 
 This folder contains all the examples from [Lecture 7](/dokuwiki/at-m42:lecture7).
 
-Classes
-~~~~~~~~~
+### Classes
 
 * [example1.groovy](example1.groovy) &ndash; A simple Groovy class.
 * [example2.groovy](example2.groovy) &ndash; Two object instances.
@@ -17,11 +16,10 @@ Classes
 * [example6.groovy](example6.groovy) &ndash; Redefining the `toString` method.
 * [example7.groovy](example7.groovy) &ndash; A constructor method.
 * [example8.groovy](example8.groovy) &ndash; Composition of classes:
-** [Item.groovy]() &ndash; the `Item` class.
-** [Game.groovy](Game.groovy) &ndash; the `Game` class.
+  * [Item.groovy]() &ndash; the `Item` class.
+  * [Game.groovy](Game.groovy) &ndash; the `Game` class.
 
-Inheritence
-~~~~~~~~~~~~
+### Inheritence
 
 * [example20.groovy](example21.groovy) &ndash; Command line arguments.
 * [cat.groovy](cat.groovy) &ndash; Read and display a file, line-at-a-time.
@@ -35,6 +33,6 @@ Inheritence
 
 ----
 
-[Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 5](/dokuwiki/at-m42:lecture5) | [Previous Examples](../lecture04/index.php)| [All Examples](../index.php) | [Next Examples](../lecture06/index.php)
+[Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 7](/dokuwiki/at-m42:lecture5) | [Previous Examples](../lecture06/index.php)| [All Examples](../index.php) | [Next Examples](../lecture08/index.php)
   
 
