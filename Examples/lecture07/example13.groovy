@@ -1,3 +1,5 @@
+// Abstract class
+
 abstract class Item {
 
     String toString() { // redefines Object.toString()

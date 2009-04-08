@@ -1,14 +1,21 @@
-// abstract method
+// interface class
 
 class Player {
 	def name
 	def power
 	def strength 
+	def funds
 }
 
-abstract class Item {
+interface portable {
 
-    String toString() { // redefines Object.toString()
+    def abstract canCarry(player)  // deferred method
+
+}
+
+abstract class AbstractItem implements portable {
+
+    String toString() { 							// redefinition
         return "Item: ${name} has value ${value}"
     }
     
@@ -16,7 +23,9 @@ abstract class Item {
         return ! (description == '')
     }
     
-    def abstract canCarry(player)  // deferred method
+    def canCarry(player)  	{				// redefinition
+    	return (player.funds >= value)
+    }
 
 // ----- properties ----------------------------------
 
@@ -26,16 +35,14 @@ abstract class Item {
 
 }
 
-// Inherited features
-
-class WeightyItem extends Item {
+class WeightyItem extends AbstractItem {
     
     String toString() {
         return 'WeightyItem: ' + super.toString() + "; weight: ${weight}."
     }
     
     def canCarry(player) {
-    	return (weight < player.strength) 
+    	return super.canCarry(player) && (weight < player.strength) 
     }
 
 // ---- properties -------------------------
@@ -43,14 +50,14 @@ class WeightyItem extends Item {
     def weight = 0
 }
 
-class MagicItem extends Item {
+class MagicItem extends AbstractItem {
 
     String toString() {
         return 'MagicItem: ' + super.toString() + "; potency: ${potency}."
     }
 
     def canCarry(player) {
-    	return (player.power >= (potency/5)) 
+    	return super.canCarry(player) && (player.power >= (potency/5)) 
     }
     
 // ---- properties -------------------------
@@ -78,7 +85,7 @@ def ring = new MagicItem(name : 'The One Ring', value : 1000, potency : 500)
 def food = new WeightyItem(name : 'Rations', value : 10, weight : 20)
 def dagger = new WeightyItem(name : 'Elvish Dagger', value: 50, weight: 2)
 
-def frodo = new Player(name : 'Frodo Baggins', strength : 5, power : 5)
+def frodo = new Player(name : 'Frodo Baggins', strength : 5, power : 5, funds : 10)
 
   // add them to the game
 lotr.addItem(ring)

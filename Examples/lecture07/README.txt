@@ -25,12 +25,9 @@ This folder contains all the examples from [Lecture 7](/dokuwiki/at-m42:lecture7
 * [example10.groovy](example10.groovy) &ndash; Class inheritance.
 * [example11.groovy](example11.groovy) &ndash; Inherited features.
 * [example12.groovy](example12.groovy) &ndash; Polymorphism example.
-
-* [example24.groovy](example24.groovy) &ndash; Recursively traversing a directory.
-* [cp.groovy](cp.groovy) &ndash; File copying.
-* [example26.groovy](example26.groovy) &ndash; File copying with a PrintWriter.
-* [sort.groovy](sort.groovy) &ndash; Sorting a file.
-* [example28.groovy](example28.groovy) &ndash; Diary report.
+* [example13.groovy](example13.groovy) &ndash; Abstract class.
+* [example14.groovy](example14.groovy) &ndash; Abstract method.
+* [example15.groovy](example15.groovy) &ndash; Interface class.
 
 ----
 
