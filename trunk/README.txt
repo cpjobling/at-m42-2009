@@ -9,5 +9,6 @@ Quick links
 * [Course home](/dokuwki/at-m42:home)
 * [Lectures](/dokuwiki/at-m42:lectures)
 * [Examples](Examples)
+* [Case Studies](/dokuwiki/at-m42:casestudies)
 * [Lab Work](/dokuwiki/at-m42:labs)
 
