@@ -6,9 +6,9 @@ Case Study 2: Adventure Game (Methods and Closures)
 
 This folder contains all the examples from [Case study 2](/dokuwiki/at-m42:casestudies:cs02).
 
-* [room1.groovy](room1.groovy) &ndash; A simple adventure game.
-* [room2.groovy](room2.groovy) &ndash; Text-based UI.
-* [room3.groovy](room3.groovy) &ndash; Implementation using closures.
+* [location1.groovy](location1.groovy) &ndash; A simple adventure game.
+* [location2.groovy](location2.groovy) &ndash; Text-based UI.
+* [location3.groovy](location3.groovy) &ndash; Implementation using closures.
 
 ----
 
