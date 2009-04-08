@@ -21,8 +21,8 @@ This folder contains all the examples from [Lecture 7](/dokuwiki/at-m42:lecture7
 
 ### Inheritence
 
-* [example20.groovy](example21.groovy) &ndash; Command line arguments.
-* [cat.groovy](cat.groovy) &ndash; Read and display a file, line-at-a-time.
+* [example9.groovy](example9.groovy) &ndash; A weighty item.
+* [example10.groovy](example10.groovy) &ndash; Class inheritance.
 * [wc.groovy](wc.groovy) &ndash; WC utility.
 * [ls.groovy](ls.groovy) &ndash; List the content of a directory file.
 * [example24.groovy](example24.groovy) &ndash; Recursively traversing a directory.
