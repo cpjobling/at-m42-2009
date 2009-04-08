@@ -19,8 +19,10 @@ atM42.increaseValueOfItem('labwork', 10) // now 30
 atM42.decreaseValueOfItem('project', 10) // now 40
 atM42.decreaseValueOfItem('project', 50) // remains at 40
 
-  // display details of this item
+  // display details of the project item
 println "Value of project is: ${atM42.getValueOfItem('project')}"
+println "Project description: ${project}"
+println "${project.description}"
 
   // calculate total value of items
 println "Total value of items: ${atM42.getTotalValueOfItems()}"
