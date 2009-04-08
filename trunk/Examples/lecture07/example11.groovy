@@ -24,4 +24,8 @@ def wine = new WeightyItem(name : 'A Flagon of Wine', value : 2, weight : 2)
 
     // use methods and inherited methods
 println "Weight: ${wine.weight}"
-prinln "Name: ${wine.name}"
+println "Name: ${wine.name}"
+
+def spell = new Item(name : 'A Magic Spell', value: 10)
+println "Name: ${spell.name}"        // OK
+//println "Weight: ${spell.weight}"  // ERROR: no such property
