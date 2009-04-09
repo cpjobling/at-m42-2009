@@ -1,22 +1,22 @@
 // Case study iteration 1: Adventure game location with List
 
-// Initialise the dungeon location
-def dungeon = [ ['Chris', 'Sword'],
+// Initialise the game dng
+def dng = [ ['Chris', 'Sword'],
                 ['Chris', 'Food'],
                 ['Jenny', 'Dagger']
               ]
               
 // add two new items
-dungeon << ['Jenny', 'Food']
-dungeon.add(['Joe', 'Magic Wand'])
+dng << ['Jenny', 'Food']
+dng.add(['Joe', 'Magic Wand'])
 
 // print the location
-println "Dungeon: ${dungeon}"
+println "dng: ${dng}"
 
 // Does Chris have a sword?
-println "Player Chris has a sword? ${dungeon.contains(['Chris', 'Sword'])}"
+println "Player Chris has a sword? ${dng.contains(['Chris', 'Sword'])}"
 
 // Print the number of items in the location
-println "Number of items in the dungeon: ${dungeon.size()}"
+println "Number of items in the dng: ${dng.size()}"
 
 
