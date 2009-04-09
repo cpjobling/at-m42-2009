@@ -65,7 +65,7 @@ def doRemoveItem = { removeItem(game, readItemName()) }
 
 def doPickupItem = { pickUpItem(game, readItemName(), readPlayerName()) }
 
-def doDropItem = { dropItem(game, readItemName(), , readPlayerName()) }
+def doDropItem = { dropItem(game, readItemName(), readPlayerName()) }
 
 def doDisplayItems = { displayItems(game) }
 
