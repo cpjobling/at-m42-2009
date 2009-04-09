@@ -4,32 +4,24 @@ AT-M42 Client Server Programming for the Java Plaform
 Examples for Lecture 8: Unit Testing
 ---------------------------------------------------
 
-This folder contains all the examples from [Lecture 8](/dokuwiki/at-m42:lecture8).
+This folder contains all the examples from [Lecture 8](/dokuwiki/at-m42:lecture8). Note that `Game.class` contains a bug that will make some of the tests fail. See the [lecture](/dokuwiki/at-m42:lecture8) for corrections. 
 
 ### Classes to be Tested
 
 * [Item.groovy](Item1.groovy) &ndash; an item in the game.
-* [Game.groovy](Game.groovy) &ndash; the game class.
+* [Game.groovy](Game.groovy) &ndash; the game class (contains a bug).
 
 ### Test Cases
 
 * [example1.groovy](example1.groovy) &ndash; Testing with `println`.
 * [example2.groovy](example2.groovy) &ndash; Testing with assertions.
 * [ItemTest.groovy](ItemTest.groovy) &ndash; Testing with JUnit.
-* [GameTest.groovy](GameTest.groovy) &ndash; Testing the `Game` class.
-* [example13.groovy](example13.groovy) &ndash; Abstract class.
-* [example14.groovy](example14.groovy) &ndash; Abstract method.
-* [example15.groovy](example15.groovy) &ndash; Interface class.
+* [GameTest.groovy](GameTest.groovy) &ndash; Testing the `Game` class (complete).
 
 ### Test Suites
 
-* [example9.groovy](example9.groovy) &ndash; A weighty item.
-* [example10.groovy](example10.groovy) &ndash; Class inheritance.
-* [example11.groovy](example11.groovy) &ndash; Inherited features.
-* [example12.groovy](example12.groovy) &ndash; Polymorphism example.
-* [example13.groovy](example13.groovy) &ndash; Abstract class.
-* [example14.groovy](example14.groovy) &ndash; Abstract method.
-* [example15.groovy](example15.groovy) &ndash; Interface class.
+* [runAllTests.groovy](runAllTests.groovy) &ndash; run all Game/Item tests.
+* [runAllTests2.groovy](runAllTests2.groovy) &ndash; run all Game/Item/Player tests.
 
 ----
 
