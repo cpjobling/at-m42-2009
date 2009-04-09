@@ -65,7 +65,7 @@ def doRemoveItem = { removeItem(game, readItemName()) }
 
 def doPickupItem = { pickUpItem(game, readItemName(), readPlayerName()) }
 
-def doDroupItem = { dropItem(game, readItemName(), , readPlayerName()) }
+def doDropItem = { dropItem(game, readItemName(), , readPlayerName()) }
 
 def doDisplayItems = { displayItems(game) }
 
@@ -85,7 +85,7 @@ def menu = [
     1: doAddItem,
     2: doRemoveItem,
     3: doPickupItem,
-    4: doDroupItem,
+    4: doDropItem,
     5: doDisplayItems,
     6: doDisplayNumberOfItemsBeingCarriedByPlayer,
     7: doDisplayNumberOfPlayersCarryingItem,
