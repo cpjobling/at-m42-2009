@@ -14,14 +14,14 @@ class GameTest extends GroovyTestCase {
             description : 'a maths text book')    
         satchel = new Item (id : 2, name : 'satchel', value : 10,
             description : 'a carrier for school books and pencils')
-        item3 = new Item (id : 2, name : 'a different satchel', value : 10)
+        //uncomment later: item3 = new Item (id : 2, name : 'a different satchel', value : 10)
     }
     
     /**
      * Test that the addition of an item to the game results in one more
      * item in the game.
      */
-     void testAddBook_1() {
+     void testAddItem_1() {
          def pre = game.inventory.size()
          game.addItem(book)
          def post = game.inventory.size()
@@ -33,7 +33,7 @@ class GameTest extends GroovyTestCase {
      * Test that the addition of two items with different ids to an
      * empty game results in a game with two items in its inventory
      */
-     void testAddBook_2() {
+     void testAddItem_2() {
          game.addItem(book)
          game.addItem(satchel)
          def expected = 2
@@ -45,9 +45,11 @@ class GameTest extends GroovyTestCase {
      /**
       * Test that the addition of an Item with the same id as one
       * already present in the Game results in no change in the number
-      * of items in the inventory
+      * of items in the inventory.
+      * Uncomment to activate test
       */
-     void testAddBook_3() {
+     /*
+     void testAddItem_3() {
          game.addItem(book)
          game.addItem(satchel)
          def pre = game.inventory.size()
@@ -55,14 +57,17 @@ class GameTest extends GroovyTestCase {
          def post = game.inventory.size()
          
          assertTrue('one more item than expected', post == pre)
-     }      
+     } 
+     */     
 
      /**
       * Test that the addition of an Item with the same id as one
       * already present in the Game results in no change in the number
-      * of items in the inventory
+      * of items in the inventory.
+      * Uncomment to activate test
       */
-     void testAddBook_4() {
+     /*
+     void testAddItem_4() {
          game.addItem(satchel)
          game.addItem(item3)
          def expected = satchel.toString()
@@ -70,13 +75,39 @@ class GameTest extends GroovyTestCase {
          
          assertToString(actual, expected)
      }      
+     */
      
-     
+     /**
+      * Test that successfully adding an Item to the Game
+      * is detected
+      * uncoment to activate
+      */
+     /*
+     void testAddItem_5() {
+         def success = game.addItem(satchel)
+         
+         assertTrue('addition should succeed', success)
+     }      
+     */
+      /**
+      * Test that unsuccessfully attempting to add Item with the same 
+      * id as one already present in the Game is detected.
+      * uncoment to activate
+      */
+      /*
+      void testAddItem_6() {
+         game.addItem(satchel)
+         def success = game.addItem(item3)
+         
+         assertFalse('addition should fail', success)
+     }
+     */      
+      
 // ----- properties --------------------------
 
     def game
     
     def book
     def satchel
-    def item3
+    // uncomment later: def item3
 }

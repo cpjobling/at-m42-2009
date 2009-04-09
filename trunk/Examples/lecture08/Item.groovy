@@ -10,11 +10,20 @@ class Item {
         return s
     }
 
+    def pickedUpBy(player) {
+        this.carrier = player
+    }
+    
+    def dropped() {
+        this.carrier = null        
+    }
+    
 // ----- properties -----------------------------
 
     def name
     def description = ''
     def id
     def value
+    def carrier
 
 }

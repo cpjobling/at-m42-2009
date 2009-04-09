@@ -10,13 +10,15 @@ This folder contains all the examples from [Lecture 8](/dokuwiki/at-m42:lecture8
 
 * [Item.groovy](Item1.groovy) &ndash; an item in the game.
 * [Game.groovy](Game.groovy) &ndash; the game class (contains a bug).
+* [Player.groovy](Player.groovy) &ndash; the player class (contains a bug).
 
 ### Test Cases
 
 * [example1.groovy](example1.groovy) &ndash; Testing with `println`.
 * [example2.groovy](example2.groovy) &ndash; Testing with assertions.
 * [ItemTest.groovy](ItemTest.groovy) &ndash; Testing with JUnit.
-* [GameTest.groovy](GameTest.groovy) &ndash; Testing the `Game` class (complete).
+* [GameTest.groovy](GameTest.groovy) &ndash; Testing the `Game` class (complete with some methods commented out).
+* [PlayerTest.groovy](PlayerTest.groovy) &ndash; Testing the `Player` class (complete with some methods commented out).
 
 ### Test Suites
 
