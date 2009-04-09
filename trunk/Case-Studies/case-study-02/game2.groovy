@@ -3,30 +3,30 @@
 import console.*
 
     // The methods
-def addItem(location, item) {
-    location[item] = []
+def addItem(game, item) {
+    game[item] = []
 }
 
-def removeItem(location, item) {
-	location.remove(item)
+def removeItem(game, item) {
+	game.remove(item)
 }
 
-def pickUpItem(location, item, player) {
-	location[item] << player
+def pickUpItem(game, item, player) {
+	game[item] << player
 }
 
-def dropItem(location, item, player) {
-	location[item].remove(player)
+def dropItem(game, item, player) {
+	game[item].remove(player)
 }
 
-def displayItems(location) {
-	println "The location contains: ${location} \n"
+def displayItems(game) {
+	println "The game contains: ${game} \n"
 }
 
-def readNumberOfItemsBeingCarried(location, player) {
+def readNumberOfItemsBeingCarried(game, player) {
 	
-	// get a List of each List of the players from the location
-	def playerNames = location.values().asList()
+	// get a List of each List of the players from the game
+	def playerNames = game.values().asList()
 	
 	// create a single list fo the players' names
 	playerNames = playerNames.flatten()
@@ -35,8 +35,8 @@ def readNumberOfItemsBeingCarried(location, player) {
 	return playerNames.count(player)
 }
 
-def readNumberOfPlayersHoldingItem(location, item) {
-   return location[item].size()
+def readNumberOfPlayersHoldingItem(game, item) {
+   return game[item].size()
 }
 
 
@@ -65,8 +65,8 @@ def readMenuSelection() {
 	return Console.readInteger()	
 }
 
-	// initialize the items in a location
-def location = [
+	// initialize the items in a game
+def game = [
   'bread' : ['Chris', 'John'],
   'fork' : ['Chris'],
   'sword' : ['John', 'Sally'],
@@ -79,32 +79,32 @@ def choice = readMenuSelection()
 while (choice != 0)	{
 	switch (choice) {
 		case 1:
-			addItem(location, readItemName())
+			addItem(game, readItemName())
 			break
 		case 2:
-			removeItem(location, readItemName())
+			removeItem(game, readItemName())
 			break
 		case 3:
-			pickUpItem(location, 
+			pickUpItem(game, 
 				readItemName(), readPlayerName())
 			break
 		case 4:
-			dropItem(location, 
+			dropItem(game, 
 				readItemName(), readPlayerName())
 			break
 		case 5:
-			displayItems(location)
+			displayItems(game)
 			break
 		case 6:
 			def player = readPlayerName()
 			def count = 
-			    readNumberOfItemsBeingCarried(location, player)
+			    readNumberOfItemsBeingCarried(game, player)
 			println "\n${player} is carrying ${count} items\n"
 			break
 		case 7:
 			def item = readItemName()
 			def count = 
-			    readNumberOfPlayersHoldingItem(location, item)
+			    readNumberOfPlayersHoldingItem(game, item)
 			println "\n${item} is being carried by ${count} players\n"
 			break
 		default:
