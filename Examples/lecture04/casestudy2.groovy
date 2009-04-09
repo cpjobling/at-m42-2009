@@ -1,24 +1,24 @@
 // Case study iteration 2: Adventure game location with Map
 
-// Initialise the dungeon location
-def dungeon = [ 'Chris':  ['Sword', 'Food'],
+// Initialise the game dng
+def dng = [ 'Chris':  ['Sword', 'Food'],
                 'Jenny': ['Dagger']
               ]
               
 // add a new player
-dungeon['Joe'] = ['Magic Wand']
+dng['Joe'] = ['Magic Wand']
 
 // update an existing player
-dungeon['Jenny'] = dungeon['Jenny'] << 'Food'
+dng['Jenny'] = dng['Jenny'] << 'Food'
 
 // display the data in various ways
-println "Dungeon: ${dungeon}"
+println "dng: ${dng}"
 
-println "Player Chris has a sword? ${dungeon['Chris'].contains('Sword')}"
+println "Player Chris has a sword? ${dng['Chris'].contains('Sword')}"
 
-println "Number of items in the dungeon: ${dungeon.size()}"
+println "Number of items in the dng: ${dng.size()}"
 
-println "Players: ${dungeon.keySet().sort()}"
+println "Players: ${dng.keySet().sort()}"
 
-println "Number of items being carried by Chris: ${dungeon['Chris'].size()}"
+println "Number of items being carried by Chris: ${dng['Chris'].size()}"
 
