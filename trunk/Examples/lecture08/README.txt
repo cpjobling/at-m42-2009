@@ -23,7 +23,7 @@ This folder contains all the examples from [Lecture 8](/dokuwiki/at-m42:lecture8
 
 * [example1.groovy](example1.groovy) &ndash; Testing with `println`.
 * [example2.groovy](example2.groovy) &ndash; Testing with assertions.
-* [example11.groovy](example11.groovy) &ndash; Inherited features.
+* [ItemTest.groovy](ItemTest.groovy) &ndash; Testing with JUnit.
 * [example12.groovy](example12.groovy) &ndash; Polymorphism example.
 * [example13.groovy](example13.groovy) &ndash; Abstract class.
 * [example14.groovy](example14.groovy) &ndash; Abstract method.
