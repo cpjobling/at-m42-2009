@@ -72,32 +72,6 @@ class PlayerTest extends GroovyTestCase {
          assertToString(actual, expected)
      }      
      
-     /**
-      * Test that successfully adding an Item to the player
-      * is detected
-      * uncoment to activate
-      */
-     /*
-     void testpickUp_5() {
-         def success = player.pickUp(itm2)
-         
-         assertTrue('addition should succeed', success)
-     }      
-     */
-      /**
-      * Test that unsuccessfully attempting to add Item with the same 
-      * id as one already present in the player is detected.
-      * uncoment to activate
-      */
-      /*
-      void testpickUp_6() {
-         player.pickUp(itm2)
-         def success = player.pickUp(itm3)
-         
-         assertFalse('addition should fail', success)
-     }
-     */      
-      
 // ----- properties --------------------------
 
     def player
