@@ -5,7 +5,7 @@ def atM42 = new Game(name : 'Client Server Programming on the Java Platform')
 
  // add items
 atM42.createItem('labwork', 20, 'Exercises in programming')
-atM42.createItem('seminar', 30, 'Latest research in enterprised computing')
+atM42.createItem('seminar', 30, 'Latest research in enterprise computing')
 atM42.createItem('project', 50)
 def project = atM42.findItem('project')
 project.description = """
