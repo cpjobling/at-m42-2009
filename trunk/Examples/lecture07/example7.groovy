@@ -2,7 +2,7 @@
 
 class Item {
     
-    def Item(name, value) { // cosntructor method
+    def Item(name, value) { // constructor method
         this.name = name
         this.value = value
     }
