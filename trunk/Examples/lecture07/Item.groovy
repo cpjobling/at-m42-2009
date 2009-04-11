@@ -2,11 +2,11 @@
 
 class Item {
     
-    def increaseValue(amount) {
+    void increaseValue(Integer amount) {
         value += amount
     }
     
-    def reduceValue(amount) {
+    void reduceValue(Integer amount) {
         if (value >= amount) { // only if result won't be negative
             value -= amount
         }

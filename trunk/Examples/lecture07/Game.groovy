@@ -1,8 +1,8 @@
-// character
+// Game
 
 class Game {
     
-    def createItem(name, value, description = '') {
+    void createItem(String name, Integer value, String description = '') {
         def item = new Item(name : name, value : value)
         if (description != '') {
             item.description = description
@@ -11,38 +11,38 @@ class Game {
     }
     
    
-    def increaseValueOfItem(name, amount) {
+    void increaseValueOfItem(String name, Integer amount) {
         def item = this.findItem(name)
         if (item != null) {
             item.increaseValue(amount)
         }
     }
     
-   def decreaseValueOfItem(name, amount) {
+   void decreaseValueOfItem(String name, Integer amount) {
         def item = this.findItem(name)
         if (item != null) {
             item.reduceValue(amount)
         }
     }
     
-    def getValueOfItem(name) {
+    Integer getValueOfItem(String name) {
         def item = this.findItem(name)
         return (item == null) ? null : item.value
     }
     
-    def getTotalValueOfItems() {
+    Integer getTotalValueOfItems() {
         def totalValue = 0
         items.each { name, item -> totalValue += item.value }
         return totalValue
     }
     
-    def findItem(name) {
+    Item findItem(name) {
         def item = items.find { entry -> entry.key == name }
         return (item == null) ? null : item.value
     }
     
     // See example 12
-    def addItem(item) {
+    void addItem(item) {
     	items[item.name] = item
     }
  
