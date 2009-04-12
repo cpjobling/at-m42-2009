@@ -10,11 +10,11 @@ class Item {
         return s
     }
     
-    def pickedUpBy(player) {
+    void pickedUpBy(Player player) {
         this.carrier = player
     }
     
-    def dropped() {
+    void dropped() {
         this.carrier = null        
     }
 
@@ -30,12 +30,12 @@ class Item {
 
 class Player {
     
-    def pickUp(item) {
+    void pickUp(Item item) {
         inventory[item.id] = item
         item.pickedUpBy(this)
     }
     
-    def drop(item) {
+    void drop(item) {
         inventory.remove(item.id)
         item.dropped()
     }
@@ -55,18 +55,18 @@ class Player {
 
 class Game {
 
-    def addItem(item) {
+    void addItem(Item item) {
         inventory[item.id] = item
     }
 
-    def displayInventory() {
+    void displayInventory() {
         println "\n\nGame: ${name}"
         println "=========================================="
         
         inventory.each { id, item -> println "  ${item}" }
     }
 
-    def displayAvailableItems() {
+    void displayAvailableItems() {
         println "\n\nGame: ${name} : Available items"
         println "=========================================="
         
@@ -77,7 +77,7 @@ class Game {
         }                
     }    
     
-    def displayItemsBeingCarried() {
+    void displayItemsBeingCarried() {
         println "\n\nGame: ${name} : Items being carried"
         println "=========================================="
         
@@ -88,11 +88,11 @@ class Game {
         }                
     }    
     
-    def registerPlayer(player) {
+    void registerPlayer(Player player) {
         players[player.id] = player
     }
     
-    def displayPlayers() {
+    void displayPlayers() {
         println "\n\nGame: ${name} : Player Details"
         println "=========================================="
         
@@ -102,14 +102,14 @@ class Game {
         }                    
     }
         
-    def pickupItem(itemId, playerId) {
+    void pickupItem(Integer itemId, Integer playerId) {
         def inventoryEntry = inventory.find { entry -> entry.key == itemId }
         def playersEntry = players.find { entry -> entry.key == playerId }
         
         playersEntry.value.pickUp(inventoryEntry.value)
     }
     
-    def dropItem(itemId) {
+    void dropItem(Integer itemId) {
         def inventoryEntry = inventory.find { entry -> entry.key == itemId }
         def player = inventoryEntry.value.carrier
         player.drop(inventoryEntry.value)

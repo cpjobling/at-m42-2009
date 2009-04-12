@@ -12,11 +12,11 @@ class Item {
         return s
     }
     
-    def pickedUpBy(player) {
+    void pickedUpBy(Player player) {
         this.carrier = player
     }
     
-    def dropped() {
+    void dropped() {
         this.carrier = null        
     }
 
@@ -32,12 +32,12 @@ class Item {
 
 class Player {
     
-    def pickUp(item) {
+    void pickUp(Item item) {
         inventory[item.id] = item
         item.pickedUpBy(this)
     }
     
-    def drop(item) {
+    void drop(Item item) {
         inventory.remove(item.id)
         item.dropped()
     }
@@ -57,21 +57,21 @@ class Player {
 
 class Game {
 
-    def addItem(item) {
+    void addItem(Item item) {
         inventory[item.id] = item
     }
 
-    def registerPlayer(player) {
+    void registerPlayer(Player player) {
         players[player.id] = player
     }
 
-    def pickupItem(itemId, playerId) {
+    void pickupItem(Integer itemId, Integer playerId) {
         def inventoryEntry = inventory.find { entry -> entry.key == itemId }
         def playersEntry = players.find { entry -> entry.key == playerId }   
         playersEntry.value.pickUp(inventoryEntry.value)
     }
     
-    def dropItem(itemId) {
+    void dropItem(Integer itemId) {
         def inventoryEntry = inventory.find { entry -> entry.key == itemId }
         def player = inventoryEntry.value.carrier
         player.drop(inventoryEntry.value)
@@ -87,7 +87,7 @@ class Game {
 
 class Action {
 
-	def addItem() {
+	void addItem() {
 		print('\nEnter item id: ')
 		def itemId = Console.readInteger()
 		print('\nEnter item name: ')
@@ -103,14 +103,14 @@ class Action {
 		game.addItem(item)		
 	}
 	
-    def displayInventory() {
+    void displayInventory() {
         println "\n\nGame: ${game.name}"
         println "=========================================="
         
         game.inventory.each { id, item -> println "  ${item}" }
     }	
     
-    def displayAvailableItems() {
+    void displayAvailableItems() {
         println "\n\nGame: ${game.name} : Available items"
         println "=========================================="
         
@@ -121,7 +121,7 @@ class Action {
         }                
     }    
 
-    def displayItemsBeingCarried() {
+    void displayItemsBeingCarried() {
         println "\n\nGame: ${game.name} : Items being carried"
         println "=========================================="
         
@@ -132,7 +132,7 @@ class Action {
         }                
     }    
 
-    def registerPlayer() {
+    void registerPlayer() {
     	print('\nEnter player id: ')
 		def playerId = Console.readInteger()
 		print('\nEnter player nickname: ')
@@ -146,7 +146,7 @@ class Action {
 		game.registerPlayer(player)
     }
     
-    def displayPlayers() {
+    void displayPlayers() {
         println "\n\nGame: ${game.name} : Player Details"
         println "=========================================="
         
@@ -156,7 +156,7 @@ class Action {
         }                    
     }
 
-    def pickupItem() {
+    void pickupItem() {
     	print '\nEnter item id: '
     	def itemId = Console.readInteger()
     	print '\nEnter player id: '
@@ -164,7 +164,7 @@ class Action {
         game.pickupItem(itemId, playerId)
     }
     
-    def dropItem() {
+    void dropItem() {
     	print '\nEnter item id: '
     	def itemId = Console.readInteger()
         game.dropItem(itemId)
