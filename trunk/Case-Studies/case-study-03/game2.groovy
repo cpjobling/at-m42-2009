@@ -155,8 +155,8 @@ discworld.displayPlayers()
   // Make some transactions
 discworld.displayAvailableItems()
 
-discworld.pickupItem(1, 1)
-discworld.pickupItem(2, 2)
+discworld.pickupItem(2, 1)
+discworld.pickupItem(1, 2)
 
 discworld.displayAvailableItems()
 discworld.displayItemsBeingCarried()
