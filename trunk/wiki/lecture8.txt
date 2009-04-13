@@ -11,7 +11,45 @@ The slides and notes in this presentation are adapted from //Groovy Programming/
 
 An index to the source code for all the examples in this lecture is [[/~eechris/at-m42/Examples/lecture08|available]].
 
+----
+
+This lecture explores the use of the JUnit testing framework within the Groovy environment. We use classes from [[at-m42:casestudies:cs03|Case Study 3]] to illustrate how unit testing can be accomplished using the ''GroovyTestCase'' class. Next, we show how several ''GroovyTestCases''s can be combined into a ''GroovyTestSuite''. Finally, we reflect on the role of unit testing in an iterative, incremental approach to software development. Throughout this discussion, we emphasize just how easy it is to benefit from unit testing with Groovy.
+
 ===== Unit Testing =====
+
+  * Fundamental unit of an object-oriented system is the class
+  * Obvious candidate for //unit testing// is the class.
+  * Approach:
+    * create an object of the class under test
+    * check that selected methods execute as expected
+  * Aim is to detect and correct //likely// failures rather than guarantee 100% test coverage.
+
+----
+
+Unit testing is a programming activity, and so each unit test involves the internal coding details of the class under test. This is known as //white box testing// to suggest that we can "look inside2 the class to see its internal workings. The alternative is //black box testing// which, as its name suggests, does not look inside the class. Its purpose is to check the overall effect of a method without any knowledge of how it is internally coded. The use case (functional) tests in [[at-m42:casestudies:cs02|Case Study 2]] and [[at-m42:casestudies:cs03|Case Study 3]] are examples of black box testing.
+
+===== Class to be tested (outline) =====
+
+<code groovy>
+class Item {
+
+    String toString() { ... }
+
+    void pickedUpBy(Player player) { ... }
+    
+    void dropped() { ... }
+    
+// ----- properties -----------------------------
+    def description = ''
+    def id
+    def value
+    def carrier
+}
+</code>
+
+The full [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/Item.groovy|Item class]] is reproduced in the notes.
+
+----
 
 <code groovy 1 | Class to be tested (at-m42/Examples/lecture08/Item.groovy)>
 extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/Item.groovy
@@ -28,14 +66,17 @@ extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/example1.
 
 ----
 
-Here we simply create a couple of items and print them. This demonstrates that the ``toString`` method has been overridden and behaves as expected. 
+Here we simply create a couple of items and print them. This demonstrates that the ''toString'' method has been overridden and behaves as expected. 
 
-The output is indeed as expected (note the use of the triple quoted string to enable a multi-line description to be given):
+===== Test output =====
+
   Item: 2001; name = Cloth of Gold: value = 25;
   Item: 2002; name = Shiny pebble: value = 0; description: A shiny pebble, found on the beach. 
   Has sentimental value only!;
 
-But this manner of testing is rather tedious: it produces a lot of output which presumably has to be read by someone.
+----
+
+The output is indeed as expected (note the use of the triple quoted string to enable a multi-line description to be given). But this manner of testing is rather tedious: it produces a lot of output which presumably has to be read by someone.
 
 ===== Testing with assertions =====
 
@@ -148,6 +189,12 @@ class GameTest extends GroovyTestCase {
 
 Download complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/GameTest.groovy]].
 
+----
+
+The method ''setUp'' establishes the environment (context) in which each test method operates. The test environment is known as a //test fixture// and it  must be initialized each time a test method is executed. This ensures that there is no difference between tests and that they can be run in any order. Groovy arranges for ''setUp'' to be executed before the execution of each test method.
+
+In our ''GameTest'' class, the test fixture is a ''Game'' object referenced by ''game'', and two ''Item'' objects referenced by ''book'' and ''satchel'' respectively. 
+
 ===== testAddItem_1 =====
 <code groovy 1 | Example 4: The GameTest Class (continued) (at-m42/Examples/lecture08/GameTest.groovy)>
 class GameTest extends GroovyTestCase {
@@ -172,6 +219,20 @@ class GameTest extends GroovyTestCase {
 </code>
 
 Download complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/GameTest.groovy]].
+
+---- 
+
+Notice that we use a numbering scheme with a suitable comment for a method with several tests. However, the use of more meaningful method names, such as ''testAddItemWithDifferentId'', is a popular (self documenting) alternative.
+
+In each test method, we assert that something is true. if it is not, the the test fails and the failure is reported with a suitable message. For example, in the test method shown on this slide, we assert that on completion of the method, there should be one more ''Item'' in the ''Game'' with:
+
+<code groovy>
+assertTrue('one less item than expected', post == pre + 1)
+</code>
+
+If the condition ''post == pre + 1'' evaluates to true, then the assertion is true. Otherwise the assertion is false and a failure is reported with the text: 
+  one less item than expected
+incorporated into it to help us identify the nature of the problem.   
 
 ===== testAddItem_2 =====
 <code groovy 1 | Example 4: The GameTest Class (continued) (at-m42/Examples/lecture08/GameTest.groovy)>
@@ -199,6 +260,10 @@ class GameTest extends GroovyTestCase {
 
 Download complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/GameTest.groovy]].
 
+----
+
+In ''testAddItem_2'', we assert that the addition of two ''Item''s with different ids into an empty ''Game'' should result in a ''Game'' with two ''Item'' objects in it.  
+
 ===== The properties =====
 
 Needed for the fixture.
@@ -215,26 +280,37 @@ class GameTest extends GroovyTestCase {
 	def book
 	def satchel
 }
-
 </code>
 
 Download complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/GameTest.groovy]].
 
 ----
+The elements of the [[#testcase_for_the_game_class|test fixture]] ''game'', ''book'' and ''satchel'' are defined as properties of the ''GameTest'' class. This makes them available to all test methods.
 
-Notes....
 
-Output:
+===== Results of executing GameTest =====
+
+
+  Output:
   
   ..
   Time: 0.024
   
   OK (2 tests)
-===== Add another test =====
 
+
+---- 
+
+This shows us that two tests have passed. Although they appear rather simple this tests give us confidence that the ''Game'' class is behaving as planned. There is no need to construct elaborate unit tests. In fact, it is normally much better to have several tests, each of which tests just one logical path though the method under test. They are not a burden because they are automatically compiled, executed and checked. As we add more tests, we gain more an more confidence in our code. 
+
+===== Pose a question =====
+
+  * Unit testing is all about using our experience as programmers to detect and correct possible failures in our code. 
+  * To illustrate, let's ask the question: "What happens if we attempt to add an item with the same id ans one already in the game?"
+
+===== Add another unit test =====
+ 
 <code groovy 1 | Example 5: Add another test (at-m42/Examples/lecture08/GameTest.groovy)>
-//class GameTest
-
     /**
      * Set up the fixture
      */
@@ -266,9 +342,12 @@ Download complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Exa
 
 ----
 
+Perhaps we are not sure but suspect that an ''Item'' with the same id as one already in the ''Game'' is not added: a suitable test is the one shown in the slide.
+
 Note that although for space reasons it isn't shown, you need to add ''def item3'' to the properties of ''GameTest''!
 
-Result now:
+===== Result now =====
+
   
   ...
   Time: 0.02
@@ -276,7 +355,10 @@ Result now:
   OK (3 tests)
 
 
-===== And another =====
+===== Another question =====
+  * Is the ''Item'' the original one or a new one?
+
+===== Another test =====
 
 
 <code groovy 1 | Example 5: Another test (at-m42/Examples/lecture08/GameTest.groovy)>
@@ -322,11 +404,13 @@ Tests run: 4,  Failures: 1,  Errors: 0
 </pre>
 </html>
 
+Now the test report informs us that the fourth test method failed (hence the four dots and the F) It goes on to give more information about the failure. Although it does not concern us here, note that i an unexpected exception occurs, an error, not a failure is reported.
+
 ===== Correct error =====
 
 <code groovy l|Correction to code>
 // class Game
-def addItem(item) {
+void addItem(Item item) {
   if (! inventory.containsKey(item.id) ) {
     inventory[item.id] = item
   }
@@ -335,18 +419,42 @@ def addItem(item) {
 
 Verify this change passes the test!
 
+----
+
+Having established that there is a problem with the ''addItem'' method in the ''Game'' classm re now recode it as shown in the slide and re-run''GameTest'' to give a successful test result.
+
+Happily all four tests now pass and as a result we have fixed a bug and have gained more confidence in our code. Notice that we made the minimum changed necessary to pass the fourth test and that none of the previous tests was invalidated. 
+
 ===== The GroovyTestSuite and Junit TestSuite Classes =====
+
+  * One test class per class in an application
+  * Want to execute all tests at once
+  * ''GroovyTestCase'' makes it eay to write a JUnit test class.
+  * ''GroovyTestSuite'' makes it easy to combine test cases into a test suite.
+  * All ''GroovyTestCases'' in a ''GroovyTestSuite'' execute together.
+  * Easy to run a full range of tests.
+
+===== GroovyTestSuite runAllTests.groovy =====
+
 
 <code groovy l|Example 6: A Groovy test suite (at-m42/Examples/lecture08/runAllTests.groovy)>
 extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/runAllTests.groovy
 </code>
+
+----
+
+The ''AllTests'' class has a static method, ''suite''. It returns a ''GroovyTestSuite'', referenced by ''allTests'', to which a ''Class'' object for each ''GroovyTestCase'' has been added. Note that ''Test'' is an interface implemented by ''GroovyTestSuite''. It just ensures that a ''GroovyTestSuite'' can be run.
+
+On execution of the script, there is a call to the ''static run'' method of the ''TestRunner'' class. The actual parameter to this method call is the ''trest'' object returned by the ''suite'' method of the class ''AllTests''. The ''run'' method automatically executes each ''GroovyTestCase'' in the ''GroovyTestSuite''. In our case they are the ''ItemTest'' and the ''GameTest'' classes developed previously. The details of how this is accomplished need not concern us here, but interested readers should consult the Junit web site (see http://www.junit.org) for more information.
+
+Just as with a ''GroovyTestCase'', we compile and executed ''runAllTests'' as normal to get a test report. As before all five tests (one from ''ItemTest'' and four from ''GameTest'') pass. Noet that previously the ''TestRunner'' was executed "under the covers". Here, we find it convenient to make its presence explicit. Interested readers may like to consult the Groovy website (http://grovvy.codehaus.org) for alternatives. 
 
 ===== A further minor change =====
 
 <code groovy l>
     // class Game
   
-    def addItem(item) {
+    Boolean addItem(Item item) {
         if ( ! inventory.containsKey(item.id) ) {
             inventory[item.id] = item
             return true
@@ -355,6 +463,11 @@ extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/runAllTes
         }
     }
 </code>
+
+
+---- 
+
+To appreciate just how useful unit testing is, let's return to the ''addItem'' method in the ''Game'' class. We decide that we'd like it to report on success of failure of adding an ''Item''. Therefore we record the method so that it returns a ''Boolean'' status value as shown here.
 
 ===== Test for success =====
 
@@ -372,6 +485,10 @@ extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/runAllTes
 
 Complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/GameTest.groovy|GameTest.groovy]]
 
+----
+
+We add a test for success ...
+
 ===== Expect failure =====
 
 <code groovy l|Example 7: New tests added to TestSuite (continued)>
@@ -388,6 +505,17 @@ Complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lec
 </code>
 
 Complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/GameTest.groovy|GameTest.groovy]]
+
+----
+
+... and one for failure.
+
+Notice that ''assertFalse'' returns ''true'' if the condition evaluates to ''false''. We find it more convenient than the equivalent
+<code groovy>
+assertTrue('no addition expected', success == false)
+</code>
+
+Because all of the previous tests have passed, we are reasonably confident that any changes made have not had a detrimental effect on the rest of our code. This has been achieved with minimum effort on our part. This is one of the reason why unit testing is such a powerful weapon in our armoury.
 
 ===== The Role of Unit Testing =====
 
@@ -494,9 +622,6 @@ We should test additional methods that [[at-m42:casestudies:cs03#iteration_iiaug
 
 ===== Summary of this Lecture ====
  
-The ....
-
-
   * [[#Unit Testing]]
   * [[#The GroovyTestCase and Junit TestCase Classes]]
   * [[#The GroovyTestSuite and Junit TestSuite Classes]]
