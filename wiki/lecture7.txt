@@ -644,7 +644,7 @@ extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example12
 The output from this program is:
   Game: Lord of the Rings
   ===========================
-  MagicItem: Item: The One Ring has value 1000; potency: 500.
+  MagicalItem: Item: The One Ring has value 1000; potency: 500.
   WeightyItem: Item: Rations has value 10; weight: 20.
   Item: clay pipe has value 0
   This pipe is excellent for smoking a good tobacco.
@@ -683,8 +683,8 @@ abstract class Item {
 
 class WeightyItem extends Item { ... }
 
-class MagicItem extends Item { ... }
-<code>
+class MagicalItem extends Item { ... }
+</code>
 
 Full [[ http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example13.groovy|source code]] in the notes.
 
@@ -718,7 +718,7 @@ The output is:
 
   Game: Lord of the Rings
   ===========================
-  MagicItem: Item: The One Ring has value 1000; potency: 500.
+  MagicalItem: Item: The One Ring has value 1000; potency: 500.
   WeightyItem: Item: Rations has value 10; weight: 20.
   WeightyItem: Item: Elvish Dagger has value 50; weight: 2.
   Can Frodo Baggins carry The One Ring?: false
@@ -734,6 +734,33 @@ Observe the definitions for the method ''canCarry'' in both the ''WeightyItem'' 
 ----
 
 It is possible to have an abstract class in which none of the methods has been defined. They are all //deferred// to a subclass for their implementation. Such a class is referred to as an //interface class//. Since no method is actually defined, an interface presents only a specification of its behaviours. An interface proves extremely useful, acting as the //protocol// to which one or more subclasses must conform, that is, provide definitions for all its methods.
+
+Groovy supports the concept of an interface class with the keyword ''interface''. although it is similar to an abstract class with no defined methods, it is important to realize that it is different in one important respect. It is that a class that implements the interface, that is, one that provides methods for its deferred operations, need not belong to the same class hierarchy. Although they may implement other methods and have different parents, if they implement those operations advertised by the interface they can substitute for it. This simple fact makes the interface an extremely powerful facility that gives the designer more flexibility than the abstract class allows.
+
+Consider the game and its items. We insist that we must be able to ask any item wither it can be carried by a player. Clearly, the class to which an item belongs must have implementations for the ''canCarry'' method. However, there is no requirement that each class is part of the same inheritance hierarchy. This is an important point that makes a critical difference to our design. All that matters is that the ''game'' is abel to send the message ''cancCarry'' to each of its items. It may be possible to send other messages, but to be an item in the ''Game'' on;y the ''canCarry'' operation is required. 
+
+We can model this situation with a Groovy interface as shown in this slide. In UML, interfaces are shown as small circles. The dashed inheritance arrow connecting AbstractItem to the //Portable// interface denotes that (abstrac) class AbstractItem implements the ''Portable'' interface.
+
+===== Portable interface =====
+
+<code groovy>
+interface Portable {
+    Boolean abstract canCarry(Player player) 
+}
+
+abstract class AbstractItem implements Portable { ... }
+
+class WeightyItem extends AbstractItem { ... }
+
+class MagicalItem extends AbstractItem { ... }
+</code>
+
+Full listing for [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example15.groovy|Example 15]] is given in the notes.
+
+----
+
+The implementation for this is give in Example 15, where ''Portable'' is introduced as a an interface class. An interface declares, but does not define, one or more abstract methods. The abstract class ''AbstractItem'' conforms to the protocol since it //implements// the ''Portable// interface. Notice that ''AbstractItem'' offers a simple implementation for the ''canCarry'' method. We must explicitly redefine it in the ''WeightyItem'' and ''MigicalItem'' classes (note we use the superclass definitions in both!).
+
 <code groovy 1 | Example 15: The interface calls (at-m42/Examples/lecture07/example15.groovy)>
 extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example15.groovy
 </code>
@@ -742,7 +769,7 @@ extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example15
 Output:
   Game: Lord of the Rings
   ===========================
-  MagicItem: Item: The One Ring has value 1000; potency: 500.
+  MagicalItem: Item: The One Ring has value 1000; potency: 500.
   WeightyItem: Item: Rations has value 10; weight: 20.
   WeightyItem: Item: Elvish Dagger has value 50; weight: 2.
   Can Frodo Baggins carry The One Ring?: false
