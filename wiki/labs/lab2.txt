@@ -1,0 +1,55 @@
+====== Lab Exercise 2: Programming the Java Platform 2 ======
+
+
+These exercises are designed to support [[at-m42:lecture7|Lecture 7 Classes and Inheritance]] and [[at-m42:lecture8|Lecture 8 Unit Testing]]. Create a new folder in your work directory ''h:\work\at-m42'' called //lab2//. Store the solutions to the exercise in separate groovy files labelled //lab2-ex11.groovy//, //lab2-ex12.groovy//, etc. 
+
+Put the following comment at the top of each script:
+<code groovy>
+// Lab 1: Exercise n.m
+// Student number: 0123456
+</code>
+
+===== Part 1: Classes =====
+
+==== Exercise 1.1 ====
+
+Develop a class to represent a ''Point'' in a two dimensional space with an ''x'' and ''y'' property. Include in the class the method ''moveBy'', which moves the point by the x and y displacements given as method parameters.
+
+==== Exercise 1.2 ====
+
+Build on the ''Point'' class developed in Exercise 1.1 to develop the class ''Line'', defined by its start and end points. Include in the class the method ''moveBy'', to displace the line by some given amount. Also, include the methods ''isHorizontal'', ''isVertical'' to determine the nature of the line and length to determine the distance between the end points (you will need the ''Math.sqrt()'' method).
+
+==== Exercise 1.3 ====
+
+Build on the ''Point'' class developed in Exercise 1.1 to develop the class ''Rectangle'', defined by the position of its upper left corner (a ''Point'') its width and its height. its start and end points. Include in the class the methods ''moveBy'', ''getArea'' and ''getPerimeter''. Method ''moveBy'' displaces the rectangle by a given amount. Methods ''getArea'' and ''getPerimeter'' calculate the area and perimeter, respectively, of the rectangle.
+
+==== Exercise 1.4 ====
+
+A news agent maintains a list of customers, including their name. For each customer, the news agent has a list of newspapers to be delivered to their home. Develop a system to list each newspaper and the quantity required.
+
+===== Part 2: Inheritance =====
+
+
+
+===== Part 3: Unit Testing =====
+
+You may need to copy some files from the Exercises for [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/|Lecture 8]] and [[http://www.cpjobling.org.uk/~eechris/at-m42/Case-Studies/case-study-03/|Case Study 3]] before you begin.
+
+
+
+==== Exercise 2.1 ====
+
+  - Test that registering two ''Players'' with different id numbers to an empty ''Game'' results in two ''Player''s in the ''Game''.
+  - Test that an attempt to register a ''Player'' with the same id as one already registered results in no change to the number of ''Player''s in a ''Game''.
+  - Test that an attempt to register a ''Player'' with the same id as one already registered results in no change to the ''Player'' already registered.
+
+
+
+
+===== Acknowledgements =====
+
+The exercises are based on those given in //Programming Groovy//.
+
+----
+
+[[at-m42:home]] | [[lab1|Previous Lab]] | [[at-m42:labs]] | [[lab3|Next Lab]]

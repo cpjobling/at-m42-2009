@@ -1,0 +1,52 @@
+====== Logical Operators ======
+
+These notes are extracted from Appendix C.6 of //Groovy Programming//. (See [[lecture0#Reading|Recommended Reading]]).
+
+The //logical operators// are given in Table 1. The logical //and// operator (represented as ''&&'') and the logical //or// operator are binary operators. They are applied to a pair of ''Boolean'' values and produce a ''Boolean'' result. The logical negation operator ''!'' (//not//) is a unary operator applied to a single ''Boolean'' value that delivers a ''Boolean'' result.
+
+**Table 1** Logical Operators
+
+^ Operator ^ Description ^ Associativity ^
+| ''&&'' | Logical //and// | Left to right |
+| ''||'' | Logical //or// | Left to right |
+| ''!'' | (Unary) logical negation | Right to left |
+
+The effect of applying these operators is shown in Table 2.
+
+**Table 2** Evaluation of Logical Expressions (Truth Tables)
+
+^ //P// ^ //Q// ^ //P// && //Q// ^
+| ''false'' | don't care | ''false'' |
+| ''true'' | ''false'' | ''false'' |
+| ''true'' | ''true'' | ''true'' |
+
+^ //P// ^ //Q// ^ //P// %%||%% //Q// ^ 
+| ''false'' | ''false'' | ''false'' |
+| ''false'' | ''true'' | ''true'' |
+| ''true'' | don't care | ''true'' |
+
+^ //S// ^ ! //S// ^
+| ''false'' | ''true '' |
+| ''true'' | ''false'' |
+
+If you are familiar with hardware logic, you may be surprised to see "don't care" for the value of //Q// in the cases //P// && //Q// when //P// is ''false'' and //P// || //Q// when //P// is ''true''. This is because Groovy (and Java) implement a so called //short-circuit// logical operator. The result of the expression is returned as soon as it is known. Since by associativity, the expression is evaluated left to right, in the case //P// ''&&'' //Q//, if //P// is ''false'', it doesn't matter what the value of //Q// is, the result is ''false''. Similarly in the case //P// ''||'' //Q//, if //P// is ''true'', then the result is true, whatever the value of //Q//. This short-circuit effect has a marginal impact on the computation efficiency because if the result can be decided based on the value of //P// alone, then //Q// (which may be a complex expression) doesn't have to evaluated.
+
+To illustrate this consider the example:
+<code groovy 1>
+def a = 10
+def b = 20
+def c = 30
+:
+def d = (b < a) && (c == 40)
+</code>
+
+Since the sub expression ''b < a'' is false, then the test ''c == 40'' does not have to execute.
+
+
+
+
+
+
+----
+
+[[Home]] | [[Lectures]]

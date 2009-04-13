@@ -1,0 +1,686 @@
+~~SLIDESHOW~~
+====== Methods and Flow of Control ======
+
+  * [[#Methods]]
+  * [[#Flow of Control]]
+
+The slides and notes in this presentation are adapted from //Groovy Programming// (See [[lecture0#Reading|Recommended Reading]]).
+
+An index to the source code for all the examples in this lecture is [[/~eechris/at-m42/Examples/lecture05|available]].
+
+
+===== Methods =====
+
+
+  * [[#Method parameters]]
+  * [[#Default parameters]]
+  * [[#Method return values]]
+  * [[#Parameter passing]]
+  * [[#Variable scope]]
+  * [[#Collections as method parameters and return values]]
+
+===== What is a method? =====
+
+A program structuring and task partitioning feature:
+  * A //method// us a segment of code that can be executed or //called// one or more times in a program.
+  * Methods may be given //parameters// that act as input values to the method calls.
+  * Each method may use different //actual parameters// that determine the method's effect when it is executed.
+  * Other names for method: //subroutine//, //function//, //procedure//.
+
+----
+
+Methods in Groovy and other programming languages partition large programs into smaller manageable units, thus simplifying the programming task. Each method is responsible for a particular functionality required in the application. One method can call or execute any other method. thus a task represented by one method can be partitioned into subtasks realized by other sub-methods. Further, methods developed in one program can be reused in other programs.
+
+===== Defining a method =====
+
+<code groovy>
+def methodName() {
+  // Method code goes here
+}
+</code>
+
+----
+
+The simplest form of a method definition is one with no parameters as shown on this slide. Method names are presented as program identifiers. when the method is called, the parentheses ''( )'' must be present.
+
+===== A simple method  =====
+
+<code groovy 1 | Example 1: A simple method definition (at-m42/Examples/lecture05/example1.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example1.groovy
+</code>
+----
+
+Here the method is named ''greetings''. The method code involves printing a simple greeting to the user. The method is invoked using the //method call// ''greetings()''. The program output is:
+
+  Hello AT-M42 class of 2009
+
+===== Using variables in a method =====
+
+<code groovy 1 | Example 2: A method with variables. (at-m42/Examples/lecture05/example2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example2.groovy
+</code>
+----
+
+This program reads in two numbers from the console and then reverses the values. To acheive this effect, the method needs to declare and use variables in the method body. Running the script might produces the following
+<html>
+<pre>
+<b><i>groovy example2.groovy</i></b>
+Enter two integer values: <b><i>12</i></b>
+<b><i>13</i></b>
+Reversed values: 13 and 12
+</pre>
+</html>
+
+===== Converting clock time =====
+
+<code groovy 1 | Example 3: Converting clock time (at-m42/Examples/lecture05/example3.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example3.groovy
+</code>
+----
+
+This example is similar to the last. It reads some data, processes it, and displays the results. The processing involves some arithmetic operations. The program reads three integer values representing a 24-hour clock time expressed as hours, minutes and seconds. The time is converted to the number of seconds.
+
+Running the program might produce:
+<html>
+<pre>
+<b><i>groovy example3.groovy</i></b>
+Enter the time to be converted [hours minutes seconds]: <b><i>22 34 56</i></b>
+The original time of: 22 hours, 34 minutes and 56 seconds
+Converts to: 81296 seconds
+</pre>
+</html>
+
+===== Method parameters =====
+
+<code groovy>
+def methodName(para1, para2, para3) {
+  // method code goes here
+}
+</code>
+
+----
+
+A method will be more generally useful if its behaviour is determined by the value of one or more parameters. We can transfer values to the called method using //method parameters//. The slide illustrates a method declaration with three parameters.
+
+The method parameters appear as a list of //formal parameter// names enclosed in parentheses following the method name. The parameter names must differ from each other.
+
+===== Method parameters (example) =====
+
+<code groovy 1 | Example 4:  Method parameters (at-m42/Examples/lecture05/example4.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example4.groovy
+</code>
+----
+
+This new version of the ''greeting'' method allows it to be personalized by passing in the name of the person we wish to welcome. Running the program produces the output;
+
+  Hello Chris, welcome to AT-M42 class of 2009
+
+===== Default Parameters =====
+
+<code groovy>
+def methodName(para1, para2 = 0, para3 = 0) {
+  // method code goes here
+}
+</code>
+
+----
+
+The formal parameters in a method definition can specify //default values//. Where default values are given, these values are used if the caller does not pass them explicitly. Default parameter values are shown as assignments. Where default parameters are introduced in a method definition, they must be listed after the non-default parameters. That is default parameters, if present, must be given last in the formal parameter list. In the slide, the second and third parameters have been given default values.
+
+The ''someMethod'' may then be called with one, two, or three actual parameters. If one actual parameter is supplied, the other two default to zero. If two actual parameters are used, the final parameter is zero. The method call must include at least one parameter and at most three actual parameters. 
+
+===== Default parameters (Example) =====
+
+<code groovy 1 | Example 5: Default parameters (at-m42/Examples/lecture05/example5.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example5.groovy
+</code>
+----
+
+An illustration of default parameters is shown in this slide. When we execute this script, we see the second call to method greetings assumes that the name has the default value ''%%'Chris'%%''.
+
+
+
+
+===== Method return values =====
+
+<code groovy 1 | Example 6: Method return values (at-m42/Examples/lecture05/example6.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example6.groovy
+</code>
+
+----
+
+A method can also return a value to its caller. This is achieved with the //return statement// of the form:
+<code groovy>
+return expression
+</code>
+
+The statement indicates that control is to return immediately from the method to the caller, and that the expression is to be made available to the caller. The value may be captured with an appropriate assignment.
+
+The ''return'' statement is illustrated in this slide. The method ''hmsToSeconds'' obtains a clock time through its parameters (line 5), and converts it into seconds. The method returns the computed value to its caller (line 6). The calling code calls this method (line 15), and prints the returned value (line 16). Note that we have used default parameters for the minutes and seconds such that ''hmsToSeconds(1)'' would return 3600.
+
+The script behaves identically to [[#Converting clock time]].
+
+===== Implicit returns =====
+
+<code groovy 1 | Example 7: Implicit returns (at-m42/Examples/lecture05/example7.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example7.groovy
+</code>
+----
+
+The ''return'' keyword is actually optional. if is omitted, then the value of the final statement is returned. This example recodes ''hmsToSeconds'' using this behaviour. However, I recommend that your code will be clearer if you forget this feature and always explicitly use the ''return'' statement.
+
+===== Parameter Passing =====
+
+  * //Pass by value//
+  * Parameter value is copied from actual parameter to formal parameter
+  * All values in Groovy are //object references// so formal parameter is //aliased// to actual parameter.
+  * That is, changes to the state of the formal parameter will be reflected in the actual parameter.
+
+----
+
+See [[lecture2#Variables and object referencing|Variables and object referencing]] for a reminder of what is meant by object aliasing.
+
+===== Parameter aliasing =====
+
+<code groovy 1 | Example 8: Parameter aliasing (at-m42/Examples/lecture05/example8.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example8.groovy
+</code>
+----
+
+An implication of //pass by value// in Groovy is that any assignment to a formal parameter within a method body establishes a new object for the formal parameters to reference. This is illustrated in this slide.
+
+When this program is run, the result is:
+  Name (at entry): Chris
+  Name (after assignment): John
+  Lecturer: Chris
+
+The method ''printName'' is defined in terms of a formal parameter ''name''. At the point of entry to the method (line 4) the method prints the value of ''name''. At line 5, a new value is assigned to the formal parameter. At this point, the ''name'' parameter now points to a new ''String'' object with value ''%%'John'%%''. This new value is printed at line 6. In the code, the ''printName'' method is called with actual parameter ''lecturer'' that refers to the ''String'' object with the value ''%%'Chris'%%''. This is the value that is copied into the formal parameter ''name'' on entry to the method and is the value printed (by line 4) in the output. After the return from the method, the program finishes by printing the value of ''lecturer''. we can see that this value is unaffected by the change to the formal parameter.
+
+===== Interchange method =====
+
+<code groovy 1 | Example 9: Interchange method (at-m42/Examples/lecture05/example9.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example9.groovy
+</code>
+----
+
+A consequence of the aliasing of formal and actual parameters is that the ''swap'' method, as defined in this slide, does not produce the effect that we might expect. The definition for ''swap'' suggests that the values of ''x'' and ''y'' are exchanged. This does indeed occur in the body of the method  (line 6--8), but these changes are not reflected in the actual parameters.
+
+This is confirmed by the actual run of the program:
+<html>
+<pre>
+Enter the first value: <b><i>12</i></b>
+Enter the second value: <b><i>34</i></b>
+First: 12
+Second: 34
+</pre>
+</html>
+
+===== Variable Scope =====
+
+  * Variables defined inside the body of a method are called //local variables//.
+  * Local variables are limited in //scope// to the body of the method.
+  * Variables can only be referenced when they are //in scope//.
+  * Variables have no existence when they are out of scope.
+  * Formal parameters also behave as local variables within the scope of the method for which they have been defined.
+  * Methods declared outside the body of a method are //not in scope// within the method.
+
+===== Illustration of variable scope =====
+
+<code groovy 1 | Example 1: Variable scope (at-m42/Examples/lecture05/example10.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example10.groovy
+</code>
+----
+
+This example includes the method ''printName'' and the defined variable ''lecturer''. The variable ''lecturer'' is declared at line 10 which is in the scope of the script //example10.groovy// but not in scope of the method. It cannot be referenced inside the method and if the comment is removed from line 5 there would be a run-time exception:
+
+  Exception thrown: No such property: lecturer for class: example10
+
+Similarly, the scope of the formal parameter ''name'' (line 3), is not defined at line 14, and un-commenting the print statement at that line would result in the exception: 
+
+  Exception thrown: No such property: name for class: example10
+
+===== Variables and methods in same scope =====
+
+<code groovy 1 | Example 11: Variables and methods in same scope (at-m42/Examples/lecture05/example11.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example11.groovy
+</code>
+----
+
+The order of declaration is irrelevant to scoping rules. Even though ''lecturer'' is declared before the ''printName'' method, it is still not visible inside the scope of the method. If the comment is removed from line 7, an exception will be thrown.
+
+===== Collections as method parameters and return values =====
+
+<code groovy 1 | Example 12: List parameter and return. (at-m42/Examples/lecture05/example12.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example12.groovy
+</code>
+----
+
+A Groovy method can accept a collection parameter, such as a ''List'', and return a collection value. In Example 12, the method ''sort'' us used to order a ''List'' of values. If the second parameter is the ''Boolean'' value ''true'', then the list is sorted in ascending order. If the ''Boolean'' value is ''false'', the the ''List'' is ordered in descending order.
+
+===== Flow of Control =====
+
+Three types of //flow of control// structures:
+  * Sequence
+  * Selection
+  * Iteration
+
+----
+
+So far the programs and examples we have seen have been //sequential//: the execution of the statements has occurred one after the other. We have also created abstract actions, using methods, and then treated them as simple statements through their method calls. Other sequential statements see so far have been assignment, input/output and method calls.
+
+Additional statements are provided in Groovy that can alter the flow of control of a program. We explore these in this section((If you know at least one other programming language, these will be very familiar)).
+
+===== Classification of Program Statements =====
+
+  * //Iteration//
+    * [[#while statement]]
+    * [[#for statement]]
+  * //Selection//
+    * [[#if statement]]
+    * [[#switch statement]]
+  * //Selection within iterations//
+    * [[#break statement]]
+    * [[#continue statement]]
+    
+
+===== While Statement =====
+
+The fundamental iteration clause is the //while statement//. The syntax of the ''while'' statement is:
+<code groovy>
+while (condition) {
+  statement #1
+  statement #2 
+  ...
+}
+</code>
+
+----
+
+The ''while'' statement is executed by first evaluating the //condition// expression (a ''Boolean'' value), and if the result is ''true'', then the statements (in brackets) are executed. The whole process is repeated, starting once again with a re-evaluation of the condition. The loop continues until the condition evaluates to ''false''. when the condition is ''false'', the loop terminates, and execution continues at the first statement after the closing bracket. The group of statements is known as a //compound statement// or //block//((Any variables declared inside the brackets are local to the block!)).
+
+===== While Statement (Example 1) =====
+
+
+<code groovy 1 | Example 13: while statement (at-m42/Examples/lecture05/example13.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example13.groovy
+</code>
+----
+
+Example 13 in the slide prints the values 1 to 10 inclusive. Each iteration through the loop prints the current value of the variable ''count'' (line 10), and then increments ''count'' (line 11). Before the loop begins, ''count'' is set to 1 (line 5). The condition of the ''while'' statement is ''true'' until ''count'' exceeds ''LIMIT''. This will be after ''count: 10'' is printed, after which ''count'' will incremented to 11.
+
+The program's output will be:
+  Start
+  count: 1
+  count: 2
+   :
+  count: 9
+  count: 10
+  Done
+
+Conventionally, we denote variables with fixed values by capitalization. They are generally known as //symbolic constants//. The value in defining such variables is that they document a given value with their name. Further, the definition only occurs once in the code, and only a single change is required to modify that value.
+
+===== A More Interesting Example =====
+
+<code groovy 1 | Example 14: Sum of a series of positive integers (at-m42/Examples/lecture05/example14.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example14.groovy
+</code>
+----
+
+A typical use for a ''while'' statement is to loop over a series of statements and indeterminate number of times. a statement in the loop usually affects the condition that controls the looping. In this example, we have a program that reads an unknown number of positive integers, forming a running total for their values. The use enters a negative number to end the loop.
+
+A sample session with this program is:
+<html>
+<pre>
+Enter first value: <b><i>1</i></b>
+Enter next value [-ve to quit]: <b><i>2</i></b>
+Enter next value [-ve to quit]: <b><i>3</i></b>
+Enter next value [-ve to quit]: <b><i>4</i></b>
+Enter next value [-ve to quit]: <b><i>-1</i></b>
+The sum is: 10
+</pre>
+</html>
+
+Note that in this example, if the first input is negative, the body of the ''while'' statement will never be executed and the result will be a zero sum. For this reason, a ''while'' statement is often said to execute //zero or more times//. 
+
+===== For Statement =====
+
+Can be used to iterate over a ''Range'', a collection (''List'' or ''Map'') or a ''String''.
+<html>
+<table>
+<tr><td><pre>
+for (variable in <em>range</em>) {
+  statement #1
+  statement #2
+  ...
+}
+</pre>
+</td><td><pre>
+for (variable in <em>collection</em>) {
+  statement #1
+  statement #2
+  ...
+}
+</pre></td><td><pre>
+for (variable in <em>string</em>) {
+  statement #1
+  statement #2
+  ...
+}</pre></td></tr></table></html>
+
+===== for statement with Range =====
+
+<code groovy 1 | Example 15: for statement (at-m42/Examples/lecture05/example15.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example15.groovy
+</code>
+----
+
+Example 15 repeats the first ''while'' loop example using a ''Range''. This is a better way of implementing a loop when the number of iterations is known. The intention is also easier to reader and clearer!
+
+===== Looping through a List =====
+
+<code groovy 1 | Example 16: Looping through a List. (at-m42/Examples/lecture05/example16.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example16.groovy
+</code>
+----
+
+
+The output from this program is:
+  Start
+  count: 11
+  count: 12
+  count: 13
+  count: 14
+  Done
+
+
+
+Notes ...
+
+===== Iterating through a Map =====
+
+<code groovy 1 | Example 17: Looping through a Map. (at-m42/Examples/lecture05/example17.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example17.groovy
+</code>
+----
+
+We can use a ''for'' loop to iterate through the elements of a ''Map''. in Example 17, the total age of the employees is recorded in a ''Map''. It is worth noting that the loop variable ''staffEntry'' is a ''Map.Entry'' that references both the key and the value. Hence the staff member's age is ''staffEntry.value''.
+
+The output produced is:
+  Total staff age: 150
+
+
+
+===== Looping through a String =====
+
+<code groovy 1 | Example 18: Looping through a String (at-m42/Examples/lecture05/example18.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example18.groovy
+</code>
+----
+
+This example shows that we can also iterate through the characters of a ''String''. Here we iterate through a string adding each letter to a list.
+
+The output is:
+  listOfCharacters: [C, h, r, i, s, t, o, p, h, e, r]
+
+
+
+===== if Statement =====
+
+
+The general form is:
+<code groovy>
+if (condition) {
+  statement #1a
+  statement #1b
+  ...
+} else {
+  statement #2a
+  statement #2b
+  ...
+}
+</code>
+
+Note: ''if'' and ''else'' are reserved words. If the //condition// evaluates to the ''Boolean'' value ''true'', then the compound statement starting with ''statement #1a'' is executed and control is the passed to the statement following the ''if'' statement. If the value of the condition us ''false'', then the compound statement starting with ''statement #2a'' is executed and again control continues with the next statement after the ''if'' statement.
+
+An ''if'' statement offers a means of selecting one of two distinct logical paths through a program. Sometimes, we wish to select whether to execute some program code. We achieve this through a shortened version of the ''if'' statement:
+<code groovy>
+if (condition) {
+  statement #1
+  statement #2
+  ...
+}
+</code>
+
+If the condition evaluates to ''true'', then the compound statement is executed as the program continues with the statement following the ''if'' statement. if the condition evaluates to ''false'', then the compound statement is ignored and the program continues with the next statement after the ''if'' statement.  
+
+===== A simple if statement =====
+
+<code groovy 1 | Example 19: A simple if statement (at-m42/Examples/lecture05/example19.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example19.groovy
+</code>
+----
+
+In Example 19, the program reads two integers and prints them in ascending order. This is achieved with an ''if-else'' statement to select the correct ''print'' statement. An interactive session with this program might produce:
+
+<html>
+<pre>enter first value: <b><i>25</i></b>
+enter second value: <b><i>13</i></b>
+13 and 25
+</pre>
+</html>
+
+===== Shortened if statement =====
+
+<code groovy 1 | Example 20: Interchange two values (at-m42/Examples/lecture05/example20.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example20.groovy
+</code>
+----
+
+Example 20 repeats this exercise. This time, the program employs the shortened version of the ''if'' statement. If the condition determines that the first value is greater than the second, the values are interchanged.
+
+===== More complex decisions =====
+
+^ Score ^ Grade ^
+| ''70-100'' | ''A'' |
+| ''60-69'' | ''B'' |
+| ''50-59'' | ''C'' |
+| ''40-49'' | ''D'' |
+| ''0-39'' | ''E'' |
+
+----
+
+Various combinations of ''if'' statements are allowed. For example, the statement associated with the ''else'' clause may be another ''if'' statement. This can be repeated any number of times. Such a construct is used to select from among a number of logical paths through the code. To illustrate this, consider a program to read an examination score (any value from 0 to 100, inclusive) and assign a letter grade. the grading scheme is shown in this slide.
+
+===== Grading program =====
+
+<code groovy>
+if (score >= 70) {
+  grade = 'A'
+} else if (score >= 60) {
+  grade = 'B'
+} else if (score >= 50) {
+  grade = 'C'
+} else if (score >= 40) {
+  grade = 'D'
+} else { 
+  grade = 'E'
+}
+</code>
+
+----
+
+This chain of ''if-else'' statements can then describe the necessary decision making code.
+
+===== Switch Statement =====
+
+<code groovy>
+switch (expression) {
+  case expression #1: 
+    statement #1a
+    statement #1b
+    ...
+  case expression #2:
+    statement #2a
+    statement #2b
+    ...
+  ...
+  case expression #N:
+    statement #Na
+    statement #Nb
+    ...
+  default:
+    statement #Da
+    statement #Db
+    ...
+}
+</code>
+
+----
+
+The ''if-else'' statement chain in the last section occurs so frequently that a special statement exists for this purpose. This is called the //switch statement//.
+
+In this statement ''switch'', ''case'' and ''default'' are groovy keywords. The ''default'' clause and its statements are optional. The control expression enclosed in parentheses is evaluated. This value is then compared, in turn, against each of the //case expressions//. if a match is made against one of the case expressions, then all statements from that case clause to the end of the ''switch'' are executed. If no match is made, then the default statements are obeyed if a default clause is present. 
+
+===== Basic switch behaviour =====
+
+<code groovy 1 | Example 21: Unexpected switch behaviour (at-m42/Examples/lecture05/example21.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example21.groovy
+</code>
+----
+This slide illustrates the basic behaviour of a ''switch'' statement.
+
+The control expression is simply the value of the variable ''n''. When evaluated, it is compared, in turn to each value of the case expressions. A match is found at ''case 2'' and the output from the code is:
+  Two
+  Three
+  Four
+  Default
+  End of switch
+
+
+
+===== switch and break statement =====
+
+<code groovy 1 | Example 22: switch and break statement (at-m42/Examples/lecture05/example22.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example22.groovy
+</code>
+----
+Nornally, the statements of a case label are intended to be mutually exclusive. Having selected the matching case expression, we normally wish for only the corresponding statements to be obeyed, and then control passed to the statement following the ''switch'' statement. We achieve this with a //break statement// that, in the context of a ''switch'' statement, immediately terminates it and continues with the statement after the ''switch''. This slide illustrates this more common case. 
+
+Running this program produces:
+  Two
+  End of switch
+
+
+
+===== Grading with switch =====
+
+<code groovy 1 | Example 23: switch and a range (at-m42/Examples/lecture05/example23.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example23.groovy
+</code>
+----
+
+A ''switch'' statement can be used as a replacement for the chain of ''if'' statements shown previously. The code of Example 23 shows how a ''switch'' statement based on the examination score. Each ''case'' clause matches against a range representing the grade. This example has no ''default'' clause.
+
+Running this example produces:
+
+<html>
+<pre>
+Enter examination score: <b><i>54</i></b>
+Score: 54; grade: C
+</pre>
+</html>
+
+===== Switching on a List =====
+
+<code groovy 1 | Example 24: List case expressions (at-m42/Examples/lecture05/example24.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example24.groovy
+</code>
+----
+In Groovy, the case expression can be a ''String'', ''List'', regular expression or object of some class. Example 24 shows a ''switch'' statement in which the ''case'' expressions are ''List''s. A match is found if the value of the control expression is a member of the collection.
+
+The output is:
+  Number is thirty something
+
+
+
+===== Regular expressions for case labels =====
+
+<code groovy 1 | Example 25: Regular expressions for case labels (at-m42/Examples/lecture05/example25.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example25.groovy
+</code>
+----
+
+In this example, the ''switch'' statement in which the ''case'' expressions are regular expressions. Again, a match is made against the given patterns.
+
+The output is:
+  number is a 4-digit sequence
+
+
+===== Break statement =====
+
+<code groovy 1 | Example 26: for looop and break statement (at-m42/Examples/lecture05/example26.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example26.groovy
+</code>
+----
+The //break statement// is used to alter the flow of control inside loops and ''switch'' statements. We have already seen the ''break'' statement used with the ''switch'' statement. The ''break'' can also be used with ''while'' and ''for'' statements. Executing a ''break'' statement with any of these looping constructs causes immediate termination of the innermost enclosing loop.
+
+In this example, the program forms the sum of at most 100 positive integer values. The use provides these values as input. If, at any point, a negative value is entered, the ''for'' loop immediately terminates and the value of the summation is printed.
+
+A typical run of the program produces:
+<html>
+<pre>
+Enter next value: <b><i>11</i></b>
+Enter next value: <b><i>12</i></b>
+Enter next value: <b><i>13</i></b>
+Enter next value: <b><i>14</i></b>
+Enter next value: <b><i>-1</i></b>
+sum: 50
+</pre>
+</html>
+
+===== Continue Statement =====
+
+<code groovy 1 | Example 27: for loop and continue statement (at-m42/Examples/lecture05/example27.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture05/example27.groovy
+</code>
+----
+
+The //continue statement// complements the ''break'' statement. its use is restricted to ''while'' and ''for'' loops. When a continue statement is executed, control is immediately passed to the test condition of the nearest enclosing loop to determine whether the loop should continue. All subsequent statements in the body of the loop are ignored for that particular loop iteration.
+
+In this final example, the program finds the sum of 10 integers input by the user. If any negative value is entered, it is ignored, but it is counted as one of the 10 values.
+
+A typical run of this program is:
+<html>
+<pre>
+Enter next value: <b><i>1</i></b>
+Enter next value: <b><i>2</i></b>
+Enter next value: <b><i>3</i></b>
+Enter next value: <b><i>4</i></b>
+Enter next value: <b><i>-5</i></b>
+Enter next value: <b><i>-6</i></b>
+Enter next value: <b><i>-7</i></b>
+Enter next value: <b><i>8</i></b>
+Enter next value: <b><i>9</i></b>
+Enter next value: <b><i>10</i></b>
+sum: 37
+</pre>
+</html>
+
+
+
+
+
+===== Summary of this Lecture ====
+
+
+  * [[#Methods]]
+  * [[#Flow of Control]]
+
+===== Lab Exercises =====
+
+
+  * [[at-m42:labs:lab1|Lab 1]] all exercises [[at-m42:labs:lab1#Part 4: Methods|Part 4]].
+
+----
+
+[[Home]] | [[lecture4|Previous Lecture]] | [[Lectures]] | [[lecture6|Next Lecture]] 

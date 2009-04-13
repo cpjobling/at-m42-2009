@@ -1,0 +1,9 @@
+====== The Console Class ======
+
+<code groovy 1|The Console Class (at-m42\src\lib\console\Console.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/src/lib/console/Console.groovy
+</code>
+
+----
+
+[[Home]] | [[Lectures]]

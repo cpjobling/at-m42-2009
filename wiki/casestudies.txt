@@ -1,0 +1,13 @@
+
+====== Case Studies ======
+
+These case studies are designed for self study.
+
+  * [[at-m42:lecture4#case_study|Case Study 1]]: Introduction to the Adventure Game
+  * [[at-m42:casestudies:cs02|Case Study 2]]: Adventure Game (Methods and Closures)
+  * [[at-m42:casestudies:cs03|Case Study 3]]: Adventure Game (Objects)
+  * [[at-m42:casestudies:cs04|Case study 4]]: Adventure Game (Inheritance)
+
+----
+
+[[at-m42:home|Home]] | [[at-m42:lectures|Lectures]]

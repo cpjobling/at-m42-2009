@@ -1,0 +1,40 @@
+
+====== Summary of Operator Precedence Rules ======
+
+These notes are extracted from Appendix C.3 of //Groovy Programming// (See [[lecture0#Reading|Recommended Reading]]).
+
+An expression involving operators of equal precedence is resolved by the //associativity// of the operators. This defines the direction in which the operators possessing the same precedence are executed. For example, the expression:
+<code groovy>2 + 3 * 4 + 5</code> is evaluated in the following manner. Multiplication has the highest precedence so is evaluate first. The expression is reduced to ''2 + 12 + 5'' with the two addition operators having equal precedence. The associativity of additive operators is left to right, and so the 2 and 12 are first added to give 14, then 14 and 5 are added to produce 19 as the final result.
+
+If, in the expression ''2 + 3 * 4 + 5'' the programmer intended to perform the additions before performing the multiplication, he or she should use parenthesis around the sub expressions. The expression would be presented as ''(2 + 3) * (4 + 5)'', which evaluates to ''5 * 9'' or 45.
+
+The full table of operator precedence and associativity for Groovy (and hence Java) is given in Table 1.
+
+
+**Table 1** Operator Precedence and Associativity
+
+^ Category ^ Operators ^ Example ^ Associativity ^
+| Array subscript | ''[ ]'' | ''a[2]'' | Left to right |
+| Member access | ''.'' | ''a.b()'' | |
+| Post-fix unary operators | ''expr++ expr%%--%%''| ''x++'' | Right to left |
+| (Pre-fix) unary operators |  ''++expr %%--%%expr + - = !'' | ''-x'' | Right to left |
+| Multiplicative | ''* / %'' | ''x * y'' | Left to right |
+| Additive | ''+ -'' | ''x + y'' | Left to right |
+| Shift| ''%%<< >> >>>%%'' | ''x << y'' | Left to right |
+| Relational | ''< %%<=%% >= instanceof'' | ''x %%<=%% y'' | Left to right |
+| Equality | ''== != %%<=>%%'' | ''x != y'' | Left to right |
+| Bitwise And | ''&'' | ''x & y'' | Left to right |
+| Bitwise exclusive Or | ''^'' | ''x ^ y'' | Left to right |
+| Bitwise inclusive Or | ''|'' | ''x | y'' | Left to right |
+| Logical And | ''&&'' | ''x && y'' | Left to right |
+| Logical Or | ''||'' | ''x || y'' | Left to right |
+| Conditional | '':?'' | ''a < b ? x : y'' | Left to right |
+| Assignment | ''= += -= *= /= %= &='' | ''x += y'' | Right to left |
+|  | ''%%^= |= <<= >>= >>>=%%'' | | |
+
+
+
+
+----
+
+[[Home]] | [[Lectures]]
