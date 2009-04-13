@@ -16,7 +16,7 @@ abstract class Item {
         return ! (description == '')
     }
     
-    def abstract canCarry(player)  // deferred method
+    Boolean abstract canCarry(Player player)  // deferred method
 
 // ----- properties ----------------------------------
 
@@ -34,7 +34,7 @@ class WeightyItem extends Item {
         return 'WeightyItem: ' + super.toString() + "; weight: ${weight}."
     }
     
-    def canCarry(player) {
+    Boolean canCarry(Player player) {
     	return (weight < player.strength) 
     }
 
@@ -49,7 +49,7 @@ class MagicItem extends Item {
         return 'MagicItem: ' + super.toString() + "; potency: ${potency}."
     }
 
-    def canCarry(player) {
+    Boolean canCarry(Player player) {
     	return (player.power >= (potency/5)) 
     }
     
