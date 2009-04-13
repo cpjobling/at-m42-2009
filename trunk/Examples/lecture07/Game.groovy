@@ -42,7 +42,7 @@ class Game {
     }
     
     // See example 12
-    void addItem(item) {
+    void addItem(Item item) {
     	items[item.name] = item
     }
  
