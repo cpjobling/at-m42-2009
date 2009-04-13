@@ -11,10 +11,10 @@ class WeightyItem extends Item {
     def weight = 0
 }
 
-class MagicItem extends Item {
+class MagicalItem extends Item {
 
     String toString() {
-        return 'MagicItem: ' + super.toString() + "; potency: ${potency}."
+        return 'MagicalItem: ' + super.toString() + "; potency: ${potency}."
     }
 
 // ---- properties -------------------------
@@ -38,7 +38,7 @@ def displayGame(game) {
 def lotr = new Game(name : 'Lord of the Rings')
 
   // create some items
-def ring = new MagicItem(name : 'The One Ring', value : 1000, potency : 500)
+def ring = new MagicalItem(name : 'The One Ring', value : 1000, potency : 500)
 def food = new WeightyItem(name : 'Rations', value : 10, weight : 20)
 def pipe = new Item(name : 'clay pipe', description : 'This pipe is excellent for smoking a good tobacco.', value : 0)
 

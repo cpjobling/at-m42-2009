@@ -50,10 +50,10 @@ class WeightyItem extends AbstractItem {
     def weight = 0
 }
 
-class MagicItem extends AbstractItem {
+class MagicalItem extends AbstractItem {
 
     String toString() {
-        return 'MagicItem: ' + super.toString() + "; potency: ${potency}."
+        return 'MagicalItem: ' + super.toString() + "; potency: ${potency}."
     }
 
     Boolean canCarry(Player player) {
@@ -81,7 +81,7 @@ def displayGame(game) {
 def lotr = new Game(name : 'Lord of the Rings')
 
   // create some items
-def ring = new MagicItem(name : 'The One Ring', value : 1000, potency : 500)
+def ring = new MagicalItem(name : 'The One Ring', value : 1000, potency : 500)
 def food = new WeightyItem(name : 'Rations', value : 10, weight : 20)
 def dagger = new WeightyItem(name : 'Elvish Dagger', value: 50, weight: 2)
 
