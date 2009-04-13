@@ -2,11 +2,11 @@
 
 class Game {
 
-    def addItem(item) {
+    void addItem(Item item) {
         inventory[item.id] = item
     }
 
-    def displayInventory() {
+    void displayInventory() {
         println "Game: ${name}"
         println "====================="
         

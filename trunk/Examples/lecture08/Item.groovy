@@ -10,11 +10,11 @@ class Item {
         return s
     }
 
-    def pickedUpBy(player) {
+    void pickedUpBy(Player player) {
         this.carrier = player
     }
     
-    def dropped() {
+    void dropped() {
         this.carrier = null        
     }
     
