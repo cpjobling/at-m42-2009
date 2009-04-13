@@ -7,7 +7,7 @@ class Player {
 	def funds
 }
 
-interface portable {
+interface Portable {
 
     Boolean abstract canCarry(Player player)  // deferred method
 
