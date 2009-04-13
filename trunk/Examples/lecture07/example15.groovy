@@ -9,7 +9,7 @@ class Player {
 
 interface portable {
 
-    def abstract canCarry(player)  // deferred method
+    Boolean abstract canCarry(Player player)  // deferred method
 
 }
 
@@ -23,7 +23,7 @@ abstract class AbstractItem implements portable {
         return ! (description == '')
     }
     
-    def canCarry(player)  	{				// redefinition
+    Boolean canCarry(Player player)  	{				// redefinition
     	return (player.funds >= value)
     }
 
@@ -41,7 +41,7 @@ class WeightyItem extends AbstractItem {
         return 'WeightyItem: ' + super.toString() + "; weight: ${weight}."
     }
     
-    def canCarry(player) {
+    Boolean canCarry(Player player) {
     	return super.canCarry(player) && (weight < player.strength) 
     }
 
@@ -56,7 +56,7 @@ class MagicItem extends AbstractItem {
         return 'MagicItem: ' + super.toString() + "; potency: ${potency}."
     }
 
-    def canCarry(player) {
+    Boolean canCarry(Player player) {
     	return super.canCarry(player) && (player.power >= (potency/5)) 
     }
     

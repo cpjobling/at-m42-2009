@@ -1,0 +1,358 @@
+~~SLIDESHOW~~
+====== Simple IO and a Case Study ======
+
+Simple input and output and introduction of the case study.
+
+  * [[#Simple IO]]
+  * [[#Case Study: An Adventure Game|Case Study]]
+
+The slides and notes in this presentation are adapted from //Groovy Programming// (See [[lecture0#Reading|Recommended Reading]]).
+
+An index to the source code for all the examples in this lecture is [[/~eechris/at-m42/Examples/lecture04|available]].
+
+===== Simple IO =====
+
+Console input and output is not part of the Groovy language. Nonetheless, real programs need to communicate with their environment.
+  * to produce text output in Groovy we use:
+
+  print xxx       print(xxx)
+  println xxx     println(xxx)
+
+----
+
+The methods ''print'' and ''println'' are used to display the value concerned (denoted by ''xxx''). The value may represent a ''String'' literal, a variable or expression, or an intepreted ''String''. Method ''print'' outputs its value, and any further output appears on the same line. Method ''println'' advances to the next output line after displaying its value. Java programmers will be interested to observe that ''print'' and ''println'' are actually calls to ''System.out.print'' and ''System.out.println'' respectively. Parenthesis are optional.
+
+===== Simple output =====
+
+<code groovy 1 | Example 1: Simple output (at-m42/Examples/lecture04/example1.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture04/example1.groovy
+</code>
+----
+
+Example 1 demonstrates how to print a simple ''String'' literal using the ''print'' and ''println'' methods.
+
+When the groovy script is executed, the output is:
+
+  My name is Chris.
+  This is my first program.
+  Isn't this fun!
+
+Lines 2 and 3 are responsible for the first line of output. Method ''print'' displays its parameter on the console (standard output). any further output continues on the same line. The simple method call ''println()'' prints a line break (new line). Note how the value parameters may optionally be encosed in parentheses.
+
+===== Printing numbers =====
+
+<code groovy 1 | Example 2: Printing numbers (at-m42/Examples/lecture04/example2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture04/example2.groovy
+</code>
+----
+
+From [[lecture2#Interpreted Strings|lecture 2]], we know that ''String''s enclosed in double quotes are interpreted, and any ''${expression}'' is evaluated and becomes part of the ''String''. Example 2 shows this at work with some integers.
+
+The output from running this script is:
+
+  My age is: 49
+  My age is: 49
+
+===== Printing lists and maps =====
+
+<code groovy 1 | Example 3: Printing lists and maps (at-m42/Examples/lecture04/example3.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture04/example3.groovy
+</code>
+----
+
+We can also print the contents of a ''List'' or a ''Map''. Example 3 shows how we use the same scheme as already cited.
+
+The output is:
+
+
+  numbers: [11, 12, 13, 14]
+  staff telephones: [Chris:5580, Joe:5582, Tim:5583]
+
+===== Formatted output =====
+
+Formatted output is achieved with the ''printf'' method call. The formal description of ''printf'' is:
+<code groovy>
+printf(Strinf format, List values)
+</code>
+Example
+<code groovy l>
+//Simple formatted output
+printf('My name is Chris', [])
+printf('my name is Chris\n' [])
+</code>
+
+----
+
+The ''printf'' method prints its values to the console. The ''values'' are any expressions representing what is to be printed. The presentation of these values is under control of the //formatting string//. this string contains two types of information: ordinary characters, which are simply copied to the output, and //conversion specifications//, which control conversion and printing of the values.
+
+Two examples of ''printf'' are shown in the slide. in both examples, the ''List'' of values to be printed is empty. The format string comprises ordinary characters. The first ''printf'' method call (line 2) displays its format ''String''. Further output continues on the same output line. The second example (line 3) includes the escape character ''\n'', representing a newline. Any output after that will begin on the next line.
+
+The expression on line 2 is equivalent to ''print %%'My name is Chris'%%''. The expression on line 3 is equivalent to ''println %%'My name is Chris'%%''. 
+
+===== Conversion specifications =====
+
+<code groovy 1 | Example 4: Formatted output (at-m42/Examples/lecture04/example4.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture04/example4.groovy
+</code>
+
+----
+
+In these examples, we include a list of values. The format string then includes conversion specifications for each of the values. The conversion specifications are introduced by the percent (%) character. In the first example (line 6), ''%d'' denotes printing an integer value. In the second (line 11), the ''%f'' is used for printing floating point values.
+
+The output is:
+
+  The sum of 10 and 15 is 25
+  56.780000 from 1.234000 gives -55.546000
+
+Lines 14--16 illustrates using the ''%s'' conversion to print a ''String''. In all three examples, the output string is enclosed in ''['' and '']'' to reveal the effect of the conversions. We see that ''%s'' simply outputs the string. The conversion ''%20s'' outputs the string right justified in a field of 20 characters. The conversion ''%-20s'' left justifies the output.
+
+The output is:
+
+  [Hello there]
+  [         Hello there]
+  [hello there         ]
+
+A more detailed discussion of the conversion specifications [[Formatted Output|is available]].
+
+===== Simple input =====
+
+<code groovy 1>
+// Get an input reader
+def input = new BufferedReader(new InputStreamReader(System.in))
+
+print "Please enter your first name: "
+def name = input.readLine()
+println "Hello ${name}!"
+</code>
+
+----
+
+The object ''in'' in the Java class ''System'' represents the standard input. unfortunately, it is an ''InputStream'' and is not designed for text input. To make it usable for text input, it has to be wrapped in an ''InputStreamReader'' which itself has to be buffered using a ''BufferedReader''. This arcane formula, shown on line 2 in the slide, is required to enable console input from the keyboard. Once we have the ''BufferedReader'' ''input'' we can use the method ''readLine'' to get a line of text from the keyboard and return it as a ''String''. 
+
+===== Inputting data values =====
+
+<code groovy>
+def a = input.readLine().toInteger()
+def x = input.readLine().toDouble()
+</code>
+
+----
+
+Method ''readLine'' returns a ''String'' value. In Java/Groovy there is no equivalent to C's ''scanf''. Instead, we can use the method ''toInteger'' on the ''String'' to convert it into an integer value or ''toDouble'' to convert it to a floating point value.
+
+In Example 5, below, we define three helper [[lecture5|methods]] to make it easier to read a ''String'', ''Integer'' and ''Double'' from the console. We have to pass in the ''BufferedReader input'' as an argument in order to enable the method to access the input. The methods ''toInteger'' and ''toDouble'' expect that the input ''String'' be correctly formatted with no unexpected characters and no leading or trailing spaces.  
+
+<code groovy 1 | Example 5: Simple input (at-m42/Examples/lecture04/example5.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture04/example5.groovy
+</code>
+
+**Note**
+Scripts with keyboard input cannot be run inside the //groovyConsole//. Instead you have to run it from the windows command line using //groovy example5.groovy//. If you run the script this way, the output is:
+<html>
+<pre>
+  e:\dev\at-m42-2009\Examples\lecture04><b>groovy example5.groovy</b>
+  Please enter your first name: <b>Chris</b>
+  Hello Chris!
+  Please enter your surname: <b>Jobling</b>
+  Please enter your age: <b>49</b>
+  Please enter your weight in kg: <b>100</b>
+  Hello Chris Jobling: your age is 49 and you weigh   100.00 kg
+</pre>
+</html>
+
+===== The Console class =====
+
+<code groovy>
+package console
+
+class Console {
+  def static readString() { ... }
+  def static readLine() { ... }
+  def static readInteger() { ... }
+  def static readDouble() { ... }
+  def static readBoolean() { ... }
+}
+</code>
+
+----
+
+The methods ''readString'', ''readInteger'', etc. are very useful and will find uses in other examples to come. They have been collected as a set of static methods in the the class ''Console'' that can be imported into other examples. The code for the ''Console'' class is provided in the source-code download in <[[http://www.cpjobling.org.uk/~eechris/at-m42/src/lib/console/Console.groovy|at-m42\src\lib\console\Console.groovy]]>. 
+
+The methods of class ''Console'' tokenize the input, so that for example, leading whitespace on an integer value is ignored by method ''readInteger''. Example 6 shows the use of these methods to reimplement Example 5.
+
+<code groovy 1|Example 6: Input using the Console class (at-m42\Examples\lecture04\example6.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture04/example6.groovy
+</code>
+
+To use ''Console'' you have to ensure that ''at-m42\src\lib'' is on the ''CLASSPATH'' for your project. Let us say that you download the example code and install it at ''h:\work\at-m42''. To set the classpath, open the windows command window and type:
+<cli prompt='>'>
+h:\work\at-m42> set CLASSPATH=h:\work\at-m42\src\lib;%CLASSPATH%
+</cli>
+If the classpath is set properly, Example 6 should run ok.
+
+
+===== Case Study: An Adventure Game =====
+
+This part of the lecture module will illustrate how ''List''s and ''Map''s might be used in practice. For this first case study we construct a simple model of the items in a text-based adventure game. More elaborate solutions are presented in the [[at-m42:casestudies|case studies]].]
+  * For the first iteration we use a ''List'' to define players in a location. 
+  * For the second iteration we use a ''Map'' to make a more elaborate implementation.
+The //iterative// approach illustrated here is in keeping with modern practice
+
+===== Iteration 1: Specification =====
+
+  * A text-based adventure game maintains a record of items being carried by its players.
+  * Each item is known by its name and each player by his/her name.
+  * The database of items being carried could be represented in a number of ways.
+  * We will use ''List'' and ''Map''.
+
+===== Iteration 1: Using a List =====
+
+  * The game is represented by a ''List''
+  * Each element in the ''List'' is another list of two elements:
+    * the player's //name//;
+    * an //item// that the player is carrying.
+
+===== Iteration 1: List Implementation =====
+
+
+<code groovy 1>
+def dng = [ ['Chris', 'Sword'],
+                ['Chris', 'Food'],
+                ['Jenny', 'Dagger']
+              ]
+</code>
+
+----
+
+The ''List'' ''dng'' (dngs and Dragons) is a list of three elements, each of which is a list of two elements. The first shows that player ''Chris'' has a ''Sword'' and the second also that he has ''Food''. The third states that ''Jenny'' has a ''Dagger''.
+
+===== Adding a new item ====
+
+<code groovy>
+dng <<['Jenny', 'Food']
+dng.add(['Joe', 'Magic Wand'])
+</code>
+
+===== Printing a location =====
+
+<code groovy>
+println "dng: ${dng}"
+</code>
+
+
+===== A simple adventure game =====
+
+The [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture04/casestudy1.groovy|attached code]] (listed in the notes) produces the following output:
+  dng: [[Chris, Sword], [Chris, Food], [Jenny, Dagger], [Jenny, Food], [Joe, Magic Wand]]
+  Player Chris has a sword? true
+  Number of items in the dng: 5
+
+----
+
+<code groovy l|Case study iteration 1: Adventure game location with List (at-m42\Examples\lecture04\casestudy1.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture04/casestudy1.groovy
+</code>
+
+We can determine if ''Chris'' has a sword with
+<code groovy>
+dng.contains(['Chris', 'Sword'])
+</code>
+and determine the number of items being carries by players in the location with;
+<code groovy>
+dng.size()
+</code>
+
+===== Iteration 2: Using a Map =====
+
+  * Each location is represented by a ''Map''
+    * Each //key// in the ''Map'' represents a player;
+    * Each //value// in the ''Map'' is a ''List'' of the items that the player is carrying.
+
+===== Iteration 2: Map Implementation =====
+
+
+<code groovy 1>
+def dng = [ 'Chris':  ['Sword', 'Food'],
+                'Jenny': ['Dagger']
+              ]
+</code>
+
+----
+
+in this revised implementation we associate a list of items with a player in a location. The key is the player's name and the value is a ''List'' of items being carried. Here is the code to initialise the location ''dng''. The result is a ''Map'' with two entries. The first has player ''Chris'' as the key and an associate value which is a list of items that ''Chris'' is carrying. The second entry records that states that ''Jenny'' has a ''Dagger''.
+
+===== Adding items ====
+
+<code groovy 1>
+// add a new player
+dng['Joe'] = ['Magic Wand']
+
+// update an existing player
+dng['Jenny'] = dng['Jenny'] << 'Food'
+</code>
+----
+
+We can add a new player and his items to the game as shown in line 2. To update a player's items we have to be careful to add to the player's items rather than over-writing the values as shown in line 5.
+
+===== Location queries =====
+
+<code groovy 1>
+def hasSword = dng['Chris'].contains('Sword')
+def nPlayers = dng.size()
+</code>
+
+----
+
+As with the ''List'' implementation, we can determine if ''Chris'' is carrying a particular ''Item'' with the code shown in line 1 in the slide. We can also determine the number of players in the room as shown in line 2.
+===== More Queries =====
+
+<code groovy l>
+def players = dng.keyset().sort()
+def carriedItems = dng['Chris'].size()
+</code>
+
+----
+
+Line 1 in the slide obtains the players' names and presents them as a sorted list. Line 2 determines how many items ''Chris'' is carrying.
+
+===== Putting it all together =====
+
+The [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture04/casestudy2.groovy|attached code]] (listed in the notes) produces the following output:
+  dng: [Chris:[Sword, Food], Jenny:[Dagger, Food], Joe:[Magic Wand]]
+  Player Chris has a sword? true 
+  Number of items in the dng: 3
+  Players: [Chris, Jenny, Joe]
+  Number of items being carried by Chris: 2
+
+
+----
+
+<code groovy l|Case study iteration 2: Adventure game location with Map (at-m42\Examples\lecture04\casestudy2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture04/casestudy2.groovy
+</code>
+
+We can determine if ''Chris'' has a sword with
+<code groovy>
+dng.contains(['Chris', 'Sword'])
+</code>
+and determine the number of items being carries by players in the location with;
+<code groovy>
+dng.size()
+</code>
+
+===== Summary of this Lecture =====
+
+
+Simple input and output and introduction of the case study.
+
+  * [[#Simple IO]]
+  * [[#Case Study: An Adventure Game|Case Study]]
+
+
+===== Lab Exercises =====
+
+  * [[at-m42:labs:lab1|Lab 1]] all exercises [[at-m42:labs:lab1#Part 3: Simple IO and Case Study I|Part 3]].
+
+----
+
+[[Home]] | [[lecture3|Previous Lecture]] | [[Lectures]] | [[lecture5|Next Lecture]] 

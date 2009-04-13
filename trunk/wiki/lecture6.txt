@@ -1,0 +1,760 @@
+~~SLIDESHOW~~
+====== Closures and Files ======
+
+  * [[#Closures]]
+  * [[#Files]]
+  * [[#Case Study]]
+
+The slides and notes in this presentation are adapted from //Groovy Programming// (See [[lecture0#Reading|Recommended Reading]]).
+
+An index to the source code for all the examples in this lecture is [[/~eechris/at-m42/Examples/lecture06|available]].
+
+===== Closures =====
+
+Groovy //closures// are a powerful way of representing blocks of executable code.
+  * Closures are objects: they can be passed as method parameters
+  * Closures are code blocks: they can be executed when required
+  * Closures can have parameters
+  * Closures can also access any variable that is in scope where the closure is defined.
+Closures make processing all elements of a collection very easy.
+
+===== Defining a closure =====
+
+
+<code groovy>
+{ comma-separated-formal-parameter-list -> statement-list }
+</code>
+
+----
+
+If there are no formal parameters, the parameter list and the ' ''%%->%%'' ' separator are omitted.
+
+===== A closure and its invocation =====
+
+<code groovy 1 | Example 1:   (at-m42/Examples/lecture06/example1.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example1.groovy
+</code>
+----
+
+Example 1 is a closure with no parameters which consists of a single ''println'' statement. The closure is referenced by the identifier ''clos''. The code block referenced by the identifier can be executed with the //call statement//, as shown in the slide. The result is to print the message:
+  Hello world
+
+===== Parametrized closure =====
+
+<code groovy 1 | Example 2: Parametrized closure  (at-m42/Examples/lecture06/example2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example2.groovy
+</code>
+----
+By introducing formal parameters into closure definitions, we can make them more useful, as we did with methods. On this slide we have the same closure with the name of the individual receiving the greeting as a parameter (line 3). When we execute this script, the output produced is:
+  Hello world
+  Hello again
+  Hello shortcut
+
+Observe the abbreviated form of the third invocation (line 7) in which ''call'' has been omitted.
+
+
+===== Implicit single parameter =====
+
+<code groovy 1 | Example 3: Implicit single parameter (at-m42/Examples/lecture06/example3.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example3.groovy
+</code>
+----
+
+In Groovy, if you don't define a formal parameter, an implicit parameter named ''it'' will be provided for you. In this slide, we repeat Example 2 using this implicit parameter. You should note that ''it'' is available only if the closure has only one formal parameter.
+
+===== Closures and enclosing scope =====
+
+<code groovy 1 | Example 4: Closures and enclosing scope (at-m42/Examples/lecture06/example4.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example4.groovy
+</code>
+----
+State information can be accessed by closures. More formally, this means that any variable //in scope// when the closure is defined, can be accessed within the body of the closure. This is very powerful feature, but it can also be somewhat confusing!
+
+We illustrate this behaviour in Example 4. Here the variable ''greeting'' defines the salutation. Because ''greeting'' is in scope (line 3) before ''clos'' is defined (line 4), it is this variable that is used when the closure is called at line 5. At this point it has the value ''%%'Hello'%%''. Before the second call of the closure, the value of ''greeting'' is set to ''%%'Welcome'%%'' (line 8) so the call of the closure at line 9 will result in ''Welcome world'' being printed. When we run the script, the output is as predicted:
+  Hello world
+  Welcome world
+
+
+===== Effect of scope =====
+
+<code groovy 1 | Example 5:  Effect of scope (at-m42/Examples/lecture06/example5.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example5.groovy
+</code>
+----
+
+In Example 5, we augment the previous code with a method called ''demo''. It is passed a single argument, ''clo'', representing a closure. The method calls the closure with argument ''%%'Chris'%%'' at line 13. The method introduces a new scope in which another variable called ''greeting'' is defined which is bound to the value ''%%'Bonjour'%%'' (line 12). However, when the method is called it generates the output:
+
+  Welcome Chris
+
+which indicates that the state accessible to the closure is that which was in scope at the point of definition (that is line 4, modified at line 8) rather than at the point of the call.
+
+The complete output is:
+  Hello world
+  Welcome world
+  Welcome Chris
+
+
+===== A simplification of syntax ===== 
+
+When closure is last formal parameter of a method, it can be placed after the
+parenthesis:
+<code groovy>
+demo(clos) // Closure parameter within the parenthesis
+demo() clos // Parameter removed from the parenthesis
+</code> 
+This can simplify the closure call and make statements using closures easier to read.
+
+----
+
+In the previous example, the method ''demo'' was called and the actual parameter was the closure. In this case, the closure can be removed from the list of formal parameters and placed immediately after the closing parenthesis as shown in this slide.
+
+===== Leave the closure outside of the actual argument list =====
+
+<code groovy 1 | Example 6: Leave the closure outside of the actual argument list  (at-m42/Examples/lecture06/example6.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example6.groovy
+</code>
+
+We illustrate this new form of closure call in Example 6 in which the closure has been removed from the actual parameters in the call to ''demo'' and the empty parameter list is deleted.
+
+The output is :
+  Welcome Chris
+  Hello Chris
+  Welcome Chris
+
+The final two program statements (lines 14 and 15) call the method ''demo'' and pass a closure as the actual parameter. The first of these two method calls uses a reference to a closure object, while the second uses a closure literal. In both cases, the parenthesis for the method call are omitted.
+
+Note also the statements at lines 11 and 12 in the example. The second (line 12) uses a closure literal and is acceptable syntax. However, the first (line 11) uses a closure reference and is not successfully indentified as part of the statement. This causes an execution error which reports that the method was passed a ''null'' parameter. In this special case ''demo(clos)'' should have been used instead.
+
+===== Iterators with closures =====
+
+Example -- Numbers have a method ''upto'' defined as:
+<code groovy>
+void upto(Number to, Closure closue)
+</code>
+Used like this:
+<code groovy 1>
+1.upto(10) {...} // or
+1.upto(10) { i -> ...}
+</code>
+
+----
+
+More usually, closures are applied to collections. Effectively we can iterate over the elements in the collection and apply a closure to each element. For example, all numeric types support a method called ''upto'' that has the signature shown in the slide. The programmer might call the method as in the slide (line 1) and the closure literal would be called 10 times. If the closure had a formal parameter ''i'' as shown in line 2, then on each iteration, the parameter has the value 1, 2, ..., 10.
+
+
+===== factorial(n) with closures =====
+
+<code groovy 1 | Example 7: factorial(n) with closures  (at-m42/Examples/lecture06/example7.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example7.groovy
+</code>
+----
+
+The method ''upto'' iterates from the numerical value of the recipient number (1) to the given parameter value (10), calling the closure on each occasion. We can useful employ this method to provide a way of computing the factorial of some value. We use ''upto'' to generate the series of integers 1, 2, 3, ... to some given limit. For each value we compute the partial factorial 1 x 1, 1 x 2, 2 x 3, ... until the series is complete. The code is illustrated in this slide. And the output is :
+  factorial(5): 120
+
+===== Closures, Collections and Strings =====
+
+  * Several ''List'', ''Map'' and ''String'' methods accept a closure as an argument.
+  * These provide some elegant solutions to common programming problems.
+  * The most useful of these are ''each'', ''find'', ''findAll'', ''any'', ''every'', ''collect'' and ''inject''.
+  * We illustrate these in the following examples.
+
+===== The each method =====
+
+<code google>
+void each(Closure closure)
+</code>
+  * used to iterate through a ''List'', ''Map'' or ''String'' and apply the closure on every element.
+
+===== Illustrations of the method each and a closure =====
+
+<code groovy 1 | Example 8: Illustrations of the method each and a closure (at-m42/Examples/lecture06/example8.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example8.groovy
+</code>
+----
+
+Example 8 presents a number of simple examples of the ''each'' method and a closure.
+
+The first example (line 3) prints the values 1, 2, 3 and 4 on separate lines. The last example (line 8) prints each letter of a name on a separate line. In the second example (line 5), the keys and values in a Map are printed in the format ''Chris=51''. The third example (line 6) separately accesses the key and the value of the ''Map'' element and prints them as ''Chris maps to: 49''. 
+
+The output is :
+  1
+  2
+  3
+  4
+  Chris=49
+  Renate=51
+  Gary=51
+  Chris maps to: 49
+  Renate maps to: 51
+  Gary maps to: 51
+  C
+  h
+  r
+  i
+  s
+
+
+===== Conditional elements =====
+
+<code groovy 1 | Example 9: Conditional elements (at-m42/Examples/lecture06/example9.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example9.groovy
+</code>
+----
+
+Often, we may wish to iterate across the members of a collection and apply some logic only when the elements meat some criterion. This is readily handled with a conditional statement of the closure as shown in this slide.
+
+The output from this script is :
+  2
+  4
+  Renate
+  Gary
+  Renate
+  Gary
+  h
+  r
+  i
+  s
+  
+the two examples to find those staff members who are at least 50 years old. In both cases, we iterate over the ''Map'' and apply a closure to each member of the ''Map''. In the first (lines 7--9), the closure parameter ''staff'' is a ''Map.Entry'' that includes the key and the value pair. Hence, to check the age, we use ''staff.value'' in the ''Boolean'' expression. In the second example (lines 10--12), the closure has two parameters representing the two ''Map.entry'' elements, namely the key (''staffName'') and the value (''staffAge'').
+
+===== The find method =====
+
+  * finds the first element in a collection that matches some criterion.
+  * condition to be met is defined in the closure that must be some ''Boolean'' expression.
+  * the find method returns the first element that matches the condition or ''null'' if no match is found.
+  * the signature of the ''find'' method is:
+<code groovy>
+Object find(Closure closure)
+</code>
+
+===== Illustrations of the find method and closures =====
+
+<code groovy 1 | Example 10: Illustrations of the find method and closures (at-m42/Examples/lecture06/example10.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example10.groovy
+</code>
+----
+
+The output is :
+  found: 7
+  found: null
+  found: Renate=51
+
+Notice that when we apply ''find'' to a ''Map'', the return object is a ''Map.Entry''. It would not, in this case, be appropriate to use a pair of parameters for the key and the value as in
+<code groovy>
+value = ['Chris' : 49, 'Renate' : 51, 'Gary' : 51].find { key, value -> value > 50 }
+</code>
+since we are then not able to specify what is returned, the key or the value.
+
+===== The findAll method =====
+
+  * ''findAll'' finds all elements in a collection and returns them in a ''List''
+<code groovy>
+List findAll(Closure closure)
+</code>
+
+-----
+
+''findAll'' finds all the elements in the receiving object that match the conditions defined by the closure.
+
+===== Illustrations of the findAll method and closures  =====
+
+<code groovy 1 | Example 11: Illustrations of the findAll method and closures (at-m42/Examples/lecture06/example11.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example11.groovy
+</code>
+----
+
+Example 11 gives some examples of using ''findAll''. The second example (line 9) reveals how simple closures can be combined to implement more complex algorithms. The merit of this approach is that each closure is relatively easy to express. 
+
+Again, applying ''findAll'' to a ''Map'' returns a ''List'' of ''Map.Entry'' elements. This is illustrated in the final two lines of the script's output:
+  7
+  9
+  7
+  9
+  Renate=51
+  Gary=51
+
+
+===== Methods any and every =====
+
+<code groovy>
+boolean any(Closure closure)
+boolean every(Closure closure)
+</code>
+----
+
+Two other methods that take a closure argument are ''any'' and ''every''. Method ''any'' iterates through each element of a collection checking whether the ''Boolean'' predicate is valid for at least one element. The predicate is provided by the closure. Method ''very'' checks whether a predicate (a closure that returns a ''true'' or ''false'' value) is valid for //all// the elements of a collection, returning ''true'' if they do and ''false'' otherwise.
+
+===== Examples of methods any and every =====
+
+<code groovy 1 | Example 12: Examples of methods any and every (at-m42/Examples/lecture06/example12.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example12.groovy
+</code>
+----
+
+Example 12 gives some representative examples of ''any'' and ''every''. The output is :
+  anyElement: true
+  allElements: true
+  anyStaff: false
+
+
+===== The collect method =====
+
+  * iterates through a collection, converting each value into a new value, using the closure as the transformer. 
+  * returns a ''List'' of the transformed values
+<code groovy>
+List collect(Closure closure)
+</code>
+
+===== Simple uses of the collect method =====
+
+<code groovy 1 | Example 13: Simple uses of the collect method (at-m42/Examples/lecture06/example13.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example13.groovy
+</code>
+----
+
+Example 13 shows some uses for ''collect''. The output is:
+  list: [1, 4, 9, 16]
+  list: [1, 4, 9, 16]
+  list: [0, 2, 4, 6, 8]
+  staff: [Chris:51, Renate:53, Gary:53]
+  list: [50, 52, 52]
+  olderStaff: [Chris=51, Renate=53, Gary=53]
+  
+The third example of method ''collect'' (line 12) is applied to a ''Range''. This is permissible since the ''Range'' interface extends the ''List'' interface and can, therefore be used in place of a ''List''. Consider also the example (line 17) that iterates across the ''staff'' collection, increasing the age by 1. The returned value is a ''List'' of the new age values from the ''Map''. The recipient ''Map'' object referred to a s ''staff'' is also modified by the closure (''++entry.value''). The final example that assigns to ''olderStaff'' builds a ''List'' of ''Map.Entry''s, with the age increased again.
+
+===== Further examples of collect =====
+
+<code groovy 1 | Example 14: Further examples of collect (at-m42/Examples/lecture06/example14.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example14.groovy
+</code>
+----
+
+Example 14 is a further illustration of the ''collect'' method. Note that the method ''map'', which applies the closure parameter to the ''collect'' method over a ''List'' parameter. The ''map'' method is used for doubling, tripling, and for finding those that are even-valued elements of a list of integers.
+
+The output of this script is:
+  Doubling: [2, 4, 6, 8]
+  Tripling: [3, 6, 9, 12]
+  Evens: [false, true, false, true]
+
+===== The inject method =====
+
+  * iterates through a collection:
+    * passes the initial value to the closure along with the first element of the ''List''
+    * passes into the next iteration the computed value from the previous closure, and the next element
+<code groovy>
+Object inject(Object value, Closure closure)
+</code>
+
+===== Factorial of 5 =====
+
+<code groovy 1 | Example 15: Factorial of 5 (at-m42/Examples/lecture06/example15.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example15.groovy
+</code>
+----
+
+In Example 15 we illustrate the use of ''inject'' to  find factorials.
+
+The output is :
+  Factorial(5): 120
+  fact: 120
+  factorial(5): 120
+  factorial(5): 120
+
+The segment of the code that uses the variable ''fact'' (line 9) aims to show that the result of the method ''inject'' can be achieved using and ''each'' iterator method. First the variable ''fact'' is assigned the value of the first parameter to inject (here 1). Then we iterate through each element of the ''List''. For the first value (''number = 2''), the closure evaluates ''fact *= number'', that is, ''fact = 1 * 2 = 2''. For the second value (''number = 3''), the closure again evaluates ''fact *= number'', that is, ''fact = 2 * 3 = 6'', and so on.
+
+===== Other Closure Features =====
+
+  * [[#Closures as method parameters]]
+  * [[#Closures as parameters to closures]]
+  * [[#Closures as return values]]
+  * [[#Selection sort]]
+
+===== Closures as method parameters =====
+
+<code groovy 1 | Example 16: Closures as method parameters (at-m42/Examples/lecture06/example16.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example16.groovy
+</code>
+----
+
+Since a closure is an ''Object'', it can be passed as parameter into a method. In Example 16, the simple ''filter'' method expects two parameters, a ''List'' and a closure. The method finds all those elements of the list that satisfies the condition specified by the closure using the method ''findAll''. The program then demonstrates tow uses for the method.
+
+The output reveals that the variable ''evens'' is a ''List'' of all the even integers from the ''table''. And, of course ''odds'' is a ''List'' of the odd numbers in ''table''.
+  evens: [12, 14]
+  odds: [11, 13]
+
+
+===== Closures as parameters to closures =====
+
+<code groovy 1 | Example 17: Closures as parameters to closures (at-m42/Examples/lecture06/example17.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example17.groovy
+</code>
+----
+
+Closures can be parameters to other closures. Example 17 is introduces a closure ''takeWhile'' that delivers those elements from the beginning of a ''List'' that meets some criteria defined by the closure parameter named ''predicate''.
+
+The variable ''evens'' has the even-valued integer values from ''table1'' but not the last one: the closure returns when the first odd number is found. Similarly, ''isOdd'' contains the first three values of ''table2'': ''takeWhile'' terminates when the first even number (16) is seen.
+
+The output is :
+  evens: [12, 14]
+  odds: [11, 13, 15]
+
+
+===== Closures as return values =====
+
+<code groovy 1 | Example 18: Closures as return values
+ (at-m42/Examples/lecture06/example18.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example18.groovy
+</code>
+----
+
+In Example 18, the method ''multiply'' is defined (lines 4--6). It accepts a single parameter and returns a closure. This closure multiplies two values, one of which is pre-set to the value of the value of the actual parameter passed to the method call (line 8). Thus, the variable ''twice'' is now a closure that (always) returns double the value of its single parameter. In a similar manner, the closure ''multiplication'' (defined on line 12) accepts a single parameter and returns a closure. Like method ''multiply'', the closure ''multiplication'' returns multiplies its parameter by some predefined value. The closure ''quadruple'' (defined on line 14) multiplies its single parameter by the value 4. 
+
+The output demonstrates that the closure ''twice'' does indeed double its parameter while the closure ''quadruple'' multiplies its value by 4:
+  twice(4): 8
+  quadruple(3): 12
+
+
+===== Selection sort =====
+
+<code groovy 1 | Example 19: Selection sort (at-m42/Examples/lecture06/example19.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example19.groovy
+</code>
+----
+In the final example of closures we demonstrate  that a closure may contain other nested closure definitions. In Example 19, we define a closure ''selectionSort'', which sorts a list of integers into ascending order. To implement this closure, we are required to locate the smallest item of the unsorted tail region of the list and move it to the front. moving the item to the front of the tail region actually involves swapping the front item with the smallest item. Hence we implement the closure ''selectionSort'' with two local closures, ''minimumPosition'' and ''swap''. The latter does the exchange we require, and the former finds the smallest item of the tail region of the list.
+
+Running the program produces the desired result:
+  sorted: [11, 12, 13, 14, 14]
+
+
+===== Files =====
+
+  * Simple programs print their output to the console (//standard output//) and read input from the keyboard (//standard input//).
+  * Such programs are useful when learning a new programming language, but are unrealistic.
+  * Most //real// programs use permanent storage of data in a //computer file// on disk, in a database or on the network.
+  * For these applications we need to use file IO.
+
+===== Command line arguments =====
+
+<code groovy 1 | Example 20: Command line arguments (at-m42/Examples/lecture06/example20.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example20.groovy
+</code>
+----
+
+A Groovy program exists in an environment established by the operating system. The environment supports passing //command line arguments// to a program when it begins execution. In a Groovy script, such as that in Example 20, these arguments can be accessed by the ''args'' variable, which is an array of ''Strings''.
+
+When running this program((You have to run this program, and most of the remaining programs in this lecture, from the command line)) the result is:
+<html>
+<pre>
+<b><i>groovy example20.groovy aaa bbb ccc</i></b>
+args: [aaa, bbb, ccc]
+size: 3
+First arg: aaa
+</pre>
+</html>
+Note that ''args'' only includes the actual arguments, not ''groovy'' or the program name ''example20.groovy''. The method ''size'' can be used to obtain the number of items in the ''args'' array. The elements are indexed like any other ''List''.
+
+===== The File class =====
+
+  * Paradoxically, in Java and therefore in Groovy, a ''File'' is not actually a file, rather it represents an abstraction of a //file system//.
+  * ''File'' class presents an abstract, system-independent view of hierarchical pathnames.
+  * An //abstract pathname// is a sequence of zero or more ''String'' names:
+    * The last represents an either an actual file or a directory
+    * All but the last represent directories
+    * Directories are separated by a separator character
+
+===== Some example pathnames =====
+
+<code>
+myfile.txt                   // simple file
+docs/report.doc              // file in docs subdirectory
+src/groovy/example01.groovy  // file in nested subdirectory
+src/groovy                   // directory
+/dev/at-m42/src/groovy       // absolute path to a directory (unix)
+e:\dev\at-m42\src\groovy     // MS windows directory on drive e
+</code>
+
+===== Purpose of the File class =====
+  * //Represents// either a file or a directory((importantly //not// the contents of the actual file or directory))
+  * ''File'' methods (Java):
+    * does the ''File'' exist?, is it a file or a directory? is it readable and/or writeable, what size is it?
+  * Groovy adds file methods, most of which accept a closure, which are useful for traversing the contents of a file or directory and processing it.
+  * The more commonly used methods are summarized in the notes. 
+
+---- 
+
+**Table 1** Commonly used ''File'' methods. Methods added by Groovy shown marked asterisk.
+^ Name ^ Signature ^ Description ^
+| ''append'' * | ''void append(String text)'' | Append the text to the end of this file. |
+| ''createNewFile'' | ''Boolean creatNewFile()'' | Create a new, empty file named by this abstract parameter if and only if a file with this name does not yet exist. |
+| ''delete'' | ''Boolean delete()'' | Delete the file or (empty) directory denoted by this abstract pathname. | 
+| ''eachFile'' * | ''void eachFile(Closure closure)'' | Invoke the closure for each file in the given directory. |
+| ''eachFileRecurse'' * | ''void eachFileRecurse(Closure closure)'' | Invoke the closure for each file in the given directory, and recursively to each subdirectory. |
+| ''eachLine'' * | ''void eachLine(Closure closure)'' | Iterate through the given (text) file line by line. |
+| ''exists'' | ''Boolean exists'' | Test whether the file or directory denoted by this abstract pathname exists. |
+| ''getPath'' | ''String getPath'' | Convert this abstract pathname into a (platform dependant) pathname String  |
+| ''getText'' * | ''String getText'' | Convert the content of this (text) file and return it as a ''String''. |
+| ''isDirectory'' | ''Boolean isDirectory'' | Test whether the file denoted by this abstract pathname is a directory. |
+| ''mkdir'' | ''Boolean mkdir()'' | Create the directoty named by this abstract pathname. |
+| ''withPrintWriter'' * | ''void withPrintWriter(Closure closure)'' | Helper method to create a ''PrintWriter'' for this file, pass it into the closure, and ensure that the file is closed again afterwards. |
+
+Full documentation of the ''File'' class is to be found in the Groovy JDK documentation [[http://groovy.codehaus.org/groovy-jdk/java/io/File.html|online]].
+
+===== Read and display a file, line-at-a-time =====
+
+<code groovy 1 | Example 21: Read and display a file, line-at-a-time (at-m42/Examples/lecture06/cat.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/cat.groovy
+</code>
+----
+
+Example 21 is program to list the content of a file (equivalent to unix //cat// command). It uses the ''eachLine'' closure to simply print each line. Note the use of the size of the ''args'' array as an error checking mechanism: the script has to be called with one argument. If it isn't, the program prints a usage method then exits. On line 9, a ''File'' object is created from the first argument: the actual file, the name of which is passed as ''args[0]'' will be automatically opened, processed and closed afterwards. Since we do not otherwise refer to the ''File'' object, it is not assigned to a variable. 
+
+An example of using this program (to list ''example1.groovy'') is:
+<html>
+<pre>
+<b><i>groovy cat.groovy example1.groovy</i></b>
+// A closure and its invocation
+
+def clos = { println 'Hello world' }
+clos.call()
+
+</pre>
+</html>
+
+As an exercise, you might want to compare how difficult the equivalent code would be to code in Java. 
+
+===== WC utility =====
+
+<code groovy 1 | Example 22: WC utility (at-m42/Examples/lecture06/wc.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/wc.groovy
+</code>
+----
+
+A useful utility from the Unix operating system is a program called //wc//. It takes a text file and obtains counts for the number of characters, number of words and number of lines in a text file. This has been reimplemented in the example shown on this slide. The real program, which is written in C, is significantly [[http://www.koders.com/c/fid4962C369E052004FF8B85EF3EBFE5FA9F0628578.aspx|more complex]] (and not just because the real thing has more error checking, a richer set of command line arguments, and better run-time documentation)!
+
+The output for the same file is:
+<html>
+<pre>
+<b><i>groovy wc.groovy example1.groovy</i></b>
+chars: 82; words: 15; lines: 4
+</pre>
+</html>
+
+===== List the content of a directory file =====
+
+<code groovy 1 | Example 23: List the content of a directory file (at-m42/Examples/lecture06/ls.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/ls.groovy
+</code>
+----
+
+Class ''File'' also includes the method ''eachFile''. Normally it is used for a ''File'' object that represents a directory. Once again it accepts a closure as a parameter and invokes the closure for each file in the directory. In the example in this slide, method ''printDir'' accepts the name as a directory as a parameter. It simply invokes the method ''listDir'' which expects a ''File'' object as the first parameter and an integer as the second parameter. The ''File'' object represents a directory. The method ''listDir'' calls the ''eachFile'' method on that ''File'' object and the closure prints the names of the file in the diretcory. If any of these represent a subdirectory then ''listDir'' recursively calls itself. The integer is be used to define how  much indentation to used when representing the files in a subdirectory. Each recursive call increases the value.
+
+The output looks something like this(("Dot" ''.'' is a commonly used convention to represent the //current directory//)):
+<cli prompt=">">
+e:\dev\at-m42-2009\Examples\lecture06>groovy ls.groovy .
+.svn
+  all-wcprops
+  entries
+  prop-base
+  props
+  text-base
+    cat.groovy.svn-base
+    example1.groovy.svn-base
+    example10.groovy.svn-base
+    example11.groovy.svn-base
+    ...
+    index.php.svn-base
+    README.txt.svn-base
+    wc.groovy.svn-base
+  tmp
+    prop-base
+    props
+    text-base
+cat.groovy
+example1.groovy
+example10.groovy
+...
+example8.groovy
+example9.groovy
+index.php
+ls.groovy
+README.txt
+wc.groovy
+
+</cli>
+
+**Side note**: The script is called ''ls.groovy'' and is named for the equivalent unix command //ls// (windows //dir//). However, the behaviour of ''ls.grovvy'' is more akin to unix commands ''ls -R'' (windows ''dir /s'') and ''find . -print''.
+
+===== Recursively traversing a directory =====
+
+<code groovy 1 | Example 24: Recursively traversing a directory (at-m42/Examples/lecture06/example24.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example24.groovy
+</code>
+----
+
+Class ''File'' also supports the method ''eachFileRecurse''. As its name suggests, the method iterates through all files in a directory and recursively through any subdirectory((This is equivalent to the Unix //find// command)). in this example, we use ''eachFileRecurse'' to identify those files that exceed a particular length.
+
+Output:
+<cli prompt=">">
+e:\dev\at-m42-2009\Examples\lecture06>groovy example24.groovy . 512
+.svn
+all-wcprops
+entries
+text-base
+example11.groovy.svn-base
+example13.groovy.svn-base
+...
+example6.groovy.svn-base
+ls.groovy.svn-base
+README.txt.svn-base
+tmp
+text-base
+example11.groovy
+example13.groovy
+...
+example6.groovy
+ls.groovy
+README.txt
+</cli>
+
+===== File copying =====
+
+<code groovy 1 | Example 25: File copying (at-m42/Examples/lecture06/cp.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/cp.groovy
+</code>
+----
+With the aid of a ''Printwriter'' object, we can copy the contents of one file to another. The ''PrintWriter'' class is used to print formatted representations of objects to a file. Combining ''PrintWriter'' with ''File'' and ''eachLine'' produces an elegant implementation. First we check for the existence of the destination file (line 10). If it exists, it is first removed (line 11). Class ''File'' has a ''newPrintWriter'' method that delivers a ''PrintWriter'' object for the given destination file. we then copy each line from the source file to the destination file.
+
+Here is a typical use of this script:
+<cli prompt=">">
+e:\dev\at-m42-2009\Examples\lecture06>groovy cp.groovy example1.groovy "Copy of example1.groovy"
+e:\dev\at-m42-2009\Examples\lecture06>diff example1.groovy "Copy of example1.groovy"
+
+e:\dev\at-m42-2009\Examples\lecture06>
+</cli>
+
+===== File copying with a PrintWriter =====
+
+<code groovy 1 | Example 26: File copying with a PrintWriter (at-m42/Examples/lecture06/example26.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example26.groovy
+</code>
+----
+
+Class ''File'' also provides a number of helper methods to simplify input/ouput (See [[http://groovy.codehaus.org/groovy-jdk/|GDK documentation]]). For example, the method ''withPrintWriter'' creates a new ''PrintWriter'' object for a file and then passes into it a closure and then ensures that the file is closed afterwards. Similar helper methods are ''withInputStream'', ''withOutputStream'', ''withReader'', and ''withWriter''. Example 26, repeats the file copy example using a ''PrintWriter''.
+
+===== Sorting a file =====
+
+<code groovy 1 | Example 27: Sorting a file (at-m42/Examples/lecture06/sort.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/sort.groovy
+</code>
+----
+
+A common task is to sort a text file. This is really easy in Groovy for small to medium-sized text files since we already have the ''sort'' method for ''List''s. We can read each line from the file into a ''List'', perform an internal sort, and then write the result back into the same file. An implementation is give in Example 27.
+
+The typical output (for the not particularly useful case of sorting a Groovy script) is given below:
+
+<cli prompt=">">
+e:\dev\at-m42-2009\Examples\lecture06>groovy cp.groovy sort.groovy sort2.groovy
+e:\dev\at-m42-2009\Examples\lecture06>groovy sort.groovy sort2.groovy
+e:\dev\at-m42-2009\Examples\lecture06>groovy cat.groovy sort2.groovy
+
+
+
+
+
+
+                        printWriter.println(line)
+                // Read from the text file
+                // Sort the text
+                // Write back to the text file
+                lines << line
+                lines.each { line ->
+                }
+        def lines = []
+        lines.sort()
+        new File(args[0]).eachline { line ->
+        new File(args[0]).withPrintWriter { printWriter ->
+        println 'Usage: groovy sort.groovy filename'
+        }
+        }
+// Sorting a file
+if (args.size() != 1) {
+import java.io.File
+}
+} else {
+
+e:\dev\at-m42-2009\Examples\lecture06>
+</cli>
+
+===== A Final Example =====
+
+Consider a file of the form:
+<code>
+John 2:30pM
+Jon 11:30AM
+</code>
+used to maintain a simple text-based daily diary.
+
+For this file we wish to produce a report of a day's events in time order.
+
+===== Solution =====
+
+  * put each entry of the file into a ''List''
+  * use a closure to implement a suitable comparator for ordering times
+  * use a regular expression to extract the time from each line
+<code groovy>
+def TIME_PATTERN = /(\w*)\s((\d{1,2}):(\d{2})([AP]M))/
+</code>
+
+----
+
+The bracketed terms allow us to extract each part of the expression:
+  * ''(\w*)\s'' represents the (last word) in the event title
+  * ''(\d{1,2})'' captures the hour -- one or two digits which should be followed by '':''
+  * ''(\d{2}) captures the minutes -- two digits
+  * and ''([AP]M)'' captures AM or PM.
+These pieces will be present in the matcher array and can be used by the comparator to sort AM before PM, and hours before minutes.
+
+The code for this is shown in the next slide. It uses the ''compareTo'' operator ''<=>'' to make the time-sort work. The details are left as an exercise for the reader.
+
+===== Diary report =====
+
+<code groovy 1 | Example 28: Diary report (at-m42/Examples/lecture06/example28.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/example28.groovy
+</code>
+----
+
+Example diary file:
+<code | Example diary file (at-m42/Examples/lecture06/diary.txt)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture06/diary.txt
+</code>
+
+Sorted diary:
+<cli prompt=">">
+e:\dev\at-m42-2009\Examples\lecture06>groovy example28.groovy diary.txt
+Diary events
+ Meeting with the boss 9:30AM
+ Tea break 10:30AM
+ Chris 2:30PM
+ Coffee 3:30PM
+ Go home 5:30PM
+</cli>
+
+===== Case Study =====
+
+[[at-m42:casestudies:cs02|Case Study 2]] further illustrates the use of methods and closures while continuing the development of the adventure game application. You should read through the case study and examine the source code provided in preparation for the [[project|Mini Project]]. 
+
+
+===== Summary of this Lecture ====
+
+  * [[#Closures]]
+  * [[#Files]]
+  * [[at-m42:casestudies:cs02|Case Study]]
+
+===== Lab Exercises =====
+
+  * [[at-m42:labs:lab1|Lab 1]] all exercises [[at-m42:labs:lab1#Part 6: Closures|Part 6]] and [[at-m42:labs:lab1#Part 7: Files|Part 7]] .
+
+----
+
+[[Home]] | [[lecture5|Previous Lecture]] | [[Lectures]] | [[lecture7|Next Lecture]] 

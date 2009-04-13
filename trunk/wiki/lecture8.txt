@@ -1,0 +1,512 @@
+~~SLIDESHOW~~
+====== Unit Testing ======
+
+  * [[#Unit Testing]]
+  * [[#The GroovyTestCase and Junit TestCase Classes]]
+  * [[#The GroovyTestSuite and Junit TestSuite Classes]]
+  * [[#The Role of Unit Testing]]
+  * [[#Case Study]]
+
+The slides and notes in this presentation are adapted from //Groovy Programming// (See [[lecture0#Reading|Recommended Reading]]).
+
+An index to the source code for all the examples in this lecture is [[/~eechris/at-m42/Examples/lecture08|available]].
+
+===== Unit Testing =====
+
+<code groovy 1 | Class to be tested (at-m42/Examples/lecture08/Item.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/Item.groovy
+</code>
+----
+
+To illustrate the idea we will use the ''Item'' class from [[at-m42:casestudies:cs03#Iteration I: An Initial Model|Case Study 2]].
+
+===== Naïve Test Case =====
+
+<code groovy 1 | Example 1: Testing with println (at-m42/Examples/lecture08/example1.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/example1.groovy
+</code>
+
+----
+
+Here we simply create a couple of items and print them. This demonstrates that the ``toString`` method has been overridden and behaves as expected. 
+
+The output is indeed as expected (note the use of the triple quoted string to enable a multi-line description to be given):
+  Item: 2001; name = Cloth of Gold: value = 25;
+  Item: 2002; name = Shiny pebble: value = 0; description: A shiny pebble, found on the beach. 
+  Has sentimental value only!;
+
+But this manner of testing is rather tedious: it produces a lot of output which presumably has to be read by someone.
+
+===== Testing with assertions =====
+
+<code groovy 1 | Example 2: Testing with assertions (at-m42/Examples/lecture08/example2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/example2.groovy
+</code>
+
+----
+
+Here we successfully validate the expectations of the code, but the run is now silent, we get no feedback and we would have to remember to run the test code whenever we modify the ''Item'' class.
+
+===== The GroovyTestCase and Junit TestCase Classes ======
+
+<code groovy 1 | Example 3: Testing with JUnit TestCase (at-m42/Examples/lecture08/ItemTest.groovy)>
+// Testing with jUnit
+import groovy.util.GroovyTestCase
+
+class ItemTest extends GroovyTestCase {
+
+  /**
+   * test that expected String is returned from toString
+   */
+  def void testToString() {
+      def item1 = new Item(id : 2001, name : 'Cloth of Gold', value : 25)
+      def expected = 'Item: 2001; name = Cloth of Gold: value = 25;'
+      
+      assertToString(item1, expected)
+  }
+
+  // ... continued on next slide
+}
+</code>
+
+View complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/ItemTest.groovy|ItemTest.groovy]]
+
+===== Example 3 Continued =====
+
+<code groovy 1 | Example 3: Testing with JUnit TestCase ... continued (at-m42/Examples/lecture08/ItemTest.groovy)>
+// Testing with jUnit
+import groovy.util.GroovyTestCase
+
+class ItemTest extends GroovyTestCase {
+
+ // ... continued from previous slide
+
+  /**
+   * test that toString has a description, if item has
+   */
+  def void testToStringHasDescription() {
+      def item = new Item(id : 2002, name : 'Shiny pebble', value: 0, 
+                          description : """A shiny pebble, found on the beach. 
+Has sentimental value only!""")
+      
+      def result = item.toString()
+      assertTrue(result.startsWith('Item: 2002; name = Shiny pebble: value = 0; description:'))
+      assertTrue(result.endsWith('sentimental value only!;'))
+  }
+}
+</code>
+
+View complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/ItemTest.groovy|ItemTest.groovy]]
+----
+
+
+''GroovyTestCase'' executes the tests automatically. Every method that starts with ''test'' is assumed to be a test. The //assert// methods ''AssertToString'' (used on line 13 on the previous slide) and ''AssertTrue'' (lines 17 and 18 on this slide) document our expectations. 
+
+Note that we can have as many assertions as we want in a test case, but it is best practice to test only one thing at a time. I used ''startsWith'' and ''endsWith'' here (lines 17 and 18) because the character used for the end of line is somewhat platform dependent and I didn't want to make assumptions of how the //newline// character in the description will be rendered in the ''description'' property.
+
+When the test case runs, the output is:
+  
+  ..
+  Time: 0.002
+  
+  OK (2 tests)
+  
+Note that although the tests are essentially the same as we had with the [[#Testing with assertions|assertions version]], we now get some feedback: each dot represents the execution of a test and success is indicated with "OK" when //all// tests are run. If there are errors, the test result is more descriptive and it will list the errors at the end of the run. However, it will not stop at the first error, as a failed assertion using //assert// would. Rather it will continue until all tests have been run. Thus you always run a complete set of tests each time.
+
+===== Testing the Game Class =====
+
+<code groovy 1 | The Game Class (at-m42/Examples/lecture08/Game.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/Game.groovy
+</code>
+
+===== TestCase for the Game Class =====
+
+<code groovy 1 | Example 4: The GameTest Class (at-m42/Examples/lecture08/GameTest.groovy)>
+// TestCase for the Game class
+
+import groovy.util.GroovyTestCase
+
+class GameTest extends GroovyTestCase {
+
+	/**
+	 * Set up the fixture
+	 */
+	void setUp() {
+		game = new Game(name : 'School')
+		
+		book = new Item(id : 1, name : 'book', value : 5, 
+			description : 'a maths text book')	
+		satchel = new Item (id : 2, name : 'satchel', value : 10,
+			description : 'a carrier for school books and pencils')
+	}
+	
+    // continued on next slide
+
+}
+
+</code>
+
+Download complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/GameTest.groovy]].
+
+===== testAddItem_1 =====
+<code groovy 1 | Example 4: The GameTest Class (continued) (at-m42/Examples/lecture08/GameTest.groovy)>
+class GameTest extends GroovyTestCase {
+
+	// continued from previous slide
+	
+	/**
+	 * Test that the addition of an item to the game results in one more
+	 * item in the game.
+	 */
+	 void testAddItem_1() {
+	 	def pre = game.inventory.size()
+	 	game.addItem(book)
+	 	def post = game.inventory.size()
+	 	
+	 	assertTrue('one less item than expected', post == pre + 1)
+	 }
+
+	// continued on next slide
+}
+
+</code>
+
+Download complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/GameTest.groovy]].
+
+===== testAddItem_2 =====
+<code groovy 1 | Example 4: The GameTest Class (continued) (at-m42/Examples/lecture08/GameTest.groovy)>
+class GameTest extends GroovyTestCase {
+
+  // ...
+
+	/**
+	 * Test that the addition of two items with different ids to an
+	 * empty game results in a game with two items in its inventory
+	 */
+	 void testAddItem_2() {
+	 	game.addItem(book)
+	 	game.addItem(satchel)
+	 	def expected = 2
+	 	def actual = game.inventory.size()
+	 	
+	 	assertTrue('unexpected number of items', expected == actual)
+	 }
+
+  // continued on next slide
+}
+
+</code>
+
+Download complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/GameTest.groovy]].
+
+===== The properties =====
+
+Needed for the fixture.
+
+<code groovy 1 | Example 4: The GameTest Class (concluded) (at-m42/Examples/lecture08/GameTest.groovy)>
+class GameTest extends GroovyTestCase {
+
+  // ...
+
+// ----- properties --------------------------
+
+	def game
+	
+	def book
+	def satchel
+}
+
+</code>
+
+Download complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/GameTest.groovy]].
+
+----
+
+Notes....
+
+Output:
+  
+  ..
+  Time: 0.024
+  
+  OK (2 tests)
+===== Add another test =====
+
+<code groovy 1 | Example 5: Add another test (at-m42/Examples/lecture08/GameTest.groovy)>
+//class GameTest
+
+    /**
+     * Set up the fixture
+     */
+    void setUp() {
+        // ...
+         item3 = new Item (id : 2, name : 'a different satchel', value : 10)
+    }
+    
+    // ...
+    
+     /**
+      * Test that the addition of an Item with the same id as one
+      * already present in the Game results in no change in the number
+      * of items in the inventory
+      */
+     void testAddItem_3() {
+         game.addItem(book)
+         game.addItem(satchel)
+         def pre = game.inventory.size()
+         game.addItem(item3)
+         def post = game.inventory.size()
+         
+         assertTrue('one more item than expected', post == pre)
+     }      
+   // ...
+</code>
+
+Download complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/GameTest.groovy]].
+
+----
+
+Note that although for space reasons it isn't shown, you need to add ''def item3'' to the properties of ''GameTest''!
+
+Result now:
+  
+  ...
+  Time: 0.02
+  
+  OK (3 tests)
+
+
+===== And another =====
+
+
+<code groovy 1 | Example 5: Another test (at-m42/Examples/lecture08/GameTest.groovy)>
+//class GameTest
+
+     /**
+      * Test that the addition of an Item with the same id as one
+      * already present in the Game results in no change in the number
+      * of items in the inventory
+      */
+     void testAddItem_4() {
+         game.addItem(satchel)
+         game.addItem(item3)
+         def expected = satchel.toString()
+         def actual = game.inventory[2]
+         
+         assertToString(actual, expected)
+     }        
+   // ...
+</code>
+
+Download complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/GameTest.groovy]].
+
+----
+
+In the previous example we created a third item with the same id as the //satchel// and attempted to add it to the game. However, just because this object has the same id and property values it is a //different object//. We want the original item to be still in the Game. So this test verifies that.
+
+===== The result (reformatted to fit slide) =====
+
+<html>
+<pre>
+....F
+Time: 0.003
+There was 1 failure:
+1) testAddItem_4(GameTest)junit.framework.AssertionFailedError: toString()
+ on value: Item: 2; name = a different satchel: value = 10; 
+ expected:&lt;Item: 2; name = satchel: value = 10; description: a carrier for school books and pencils;&gt; 
+ but was:&lt;Item: 2; name = a different satchel: value = 10;&gt;
+	...
+
+FAILURES!!!
+Tests run: 4,  Failures: 1,  Errors: 0
+</pre>
+</html>
+
+===== Correct error =====
+
+<code groovy l|Correction to code>
+// class Game
+def addItem(item) {
+  if (! inventory.containsKey(item.id) ) {
+    inventory[item.id] = item
+  }
+}
+</code>
+
+Verify this change passes the test!
+
+===== The GroovyTestSuite and Junit TestSuite Classes =====
+
+<code groovy l|Example 6: A Groovy test suite (at-m42/Examples/lecture08/runAllTests.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/runAllTests.groovy
+</code>
+
+===== A further minor change =====
+
+<code groovy l>
+    // class Game
+  
+    def addItem(item) {
+        if ( ! inventory.containsKey(item.id) ) {
+            inventory[item.id] = item
+            return true
+        } else {
+            return false
+        }
+    }
+</code>
+
+===== Test for success =====
+
+<code groovy l|Example 7: New tests added to TestSuite>
+     /**
+      * Test that successfully adding an Item to the Game
+      * is detected
+      */
+     void testAddItem_5() {
+         def success = game.addItem(satchel)
+         
+         assertTrue('addition should succeed', success)
+     }      
+</code>
+
+Complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/GameTest.groovy|GameTest.groovy]]
+
+===== Expect failure =====
+
+<code groovy l|Example 7: New tests added to TestSuite (continued)>
+      /**
+      * Test that unsuccessfully attempting to add Item with the same 
+      * id as one already present in the Game is detected.
+      */
+     void testAddItem_6() {
+         game.addItem(satchel)
+         def success = game.addItem(item3)
+         
+         assertFalse('addition should fail', success)
+     }  
+</code>
+
+Complete source code: [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/GameTest.groovy|GameTest.groovy]]
+
+===== The Role of Unit Testing =====
+
+  * Unit testing is an integral part of modern iterative, incremental approach to software development.
+  * In [[at-m42:casestudies:cs03#iteration_iiireimplement_the_user_interface|Iteration II]] of [[at-m42:casestudies:cs03|Case Study 3]] we developed a ''Player'' class.
+  * Here we demonstrate how unit testing could have helped.
+  * We shall create a ''PlayerTest'' class to go with the ''Player''.
+  
+===== The Player Class =====
+
+<code groovy 1 | The Player class (at-m42/Examples/lecture08/Player.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/Player.groovy
+</code>
+----
+
+Notes ....
+
+
+
+===== The PlayerTest class =====
+
+Similar to ''GameTest'' but too big to show on a slide.
+
+  * View source code [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/PlayerTest.groovy|PlayerTest.groovy]] (see notes for listing) 
+
+----
+
+<code groovy 1 | The PlayerTest class (at-m42/Examples/lecture08/PlayerTest.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/PlayerTest.groovy
+</code>
+
+===== Correction to PlayerClass to pass all tests =====
+
+<code groovy>
+    def pickUp(item) {
+        if (! inventory.containsKey(item.id) ) {
+        	inventory[item.id] = item
+        	item.pickedUpBy(this)
+        	return true
+        } else {
+        	return false
+        }
+    }
+</code>
+
+  * Exercise: add tests for success/failure of ''pickUp'' method (see earlier example).
+
+===== Add new test case to TestSuite =====
+<code groovy 1 | The extended test suite (at-m42/Examples/lecture08/runAllTests2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/runAllTests2.groovy
+</code>
+
+===== Extending LibraryTest =====
+
+In [[at-m42:casestudies:cs03#iteration_iiaugment_the_model|Iteration II]] of [[at-m42:casestudies:cs03|Case Study 3]] we extended the ''Game'' class to allow players to be registered with the game. We should test these methods (see notes and Lab exercises)
+
+----
+
+<code groovy|Additions to GameTest>
+// class GameTest
+
+/**
+ * Set up the fixture
+ */
+void setUp() {
+
+    // ...
+    player = new Player(id : 7, nickname : 'james', email : 'jb@sis.gov.uk')
+}
+
+// ...
+
+/**
+ * Test that registering a Player with an empty Game results 
+ * in one more Player in the Game.
+ */
+void testRegisterPlayer_1() {
+    def pre = game.players.size()
+    game.registerPlayer(player)
+    def post = game.players.size()
+
+    assertTrue('one less player than expected', post = pre + 1)
+}
+
+// ...
+
+def player
+
+// ...
+</code>
+
+===== Additional Tests =====
+
+We should test additional methods that [[at-m42:casestudies:cs03#iteration_iiaugment_the_model|Iteration II]] introduced. For example, the following have not been tested:
+  * methods ''pickedUpBy(player)'' and ''dropped'' in the ''Item'' class effect the ''carrier'' property.
+  * method ''drop'' in the ''Player'' class
+  * method ''pickUp'' in the ''Player'' class results in a reference to the current player (''this'') being added to the ''Item''s ''carrier'' property.
+  * methods ''pickupItem'' and ''dropItem'' in the augmented ''Game''.
+
+===== Case Study =====
+
+[[at-m42:casestudies:cs04|Case Study 4]] further illustrates the use of [[lecture7#inheritance|Class Inheritance]] and unit testing while continuing the development of the adventure game application. You should read through the case study and examine the source code provided in preparation for the [[project|Mini Project]]. 
+
+
+===== Summary of this Lecture ====
+ 
+The ....
+
+
+  * [[#Unit Testing]]
+  * [[#The GroovyTestCase and Junit TestCase Classes]]
+  * [[#The GroovyTestSuite and Junit TestSuite Classes]]
+  * [[#The Role of Unit Testing]]
+  * [[#Case Study]]
+
+===== Lab Exercises =====
+
+  * [[at-m42:labs:lab2|Lab 2]] all exercises from [[at-m42:labs:lab2#Part 3: Unit Testing|Part 3]].
+
+----
+
+[[Home]] | [[lecture7|Previous Lecture]] | [[Lectures]] | [[lecture9|Next Lecture]] 

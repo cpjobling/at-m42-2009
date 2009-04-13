@@ -1,0 +1,80 @@
+~~SLIDESHOW~~
+====== AT-M42 Client-Server Programming on the Java Platform ======
+
+  * [[#Aims]]
+  * [[#Learning Outcomes]]
+  * [[#Module Content]]
+  * [[#Assessment]]
+  * [[#Reading]]
+  * [[#Software]]
+
+===== Aims =====
+
+To examine the use of the Java platform for the development of client-server and enterprise computing applications. 
+===== Learning Outcomes =====
+
+After completing this module you will be able to:
+  * describe the correct use of objects, classes, interfaces, exceptions, and collections.
+  * describe the major infrastructure features of an enterprise application, the java APIs that give access to these and the typical architectures used in enterprise application development. 
+  * identify and describe common software design patterns used in the implementation of enterprise architectures
+  * design and implement an enterprise computing application with a web interface using the Grails framework. 
+===== Module Content: Lectures =====
+
+  * The keys to object-oriented programming on the Java platform: objects, composition & inheritance, polymorphism, inheritance, interfaces, threaded execution, exception handlers, java beans.
+  * Enterprise infrastructure: TCP/IP and sockets; RMI; Web and HTTP; SQL and RDBMS. An introduction to the Java APIs to support these: sockets; RMI; Servlets and JSP; JDBC.
+  * Software design patterns and system architecture. The three-tier enterprise architecture: presentation tier and web presentation, business tier and enterprise integration tier. The web container and enterprise java bean container.
+===== Module Content: Labs =====
+
+//First-hand experience of//
+  * objects
+  * composition & inheritance
+  * polymorphism
+  * threaded execution
+  * collections
+  * exception handlers
+  * java beans
+//Assessment// –- completed lab work.
+
+===== Module Content: Seminar =====
+Modern approaches to enterprise application development. 
+  * What’s new in Java 5
+  * Service Oriented Architectures
+  * Lightweight frameworks
+  * Dependency injection
+  * Aspect-oriented programming
+  * Web presentation frameworks
+  * Persistence frameworks
+
+===== Module Content: Mini Project =====
+
+  * The software development process: test-driven development, agile methods, continuous integration.
+  * Case-study using the Grails framework. 
+===== Assessment 100% CA =====
+
+  * //Part 1//: 20%: Assesses Learning Outcome 1.
+    * Completed lab exercises
+  * //Part 2//: 40% Assesses Learning Outcome 2 and 3. 
+    * Seminar to discuss Modern approaches to enterprise application development. Group size 4-5 people.
+  * //Part 2//: 40%: Assesses Learning Outcome 4. 
+    * An extended group design project to analyse, design and prototype a multi-tier multi-user adventure game. Assessment (a group mark) based on a presentation of the prototypes and documentation. Group size 4-5 people.
+
+All work will be completed within the two weeks of the module and submitted by 5.00 pm Friday, 8th May.
+===== Reading =====
+
+  * //Recommended Reading//:
+    * K. Barclay and J. Savage, //Groovy Programming//, Morgan Kauffman, 2007. On Amazon.co.uk at http://bit.ly/qrUJY. 
+  * //Further Reading//:
+Bruce Eckel, Thinking in Java (2nd Ed.), Prentice Hall, 2000. 
+Available in full in Word ’97, PDF and HTML form on the net: http://www.MindView.net. Local copy on course web.
+R. Johnson, J2EE Development Without EJB, Expert One-on-One , Hungry Minds, 2004.
+B.A. Tate and J. Gehtland, Spring: a developer’s notebook. O’Reilly, 2005. 
+M. Fowler, Patterns of Enterprise Application Architecture, Addison Wesley, 2003.
+See also reading list.
+
+
+===== Software =====
+===== More Software =====
+
+----
+
+[[Home]] | [[Lectures]] | [[lecture1|Next Lecture]] 

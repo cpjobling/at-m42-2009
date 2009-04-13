@@ -1,0 +1,593 @@
+~~SLIDESHOW~~
+====== Basic Building Blocks ======
+
+  * [[#Everything is an Object]]
+  * [[#Numbers and Expressions]]
+  * [[#Strings and Regular Expressions]]
+
+The slides and notes in this presentation are adapted from //Groovy Programming// (See [[lecture0#Reading|Recommended Reading]]).
+
+An index to the source code for all the examples in this lecture is [[/~eechris/at-m42/Examples/lecture02|available]].
+
+===== Everything is an Object =====
+
+<code groovy 1 | Example 1: Everything is an object (at-m42/Examples/lecture02/example1.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example1.groovy
+</code>
+----
+
+In Groovy, every datatype that you define, initialize and manipulate is an //object//: that is an //instance of// a //class//. A class is a specification for a data type that includes the //fields// (or attributes) and the operations (or //methods//) that can be performed on those fields. 
+
+In the example, ''class One'' on line 2 declares a new class called //One//. Class //One// has one field, an integer (''Integer'') named //i// which is //declared// and //initialized// to the value 1 on line 2. Class //One// has one method, named //increment//, which adds 1 to the current value of the field ''i''.
+
+On line 10 we create an object of //type One// using the constructor ''def one = new one()''. The //value// returned by the right-hand-side of the //assignment// symbol ''='' is a //reference// to a new //object// in memory which contains storage for a single Integer object. Thus the //variable// ''one'' on the left-hand-side is actually a reference to an object of type ''One''. We verify that this is the case on line 11 by asserting that the class of //one//, as a String, is ''"class One"''((Don't worry about the details of this expression, we'll get to it.))
+
+On line 12 we assert that the value of the field //one.i// is equal to 1 and on line 13 we call the //increment// method on the one object after which the value of //one.i// becomes 2 (line 14). This demonstrates that //one// is an object of //class One// and that the "state" of the this object can be changed by calling its //increment// method((another way of thinking about this is to visualize that you are sending the //increment// message to the //one// object.)).
+
+This may be confusing at the moment but it will become clearer when we talk about classes in more detail later.
+
+===== Numbers and Expressions =====
+
+  * [[#Numbers]]
+  * [[#Expressions]]
+  * [[#Operator Precedence I]]
+  * [[#Assignment]]
+  * [[#Increment and Decrement Operators]]
+  * [[#Object References]]
+  * [[#Relational and Equality Operators]]
+
+
+
+===== Numbers =====
+
+  * Groovy supports //integers// and //floating point// numbers.
+    * Example //integer literals// are ''0'', ''1'', ''26'', ''-42'', ''0xFF'', ''0177''
+    * Example //floating point// literals are ''-1.35'', ''0.25'', ''3.1415926'', ''1e6''
+
+
+----
+
+A //literal// is interpreted //literally// by the Groovy/Java compiler. In this context the term literal simply means the written value of a number.
+
+For //integer literals//, all numbers are assumed to be decimal (base 10) unless 
+    * the prefix ''0x'' is used, in which case the number following the prefix is assumed to //hexadecimal// base 16, or 
+    * the prefix ''0'' is used, as in '0177', in which case the number is assumed to be //octal// or base 8. 
+The octal and hexadecimal prefixes are useful for some applications where binary data (actual bits) needs to be manipulated.
+
+Integer values are stored in an object of class ''java.lang.Integer''. By default, //floating point literals// are stored in an object of class ''java.lang.BigDecimal'' because this has arbitrary precision. If you want, you can use single precision floating values (''java.lang.Float'') or double precision (''java.lang.Double''). In this case we add //postfix// ''f'' (e.g. ''1.234F'') to get a //Float// and ''d'' (e.g. ''-0.123d'') for //Double//.
+
+Like most computer languages. the letter ''e'' (for //exponent//), in literals like ''1.0e6'' means "multiply by 10 raised-to-the-power-of the number to the right of the ''e''". Thus ''1.0e6'' is 1x10<sup>6</sup>.
+
+
+===== Integer arithmetic =====
+
+
+^ Expression ^ Method call ^ Result ^
+| ''5 + 3'' | ''5.plus(3)'' | ''8'' |
+| ''5 - 3'' | ''5.minus(3)'' | ''2'' |
+| ''5 * 3'' | ''5.multiply(3)'' | ''15'' |
+| ''5 / 3'' | ''5.div(3)'' | ''1.6666666667'' |
+| ''5 % 3'' | ''5.mod(3)'' | ''2'' |
+
+----
+
+Although the normal //infix// operators are used in expressions, because integers are internally represented as objects of the //Integer// class, Groovy internally uses the method calls shown in the centre column to actually evaluate the expression. This has an important benefit which we will explore later. The only operator which you might be unfamiliar with is the //modulus// operator ''%'' (''mod()'') which returns the remainder of the object's value divided by the argument. 
+
+Both the infix form ''5 / 3'' and the object-method form ''5.div(3)'' are equivalent. in fact the groovy compiler turns the infix form into the object-method form when it compiles the expression. You can use either in your programs, thought clearly the infix form is more familiar and therefore easier to read and understand.
+
+===== Floating point arithmetic =====
+
+^ Expression ^ Method call ^ Result ^
+| ''5.0 + 3.0'' | ''5.0.plus(3.0)'' | ''8.0'' |
+| ''5.0 - 3.0'' | ''5.0.minus(3.0)'' | ''2.0'' |
+| ''5.0 * 3.0'' | ''5.0.multiply(3.0)'' | ''15.0'' |
+| ''5.0 / 3.0'' | ''5.0.div(3.0)'' | ''1.6666666667'' |
+
+----
+
+
+Division in Groovy will always return a floating point value. Thus the following are all equivalent:
+<code groovy>
+13.0 / 5
+13 / 5.0
+13 / 5
+</code>
+
+If you are familiar with C or Java, this may surprise you! To get the C-like behaviour use ''intdiv'' as in:
+<code groovy>
+13.intdiv(5) // returns integer value 2
+</code>
+
+Mod is only defined for integers. if you try ''5.0 % 3.0'' you get:
+
+  Exception thrown: Cannot use mod() on this number type: java.math.BigDecimal with value: 5.0
+  
+  java.lang.UnsupportedOperationException: Cannot use mod() on this number type: java.math.BigDecimal with value: 5.0
+
+===== Mixed arithmetic =====
+
+
+^ Expression ^ Method call ^ Result ^
+| ''5 + 3.2'' | ''5.plus(3.2)'' | ''8.2'' |
+| ''5.6 + 3'' | ''5.6.plus(3)'' | ''8.6'' |
+| ''5 - 3.2'' | ''5.minus(3.2)'' | ''1.8'' |
+| ''5.6 - 3'' | ''5.6.minus(3)'' | ''2.6'' |
+| ''5 * 3.2'' | ''5.multiply(3.2)'' | ''16.0'' |
+| ''5.6 * 3'' | ''5.6.multiply(3)'' | ''16.8'' |
+| ''5 * 3.2'' | ''5.div(3.2)'' | ''1.5625'' |
+| ''5.6 * 3'' | ''5.6.div(3)'' | ''1.8666666667'' |
+
+----
+
+
+With the exception of the modulus operator, Groovy's arithmetic operators can be applied to mixed combinations of integer and floats. In all cases, the integer terms are first converted to floating point values before the operators are applied.
+===== Operator Precedence =====
+
+//Arithmetic operators//
+
+^ Category ^ Operators ^ Example ^ Associativity ^
+| Multiplicative | ''* / %'' | ''x * y'' | Left to right |
+| Additive  | ''+ -'' | ''x + y'' | Left to right |
+
+//Examples//
+
+  2 + 3 * 4 = ?
+  2 * 3 / 4 = ?
+
+----
+
+The expression is evaluated left to right but multiplicative operators are evaluated first (highest priority) then the additive operators. In both cases the expression is evaluated left to right.
+
+In the first example 3 * 4 is evaluated first;
+
+  3 * 4 => 12
+
+Then ''2 + 12'' is evaluated yielding 14.
+
+In the second example * and ''/'' have the same priority so the expression is evaluate right to left:
+
+  2 * 3 => 6
+  6 / 4 => 1.25.
+
+You should use parenthesis to change the order of evaluation:
+
+  (2 + 3) * 4 = 20
+  2 * (3/6) = 1.0
+
+Other precedence relationships will be pointed out in the notes to the slides but they are summarized [[Summary of Operator Precedence Rules|here]].
+
+===== Assignment =====
+
+//The assignment operator//
+
+  variable = expression
+
+//Examples//
+<code groovy>
+interest = principal * rate * time / 100
+speed = distance / time
+totalMinutes = 60 * hours + minutes
+count = count + 1
+</code>
+
+----
+
+
+The effect of the //assignment// operator (''='') is to evaluate the expression to its right, and assign the resulting value to the variable on the left.
+
+in the examples;
+  - The first example computes the simple interest on a sum of money (the ''principal''0 invested at a given ''rate'' for a given period of time.
+  - The second example computes the speed of an object, given the speed of travel and the elapsed time.
+  - The third example converts a time expressed as hours and minutes into a total number of minutes.
+  - The final example adds one to the current value of ''count''.
+===== Declaring a variable =====
+
+In Groovy use the ''def'' keyword:
+<code groovy>
+def count = 0     // define and initialize
+count = count = 1 // increase current value by one
+</code>
+
+----
+
+
+Variables have names by which they can be referenced. These names are known as //identifiers//. A Grrovy identifier must obey the following rule
+> //An identifier is a case-sensitive combination of letters and digits, the first of which must be a letter. The underscore character (''_'') is considered to be a letter. An identifier must not be a Groovy keyword.//
+===== Increment and Decrement Operators =====
+//Unary operators// add one or delete one from the argument.
+  * //post-increment// and //post-decrement//
+<code groovy>
+def x = 10
+def y = x++ // x has value 11; y has value 10
+def z = y-- // y now has value 9; z has value 10
+</code> 
+  * //pre-increment// and //pre-decrement//
+<code groovy>
+def p = 20
+def q = ++p //  p has value 21; q has value 21
+def r = --q // q now has value 20; r has value 20;
+</code> 
+
+----
+
+Note
+
+  value++
+
+is shorthand for
+
+  value = value + 1
+
+Similarly
+
+  value--
+
+is shorthand for
+
+  value = value - 1
+
+If the operator appears before the argument, it is known as a //pre-increment// or //pre-decrement// operator. Pre-incrementing a variable causes the value to be incremented before the result is used the expression in which it appears. Similarly pre-decrementing a variable causes the value to be decremented before the value is used in the expression. Post-incrementing a value causes the value to be used in the expression and then incremented.
+
+The slide illustrates the differences. 
+
+The decrement operator ''x++'' is implemented as ''x.next()''. Similarly the decrement operator ''y%%--%%'' is implemented as ''y.previous()''
+
+//Operator precedence//: pre-increment/decrement are performed before the multiplicative operators. The post-increment/decrement operators before the pre-increment/decrement operators. Precedence for both are evaluated //right-to-left// in the expression.
+
+Thus 
+<code groovy>
+def x = 1
+def y = 3 + 1 * 4 / ++x
+</code>
+Evaluates to:
+  ++x => 2
+  1 * 4 => 4
+  4 / 2 => 2
+  3 + 2 = 5
+
+//Exercise// What are the values of ''p'' and ''q'' after the following expressions are evaluated?
+<code groovy>
+def p = 2
+def q = 4 - 2 / 4 * p++
+</code>
+[Answer p = 3; q = 3.0]
+===== Object References =====
+
+Consider
+<code groovy>
+def age
+def number = age
+</code>
+
+How are ''age'' and ''number'' related to each other?
+===== Variables and object referencing =====
+{{:at-m42:figure1.png|Figure 1: Variables and object referencing}}
+
+----
+
+The execution of the assignment ''age = 25'' creates a new ''Integer'' object with the value 25. It then makes the variable reference the object as shown in the slide.
+
+The linkage between a variable and the object is known as a //reference//. The variable is said to refer to that part of computer memory occupied by the object. Any use of the variable, such as in the expression ''age + 22'', uses this reference to obtain the object value associated with the variable.
+
+
+===== Object sharing =====
+{{:at-m42:figure2.png|Figure 2: Sharing}}
+
+----
+
+In Groovy, variables are always linked to objects. hence the result of the second assignment is to have variable ''number'' reference the same object as the variable ''age''. this is illustrated in this slide and is an example of //sharing// (or //aliasing//), for example, two variables referencing the same object.
+===== New assigment =====
+{{:at-m42:figure3.png|Figure 3: New assignment}}
+----
+
+If later in the code we assign a new value to the variable ''age'', then the effect is as illustrated in this slide. Here, we show that the ''age'' variable now references a different object, while the ''number'' variable continues to reference the object that was first referenced to ''age''
+===== Garbage =====
+
+{{:at-m42:figure4.png|Figure 4: Garbage}}
+----
+If we now assign a new value to the ''number'' variable, then the number 25 is no longer referenced by any variable. It cannot be used in the code (it is inaccessible) and is effectively //garbage//, namely an //unreferenced// object. In Groovy, a //garbage collector// will eventually sweep up the memory space taken by the object and recycle its memory space for other uses.
+
+
+
+===== Relational and Equality Operators =====
+
+Control statements, such as ''if'' and ''while'' use //conditional expressions// which evaluate to a Boolean value ''true'' or ''false''.  Three types of operators provided:
+
+  * [[#Relational operators]]
+  * [[#Equality operators]], and 
+  * [[Logical Operators]] (see notes)
+
+===== Relational operators =====
+
+^ Expression ^ Method call ^ Result ^
+| ''5 < 3'' | ''5.compareTo(3) < 0'' | ''false'' |
+| ''5 %%<=%% 3'' | ''5.compareTo(3) %%<=%% 0'' | ''false'' |
+| ''5 > 3'' | ''5.compareTo(3) > 0'' | ''true'' |
+| ''5 >= 3'' | ''5.compareTo(3) >= 0'' | ''true'' |
+
+----
+
+
+The //relational operators// are shown on this slide. All four are binary operators. Each takes two arithmetic expressions as operands and yields the booliean value either ''true'' or ''false''. Both are instances of the class ''Boolean''. All of these operators are realised with the ''compareTo'' method call. For example ''a < b'' is implemented as ''a.compareTo(b)''. The method ''a.compareTo(b)'' returns -1 if a is less than b, +1 if a is greater than b and 0 if a equals b. This method is also useful as the basis for sorting values.
+
+===== Examples of relational operators =====
+
+
+<code groovy 1|Example 2: Relational operators (at-m42/Examples/lecture02/example2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example2.groovy
+</code>
+
+----
+
+
+Relational operators have lower precedence than arithmetic operators so ''index %%<=%% limit - 1'' on line 9 is interpreted as ''index %%<=%% (limit - 1)''.
+
+===== Equality operators =====
+
+^ Expression ^ Method call ^ Result ^
+| ''5 == 3'' | ''5.equals(3)'' | ''false'' |
+| ''5 != 3'' | ''! 5.equals(3)'' | ''true'' |
+| ''5 %%<=>%% 3'' | ''5.compareTo(3)'' | ''+1'' |
+
+----
+
+The //equality operators// ''=='' and '!=' are presented on this slide. Again they are binary operators and produce the boolean value ''true'' or the boolean value ''false''. Both operators are implemented using the ''equals'' method. The ''compareTo'' operator is donated by ''%%<=>%%'' and as the same precedence as the other two.
+
+===== Examples of the use of equality operators =====
+
+<code groovy 1|Example 3: Equality operators (at-m42-2009\Examples\Lectures\lecture02\example3.groovy)>
+// Equality operators
+def forename = "Chris"
+def surname = "Jobling"
+assert forename == "Chris"
+assert surname != "Joblin"
+
+def age = 23
+def number = 25
+assert (age == number) == false
+</code>
+----
+
+
+Once again these equality operators ultimately become method calls. For example, the condition ''forename == "Chris"'' on line 4 is actually implemented as ''forename.equals("Chris")''. The method //equals// is programmed in the ''String'' class to determine whether the two values are the same. Similarly, after the two assignments at lines 7 and 8, the condition on line 9 produces the value ''true'' which satisfies the assertion. Again the method call ''age.equals(number)'' is evaluated by the //equals// method defined in the class ''Integer''.
+
+===== Strings and Regular Expressions =====
+
+  * [[#String Literals]]
+  * [[#String Indexing and Slicing]]
+  * [[#Basic Operations]]
+  * [[#String Methods]]
+  * [[#String Comparison]]
+  * [[#Regular Expressions]]
+
+===== String Literals =====
+
+<html>
+<table class="inline">
+<tr><th>Literal</th><th>Description</th></tr>
+<tr><td><code>'He said "Hello"!'</code></td><td>Single quotes (with nested double quotes)</td></tr>
+<tr><td><code>"He said 'Hello'!"</code></td><td>Double quotes (with nested single quotes)</td></tr>
+<tr><td><code>"""One two three"""</code></td><td>Triple quotes</td></tr>
+<tr><td><code>"""Spread<br />
+over<br/>
+four<br/>
+lines"""</code></td><td>Multi-line text using triple quotes</td></tr>
+</table>
+</html>
+
+----
+
+
+Groovy provides three ways to define a ''String''. For example, ''String''s can be enclosed in single quotes (''%%'%%''), double quotes (''%%"%%''), triple quotes (''%%"""%%''). Furthermore, a triple quoted ''String'' can span multiple lines. This slide summarises this types of ''String'' literal.
+
+===== Interpreted Strings =====
+
+<code groovy 1>
+def age = 25
+'My age is ${age}'     // My age is ${age}
+"My age is ${age}"     // My age is 25
+"""My age is ${age}""" // My age is 25
+"My age is \${age}"    // My age is ${age}
+</code>
+
+----
+
+
+A ''String'' enclosed in single quotes is taken literally. The other two forms of ''String'' are said to be //interpreted//. Any expression presented as ''${expression}'' within a double or triple quoted string is evaluated and the result is included as part of the ''String''. Some examples of interpreted ''String''s are shown in the slide. 
+
+Observe in line 1 how interpretation is not performed on single quoted strings. Also, observe how, in line 5, escaping the dollar sign with a backslash is required to turn off its use in ''String'' interpretation. Normal practice is to use double-quoted strings only where interpretation is required and triple-quoted strings only where interpretation and multiple lines of text are required. Use single-quoted strings for all other purposes.
+
+Interpreted ''String''s (which are also available in other languages like JavaScript, Perl, and Ruby) make it much easier to output results than it is in Java. To illustrate, consider the Java equivalent of line 3:
+<code java>
+int age = 25;
+String s = "My age is " + age + ";
+</code>
+
+The equivalent of a triple-quoted multi-line ''String'' in Java is even more "clunky".
+<code java>
+String mls = "Spread\nover\nfour\nlines"; 
+</code>
+
+In fact, Java strings are the equivalent of Groovy's single quoted strings. Groovy double-quoted and triple-quoted strings are much easier to read and understand.
+
+
+
+===== String Indexing and Slicing =====
+
+<code groovy 1|Example 4: String indexing and slicing (at-m42/Examples/lecture02/example4.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example4.groovy
+</code>
+
+----
+
+Strings are represented internally as a sequence of characters. This
+means that we can access an individual character by its position in
+the ''String''. The position is given by an //index//. Positions can
+specify either an individual character or a subset of
+characters. Either way, a ''String'' value is returned.''String''
+indeces start at zero and end at one less that the ''String''
+length. Groovy also permits negative indices to count back from the
+end of a ''String'' (index -1 is the last character). Subsets of a
+''String'' can also be expressed using //slicing//.
+
+The slide shows some examples of indexing and slicing. Note how
+slicing is denoted by ''6..11'' (line 5) and ''6..<11'' (line 6). This
+notation is known as a //range// and will be discussed in the
+[[lecture3#Ranges|next lecture]]. For now it suffices to say that
+''6..11'' is the index range 6 to 11 inclusive. The range denoted by
+''1..<11'' is range which excludes 11, that is 1 to 10.
+
+===== Basic Operations on Strings =====
+
+<code groovy 1|Example 5: Basic operations on Strings (at-m42/Examples/lecture02/example5.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example5.groovy
+</code>
+
+
+----
+
+The basic ''String'' operations include the concatenation of two
+strings, duplicating strings, and finding the length of a
+''String''. The ''minus'' method (or the //overloaded// ''-''
+operator) removes the first occurrence of a substring. The method
+''count'' determines the number of occurrences of a substring, while
+''contains'' returns ''true'' if a ''String'' contains a substring.
+
+Groovy strings and //immutable//; this means that they cannot be
+changed in place. Each of the ''String'' methods that actually appear
+to change a ''String'' actually return a new ''String''.
+
+===== String Methods =====
+
+  * Lots and lots of methods!
+    * The full set of [[http://java.sun.com/javase/6/docs/api/java/lang/String.html|java.lang.String]] methods.
+    * Plus [[http://groovy.codehaus.org/groovy-jdk/java/lang/String.html|additional methods]] added by Groovy.
+  * See example [[/~eechris/at-m42/Examples/lecture02/example6.groovy|online]]. Full listing in notes.
+
+----
+
+<code groovy 1|Example 6: String Methods (Examples/lecture02/example6.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example6.groovy
+</code>
+
+Note how the left-shift operator ''%%<<%%'' overloads the ''leftShift'' method. But be careful, it returns a ''StringBuffer'' not a ''String''. This is why I ahd to use ''greeting.toString()'' in lines 36 and 38 to convert the contents of the ''StringBuffer'' back to a ''String''.
+
+The method ''tokenize'' splits a ''String'' into a ''List'' (see [[lecture03#Lists|next lecture]]) of ''String''s. The first version of the method shown at line 61 uses a white space character as a separator. The second, at line 62, uses the ''String'' parameter to partition it. The method ''split'' splits a string around matches of the given [[lecture2#Regular Expressions|regular expression]] (line 17), delivering an array of ''String''s.
+
+===== String Comparison =====
+
+<code groovy 1|Example 7: String comparison (at-m42/Examples/lecture02/example7.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example7.groovy
+</code>
+
+----
+
+Groovy supports methods for comparing ''String''s. As mentioned earlier, the operators are overloaded versions of named methods. Thus, we compare two ''String'' objects using ''string1 == string2'', remembering that this is a convenience short cut for ''string1.equals(string2)''. Equally, the operator denoted as ''string1 %%<=>%% string2'' is a convenience for ''string1.compareTo((string2)''. This method returns -1 if ''string1'' is before ''string2'', +1 if ''string1'' is after ''string2'', and 0 if the strings are equal. This might be used to sort strings.
+
+String comparisons are lexicographic; therefore upper case letters precede lower case characters in the character set. hence, has shown in the last two examples in the slide (lines 7 and 8), 'chris' follows 'Chris' since 'C' precedes 'c'. 
+
+All characters in Groovy (and Java) ''String''s adopt the Unicode ([[http://www.unicode.org|www.unicode.org]]) character set and this makes programmes for the Java Platform relatively easy to internationalize.
+
+===== Regular Expressions =====
+
+A //regular expression// is a pattern that is used to find sub-strings in text.
+  * The ''String'' method ''matches'' method returns ''true'' if the recipient ''String'' matches the given regular expression pattern.
+<code groovy>
+assert 'abc'.matches(/abc/) == true
+assert 'abc'.maches(/bc/) == false
+</code>
+  * The method ''replaceAll'' replaces all regular expression matches inside the ''String'' with the replacement specified by the closure.
+<code groovy>
+assert 'HELLO'.replaceAll(/[A-Z]/) { ch -> ch.toLowerCase() } == 'hello'
+</code>
+
+===== The regex operator =====
+
+<code groovy 1|Example 8: The regex operator (at-m42/Examples/lecture02/example8.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example8.groovy
+</code>
+
+Groovy supports regular expressions natively using the ''~/regex/'' expression where ''regex'' represents the text of the regular expression -- a specially formatted string.
+
+In the example, a regular expression (an object of type [[http://java.sun.com/javase/6/docs/api/java/util/regex/Pattern.html|java.util.regex.Pattern]]) is defined at line 2. 
+
+When the Groovy operator ''=~'' appears as a predicate (expression returning a ''Boolean'') in expressions, the ''String'' operand on the left is matched against the regular expression on the right. Each of the expressions shown on lines 5-6 is true which we can ''assert'' as shown.
+
+The stricter operator %%==~%% requires an exact match the whole of the ''String'' on the left must match the regular expression on the right) as verified in line 10: ''%%'cheesecake'%% ==~ /cheese/'' is ''false'', so ''! (%%'cheesecake'%% ==~ /cheese/)'' is ''true''.
+
+===== Regex positional characters =====
+
+
+<code groovy 1|Example 9: Regex positional characters (at-m42/Examples/lecture02/example9.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example9.groovy
+</code>
+
+----
+
+In a regular expression. two //positional characters// are used to denote the beginning and end of a line; caret (''^'') and dollar (''$'').
+
+
+===== Regex quantifiers =====
+
+
+<code groovy 1|Example 10: Regex quantifiers (at-m42/Examples/lecture02/exampl10.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example10.groovy
+</code>
+
+----
+
+Regular expressions can also include //quantifiers//. The plus sign (''+'') represents one or more times, applied to the preceding elements of the expression. The asterisk (''*'') is used to represent //zero// or more occurrences. The question mark (''?'') denotes zero or one occurrence. The meta character { and } is uses to match a specific number of the preceding character. All the examples in the slide yield ''true''. 
+
+===== Regex wildcard =====
+
+
+<code groovy 1|Example 11: Regex wildcard (at-m42/Examples/lecture02/example11.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example11.groovy
+</code>
+
+----
+
+In  regular expression, the period symbol (''.'') can represent any character. This is described as the //wildcard character//. Things get complicated, however, when we are required to match an actual period character. All the examples in the slide evaluate to ''true''.
+
+===== Regex character classes =====
+
+
+<code groovy 1|Example 12: Regex character classes (at-m42/Examples/lecture02/example12.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example12.groovy
+</code>
+
+----
+
+A regular expression may include //character classes//. A set of characters can be given as a simple sequence of characters enclosed in the //meta-characters// [ and ] as in ''[aeiou]''. For letter and number ranges, you can use a dash separator as in ''[a-z]'' or ''[a-mA-M]''. The complement of a character class is denoted by a leading caret with the square brackets as in ''[^a-z]'' and represents all characters other than those specified. Each of the examples evaluates to ''true''.
+
+===== Regex groups =====
+
+
+<code groovy 1|Example 13: Regex groups (at-m42/Examples/lecture02/example13.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example13.groovy
+</code>
+
+----
+
+Finally, we can group regular expression to compose more complex expressions. Groups are formed using the ( and ) meta-characters. Hence, "''(ab)*''" is the regular expression for any number of occurrences of ''ab''. You can also use alternation (denoted by ''|'') to match a single regular expression from one of several regular expressions. Therefore "''(a|b)''" describes any number of mixed ''a'' or ''b''. The examples in the slide all evaluate to ''true''.
+===== More on regular expressions =====
+
+  * Regular expressions are used in many programming languages. 
+  * There is much more to learn about them than we have time to cover in this module.
+  * You can read more at [[wp>Regular_expression|Wikipedia]] and there is an excellent on-line reference at [[http://www.regular-expressions.info/|www.regular-expressions.info]].
+
+===== Summary of this Lecture ====
+ 
+The basic building blocks for programming the Java platform in Groovy.
+
+  * [[#Everything is an Object]]
+  * [[#Numbers and Expressions]]
+  * [[#Strings and Regular Expressions]]
+
+===== Lab Exercises =====
+
+  * [[at-m42:labs:lab1|Lab 1]] all exercises from [[at-m42:labs:lab1#Part 1: Basic Building Blocks|Part 1]].
+
+----
+
+[[Home]] | [[lecture1|Previous Lecture]] | [[Lectures]] | [[lecture3|Next Lecture]] 

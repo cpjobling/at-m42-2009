@@ -1,0 +1,42 @@
+~~SLIDESHOW~~
+====== Title of Lecture Here ======
+
+  * [[#Heading 1]]
+  * [[#Heading 2]]
+  * [[#heading 3]]
+
+The slides and notes in this presentation are adapted from //Groovy Programming// (See [[lecture0#Reading|Recommended Reading]]).
+
+An index to the source code for all the examples in this lecture is [[/~eechris/at-m42/Examples/lecture02|available]].
+
+===== Heading 1 =====
+
+<code groovy 1 | Example 1: Everything is an object (at-m42/Examples/lecture02/example1.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example1.groovy
+</code>
+----
+
+Notes ...
+
+===== Heading 2 =====
+
+  * [[#Sub head 1]]
+  * [[#Sub head 2]]
+
+
+===== Summary of this Lecture ====
+ 
+The ....
+
+
+  * [[#Heading 1]]
+  * [[#Heading 2]]
+  * [[#heading 3]]
+
+===== Lab Exercises =====
+
+  * [[eg-m42:labs:lab1|Lab 1]] exercises 1-7.
+
+----
+
+[[Home]] | [[lecture1|Previous Lecture]] | [[Lectures]] | [[lecture3|Next Lecture]] 

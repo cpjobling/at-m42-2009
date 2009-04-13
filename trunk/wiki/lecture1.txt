@@ -1,0 +1,64 @@
+~~SLIDESHOW~~
+====== Introducing the Java Platform and the Module ======
+
+  * A Taste of things to Come 
+  * Introduction to the Java Platform Java
+  * Software Design Patterns
+  * Client-Server Architectures
+  * Module Plan
+  * Assumed Co/Pre-Requisites
+===== Introducing the Java Platform =====
+
+Will cover Java Platform Standard Edition (Java SE 5) 
+also known as Java Development Kit (JDK) 1.5
+and Java 2 Platform Enterprise Edition (J2EE).
+Only J2SE required for projects and exercises.
+Design Goals for Java
+What Java Isn’t
+What About GUIs?
+Software Design Patterns
+Popularised by the book: Design Patterns by Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides (Addison Wesley).
+The are recurring forms of software development that you can capture at a low level and reuse across dissimilar applications.
+We shall see examples of several of these in the module and you are required to recognise and document those that occur in your project.
+Client-Server Architectures
+Examples of Architectures
+Single tier systems
+Two tier systems
+Three tier systems
+Multi-tier systems
+Peer-to-Peer (P2P) applications
+
+Single Tier System
+Two-Tier System
+Three-Tier System
+Three-Tier System: With Web Tier
+Examples:
+CGI application
+Lightweight framework
+Multi-Tier System
+Multi-Tier J2EE
+Peer-to-Peer System
+Module Plan
+Part 1: The Essence of Java
+Nine lectures
+Part 2: Client Server Programming
+Four lectures
+Part 3: Enterprise Computing in Java 
+Five lectures
+Part 4: Assessment Week
+Seminars
+Project work
+End-of-module test
+
+
+Co & Pre-Requisites and Other Notes
+Knowledge of C Programming Syntax is an advantage. 
+The Unified Modelling Language (UML) is used in this course. 
+Access to Eckel (available on-line) will be a definite plus.
+For seminars and project, most of the currently available information is on the web. Unfortunately this means that quality varies!
+I hope to be able to distribute a CD-ROM with all copies of Eckel, Java tutorials, my slides, all the examples and the software tools later this week.
+The final test will be “open book”.
+
+----
+
+[[Home]] | [[lecture0|Previous Lecture]] | [[Lectures]] | [[lecture2|Next Lecture]] 

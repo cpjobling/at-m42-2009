@@ -1,0 +1,144 @@
+====== Lab Exercise 1: Programming the Java Platform 1 ======
+
+===== Basic Building Blocks =====
+
+These exercises are designed to support [[at-m42:lecture2|Lecture 2 Basic Building Blocks]]. Create a new folder in your work directory ''h:\work\at-m42'' called //lab1//. Store the solutions to the exercise in separate groovy files labelled //lab1-ex1.groovy//, //lab2-ex2.groovy//, etc. 
+
+Present each of your solutions to these exercises in a single script called //lab1-ex1.groovy//, //lab1-ex2.groovy// etc. Put the following comment at the top of each script:
+<code groovy>
+// Lab 1: Exercise n
+// Student number: 0123456
+</code>
+
+Use the ''assert'' keyword to present your answer. Thus if you think that the answer to Exercise 1 part (a) is ''true'' you would write the code as:
+<code groovy>
+def x = 12
+def y = 2
+assert (x + 3 <= y * 10) == true
+</code>
+
+In general, you should present your answers using an //assertion// of the form ''assert (''//expression to be evaluated//'') =='' //your answer//. Load the script into //groovyConsole// and run it. If your assertion is true, the code will execute without error. If your answer is wrong you'll get an exception which will give you a clue about what the answer should be.
+
+===== Exercise 1 =====
+
+Use the rules of [[at-m42:summary_of_operator_precedence_rules|precedence and associativity]] to evaluate the following:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><pre>def x = 12
+def y = 2
+x + 3 <= y * 10
+</pre></li>
+<li><pre>def x = 12
+x = 20
+y = 2
+x + 3 <= y * 10
+</pre></li>
+<li><pre>def x = 7
+y = 1
+x +3 != y * 10
+</pre></li>
+<li><pre>x = 17
+y = 2
+x + 3 == y * 10
+</pre></li>
+<li><pre>x = 100
+y = 5
+x + 3 > y * 10
+</pre></li></ol>
+</html>
+
+===== Exercise 2 =====
+
+Evaluate each of the following expressions:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><code>"client" + "server"</code></li>
+<li><code>"10" + "66"</code></li>
+<li><code>"1" + "0"</code></li>
+</ol>
+</html>
+
+===== Exercise 3 =====
+
+Evaluate each of the following expressions:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><code>"AT-M42".length()</code></li>
+<li><code>"".length()</code></li>
+</ol>
+</html>
+
+===== Exercise 4 =====
+
+Declare a ''String'' variable ''str'' using this code:
+<code groovy>
+def str = "Client server"
+</code>
+Then evaluate each of the following expressions:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><code>str.indexOf("ie")</code></li>
+<li><code>str.indexOf("Ie")</code></li>
+<li><code>str.lastIndexOf("e")</code></li>
+<li><code>str.lastIndexOf("er")</code></li>
+</ol>
+</html>
+
+===== Exercise 5 =====
+
+Declare the following:
+<code groovy>
+def str = "Groovy, Groovy, Groovy"
+</code>
+Then evaluate the following expressions:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><code>str.length()</code></li>
+<li><code>str.indexOf("o")</code></li>
+<li><code>str.lastIndexOf("o")</code></li>
+<li><code>str.indexOf("o", 5)</code></li>
+<li><code>str.lastIndexOf("o", 5)</code></li>
+<li><code>str.indexOf("ov", str.length() - 10)</code></li>
+<li><code>str.lastIndexOf("ov", str.length() - 4)</code></li>
+<li><code>str.lastIndexOf("o", str.indexOf("ro")</code></li>
+</ol>
+</html>
+
+===== Exercise 6 =====
+
+Declare the following:
+<code groovy>
+def str = "Groovy programming"
+</code>
+Then evaluate the following expressions:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><code>str.length()</code></li>
+<li><code>str.substring(7, 14)</code></li>
+<li><code>str.substring(1, str.length() - 1)</code></li>
+<li><code>str.endsWith("ming")</code></li></ol>
+</html>
+
+===== Exercise 7 =====
+
+Evaluate each of the following expressions:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><code>'Groovy' =~ /Groovy/</code></li>
+<li><code>'Groovy' =~ /oo/</code></li>
+<li><code>'Groovy' ==~ /Groovy/</code></li>
+<li><code>'Groovy' ==~ /oo/</code></li>
+<li><code>'Groovy' =~ /^G/</code></li>
+<li><code>'Groovy' =~ /G$/</code></li>
+<li><code>'Groovy' =~ /Gro*vy/</code></li>
+<li><code>'Groovy' =~ /Gro{2}vy/</code></li>
+</ol>
+</html>
+
+===== Acknowledgements =====
+
+The exercises are based on those given in Chapters 2 and 3 of //Programming Groovy//.
+
+----
+
+[[at-m42:home]] | [[at-m42:labs]] | [[lab2|Next Lab]]

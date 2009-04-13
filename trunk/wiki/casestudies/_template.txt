@@ -1,0 +1,61 @@
+===== Adventure Game (Methods and Closures) =====
+
+  * [[cs02#Iteration I: Specification and Map Implementation|Iteration I]]
+  * [[cs02#Iteration II: Implementation of a Text-based User Interface|Iteration II]]
+  * [[cs02#Iteration III: Implementation With Closures|Iteration III]]
+  * [[cs02#Exercises]]
+
+An index to the source code for all the examples in this case study is [[/~eechris/at-m42/Examples/case-study-02|available]].
+
+===== Iteration I: Specification and Map Implementation =====
+
+  * Add and remove items to/from the location
+  * Record the picking up and dropping of an item by a player
+  * Display details of the current location
+  * Display the items being carried by a given player
+  * Display the number of players who are carrying a particular item
+
+<code groovy>
+def banquetingRoom = [
+  'bread' : ['Chris', 'John'], 
+  'fork' : ['Chris'], 
+  'sword' : ['John', 'Sally'], 
+  'magic amulet' : ['Sally'], 
+  'apple' : []
+]
+</code>
+
+<code groovy>
+def addItem(location, item) {
+    location[item] = []
+}
+</code>
+
+<code groovy>
+readNumberOfPlayersHoldingItem(location, item) {
+   return location[item].size()
+}
+</code>
+
+<code groovy 1| A simple adventure game (at-m42/Examples/case-study-02/location1.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/case-study-02/location1.groovy
+</code>
+
+===== Iteration II: Implementation of a Text-based User Interface =====
+
+<code groovy 1| Text-based user interface (at-m42/Examples/case-study-02/location2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/case-study-02/location2.groovy
+</code>
+
+===== Iteration III: Implementation With Closures =====
+
+<code groovy 1| Implementation with closures (at-m42/Examples/case-study-02/location3.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/case-study-02/location3.groovy
+</code>
+
+===== Exercises =====
+
+
+----
+
+[[at-m42:home|Home]] | [[at-m42:lectures|Lectures]] | [[at-m42:lecture4#case_study|Previous Case Study]] | [[at-m42:casestudies|Case Studies]] | [[at-m42:casestudies:cs03|Next Case Study]] 

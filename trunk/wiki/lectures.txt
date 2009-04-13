@@ -1,0 +1,32 @@
+====== The Lecture Course ======
+
+
+  * [[lecture0|Lecture 0]]: About this Module
+  * [[lecture1|Lecture 1]]: Introducing the Java Platform and the Module
+===== Part 1: Programming the Java Platform =====
+
+  * [[Why Groovy?]]
+  * Lecture 2: [[lecture2|Basic Building Blocks]]
+  * Lecture 3: [[lecture3|Lists, Maps and Ranges]]
+  * Lecture 4: [[lecture4|Simple IO and Case Study 1]]
+  * Lecture 5: [[lecture5|Methods and Flow of Control]]
+  * Lecture 6: [[lecture6|Closures and Files]]
+  * Lab 1: [[at-m42:labs:lab1|Exercises from First Day]]
+  * Case Study 2: [[at-m42:casestudies:cs02|Adventure Game (Methods and Closures)]]
+  * Lecture 7: [[lecture7|Classes and Inheritance]]
+  * Case Study 3: [[at-m42:casestudies:cs03|Adventure Game (Classes)]]
+  * Lecture 8: [[lecture8|Unit Testing]]
+  * Case study 4: [[at-m42:casestudies:cs04|Adventure Game (Inheritance)]]
+  * Lab 2: [[at-m42:labs:lab2|Exercises from Second Day]]
+
+===== Part 2: Concurrency and Client-Server Programming =====
+===== Part 3: Enterprise Applications =====
+
+===== Additional Notes =====
+
+These additional notes can be regarded as appendices to the lectures.
+
+  * [[Summary of Operator Precedence Rules]] (see [[lecture2#Operator Precedence|Lecture 2]])
+  * [[Logical Operators]] (see [[lecture2#Relational and Equality Operators|Lecture 2]])
+  * [[Formatted Output]] (see [[lecture4#Formatted output|Lecture 4]])
+  * [[The Console Class]] (see [[lecture4#The Console class|Lecture 4]])

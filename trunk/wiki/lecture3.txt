@@ -1,0 +1,158 @@
+~~SLIDESHOW~~
+====== Lists, Maps and Ranges ======
+
+//Lists//, //maps// and //ranges// are collection classes: they each hold references to other objects.
+
+  * [[#Lists]]
+  * [[#Maps]]
+  * [[#Ranges]]
+
+The slides and notes in this presentation are adapted from //Groovy Programming// (See [[lecture0#Reading|Recommended Reading]]).
+
+An index to the source code for all the examples in this lecture is [[/~eechris/at-m42/Examples/lecture03|available]].
+
+----
+
+The ''List'' and ''Map'' can reference objects of differing types. The ''Range'' represents a collection of integer values. ''List'' and ''Map'' are dynamic and can grow and shrink at run-time. Each object in a ''List'' is indexed by an integer //index//. A ''Map'' collection can be indexed by any kind of object (although more often than not a ''String'' is used). Both ''List'' and ''Map'' can contain other lists and maps, so you can build data structures of arbitrary complexity.
+
+===== Lists =====
+
+A structure used to store an ordered collection of data items.
+  * A sequence of object references, indexed by an integer.
+ 
+
+===== List literals =====
+
+A ''List'' literal is presented as a series of objects separated by commas and enclosed in square brackets((Those familiar with Java may assume that ''List''s are the same as Java arrays. They look the same but they are very different structures! In fact the Groovy ''List'' unifies the syntax and behaviour of the Java array and the List class.))
+
+^ Example ^ Description ^
+| ''[97, 98, 99, 100]'' | A list of integer values |
+| ''%%['Chris', 'Paul', 'Robert' ]%%'' | A list of ''String''s |
+| ''[1, 2, [3, 4], 5]'' | A nested list |
+| ''%%['Chris', 51, 1.76]%%'' | A heterogenous list of object references |
+| ''[ ]'' | an empty list |
+
+See [[/~eechris/at-m42/Examples/lecture03/example1.groovy|code example 1]] (listed in notes)
+----
+
+<code groovy 1 | Example 1: List literals (at-m42/Examples/lecture03/example1.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture03/example1.groovy
+</code>
+
+**Notes**
+
+  * To process the data in a list, we must be able to access individual elements. Groovy lists are indexed using the indexing operator ''[ ]'' which is implemented using the overloaded method ''getAt''.  The first element in a list is index zero. In the example line 1 declares a list of numbers and lines 5 and 6 show the use of indexing to retrieve values.
+  * A negative index can be used to count elements from the end as shown in lines 7 and 8.
+  * You can also apply the index directly to a list literal as shown on line 9.
+  * Additional, we can index a ''List'' using ranges (see [[#Ranges]]) as shown in lines 12 to 13.
+  * The ''List'' indexing operator can also be used to set new values in a ''List'' as shown in line 16. You can also add a list to a list, as shown in line 18. The inserting of items to a list is implemented using the method ''putAt''.
+  * A new item can be appended on to the right of a ''List'' using the ''<<'' operator (''leftShift'' method) as shown on line 22.
+  * The ''plus'' method has been overloaded for lists so that you can //add// new items using the ''+'' operator (line 23).
+  * the ''minus'' method has been overloaded for lists so that you can //remove// items using the ''-'' operator (line 26).
+
+===== List methods =====
+
+Like the ''String'' object, the ''List'' object has all the methods supported by [[http://java.sun.com/javase/6/docs/api/java/util/List.html|java.util.List]] as well as a number of [[http://groovy.codehaus.org/groovy-jdk/java/util/List.html|additional methods]] added by Groovy. 
+
+[[/~eechris/at-m42/Examples/lecture03/example2.groovy|Example 2]] (see listing in the notes) gives some examples of the more commonly used ''List'' methods. 
+
+----
+
+<code groovy 1 | Example 2: List methods (at-m42/Examples/lecture03/example2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture03/example2.groovy
+</code>
+
+===== Maps  =====
+
+Also known as //associative array//, //dictionary//, //table// and //hash//.
+
+  * An unordered collection of object references accessed by a //key// value.
+
+----
+
+The keys used in a ''Map'' can be of any class. When we insert a new element into a ''Map'' we need two values; a key and a value. indexing the ''Map'' with the same key retrieves the value.
+
+===== Example Maps =====
+
+^ Example ^ Description ^
+| ''[%%'Chris' : 'Jobling', 'Javier': 'Bonet']%%'' | Forename/surname collection |
+| ''[4 : [2], 6 : [3, 2], 12 : [6, 4, 3, 2]]'' | Integer keys and their list of divisors |
+| ''[ : ]'' | Empty map |
+
+See [[/~eechris/at-m42/Examples/lecture03/example3.groovy|code example 3]] (listed in notes)
+----
+
+<code groovy 1 | Example 3: Map literals (at-m42/Examples/lecture03/example3.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture03/example3.groovy
+</code>
+
+**Notes**
+
+  * ''Map'' literals comprise a comma separated list of ''key:value'' pairs enclosed in a square brackets.
+  * Individual elements of a ''Map'' are accessed using the subscript operator (implemented using the ''getAt'' method). The index value can be any class of object that represents the key (line 6). The value returned is the value associated with the key (line 6) or ''null'' (line 8) if no value with that key exists.
+  * For ''String'' keys, you can also use the property form of reference (line 7).
+  * The ''putAt'' method is used for updating elements and the notation for assignment is the same as for lists (line 12).
+
+===== Map methods  =====
+
+The ''Map'' object has all the methods supported by [[http://java.sun.com/javase/6/docs/api/java/util/Map.html|java.util.Map]] as well as a number of [[http://groovy.codehaus.org/groovy-jdk/java/util/Map.html|additional methods]] added by Groovy. 
+
+[[/~eechris/at-m42/Examples/lecture03/example4.groovy|Example 4]] (see listing in the notes) gives some examples of the more commonly used ''Map'' methods. 
+
+----
+
+<code groovy 1 | Example 4: Map methods (at-m42/Examples/lecture03/example4.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture03/example4.groovy
+</code>
+
+The examples are fairly self-explanatory. A couple of points of note: 
+  * method ''keySet'' returns an item of type ''KeySet'' (that is a ''Set''), this is possible because each key value must be unique. 
+  * The method ''values'' returns a ''Collection'' object, this is more conveniently handled as a list so the idiom is ''mp.getValues().asList()'' (line 30).
+  * Key values are not sorted, so it is tricky to compare expected items with actual items in ''assert'' statements. I used ''sort'' on line 31 to ensure the order of the values would be predictable.
+
+===== Ranges  =====
+
+<code groovy 1>
+// Ranges
+1900..1999  // twentieth century (inclusive Range)
+2000..<2100 // twenty-first century (exclusive Range)
+'A'..'D'    // A, B, C, and D
+10..1       // 10, 9, 8, ..., 1
+'Z'..'X'    // Z, Y and X
+
+// using expressions in ranges
+def start = 10
+def finish = 20
+start..finish+1 // 10, 11, 12, ...., 20, 21
+</code> 
+
+[[/~eechris/at-m42/Examples/lecture03/example5.groovy|Example 5]] (see listing in the notes) gives some examples of the more commonly used ''Range'' methods. 
+----
+
+A //range// is a shorthand for specifying a sequence of values. A ''Range'' is denoted by the first and last values in the sequence, and ''Range'' can be //inclusive// or //exclusive//. An inclusive range includes all values from the first to the last (lines 2 and 4 in the slide). Note that ''..'' is used for an inclusive range and ''..<'' for an exclusive range (line 3). A range can be denoted by characters (single letter ''String''s) or ''Integer''s. As shown in lines 5 and 6, ranges can be ascending or descending.
+
+More examples of the ''Range'' methods are given below.
+
+The first and last value for a ''Range'' can be any numeric integer expression as shown in lines 9--11.
+
+<code groovy 1 | Example 5: Range methods (at-m42/Examples/lecture03/example5.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture03/example5.groovy
+</code> 
+
+
+===== Summary of this Lecture ====
+ 
+The basic collection classes:
+
+
+  * [[#Lists]]
+  * [[#Maps]]
+  * [[#Ranges]]
+
+===== Lab Exercises =====
+
+  * [[at-m42:labs:lab1|Lab 1]] the two exercises from [[at-m42:labs:lab1#Part 2: Lists, Maps and Ranges|Part 2]].
+
+----
+
+[[Home]] | [[lecture2|Previous Lecture]] | [[Lectures]] | [[lecture4|Next Lecture]] 

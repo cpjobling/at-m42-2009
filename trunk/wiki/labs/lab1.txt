@@ -1,0 +1,314 @@
+====== Lab 1: Programming the Java Platform 1 ======
+
+These exercises are designed to reinforce the material presented during the first day's lectures. Create a new folder in your work directory ''h:\work\at-m42'' called //lab1//. Store the solutions to the exercise in separate groovy files named //ex1.groovy//, //ex2.groovy//, etc. 
+
+===== Part 1: Basic Building Blocks =====
+
+These exercises support [[at-m42:lecture2|Lecture 2 Basic Building Blocks]]. 
+
+Present each of your solutions to exercises 1-7 in a single script called //ex11.groovy//, //ex12.groovy// etc. Put the following comment at the top of each script:
+<code groovy>
+// Lab 1: Exercise n.m
+// Student number: 0123456
+</code>
+
+Use the ''assert'' keyword to present your answer. Thus if you think that the answer to Exercise 1 part (a) is ''true'' you would write the code as:
+<code groovy>
+def x = 12
+def y = 2
+assert (x + 3 <= y * 10) == true
+</code>
+
+In general, you should present your answers using an //assertion// of the form ''assert (''//expression to be evaluated//'') =='' //your answer//. Load the script into //groovyConsole// and run it. If your assertion is true, the code will execute without error. If your answer is wrong you'll get an exception which will give you a clue about what the answer should be.
+
+==== Exercise 1.1 ====
+
+Use the rules of [[at-m42:summary_of_operator_precedence_rules|precedence and associativity]] to evaluate the following:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><pre>def x = 12
+def y = 2
+x + 3 <= y * 10
+</pre></li>
+<li><pre>def x = 12
+x = 20
+y = 2
+x + 3 <= y * 10
+</pre></li>
+<li><pre>def x = 7
+y = 1
+x +3 != y * 10
+</pre></li>
+<li><pre>x = 17
+y = 2
+x + 3 == y * 10
+</pre></li>
+<li><pre>x = 100
+y = 5
+x + 3 > y * 10
+</pre></li></ol>
+</html>
+
+==== Exercise 1.2 ====
+
+Evaluate each of the following expressions:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><code>"client" + "server"</code></li>
+<li><code>"10" + "66"</code></li>
+<li><code>"1" + "0"</code></li>
+</ol>
+</html>
+
+==== Exercise 1.3 ====
+
+Evaluate each of the following expressions:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><code>"AT-M42".length()</code></li>
+<li><code>"".length()</code></li>
+</ol>
+</html>
+
+==== Exercise 1.4 ====
+
+Declare a ''String'' variable ''str'' using this code:
+<code groovy>
+def str = "Client server"
+</code>
+Then evaluate each of the following expressions:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><code>str.indexOf("ie")</code></li>
+<li><code>str.indexOf("Ie")</code></li>
+<li><code>str.lastIndexOf("e")</code></li>
+<li><code>str.lastIndexOf("er")</code></li>
+</ol>
+</html>
+
+==== Exercise 1.5 ====
+
+Declare the following:
+<code groovy>
+def str = "Groovy, Groovy, Groovy"
+</code>
+Then evaluate the following expressions:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><code>str.length()</code></li>
+<li><code>str.indexOf("o")</code></li>
+<li><code>str.lastIndexOf("o")</code></li>
+<li><code>str.indexOf("o", 5)</code></li>
+<li><code>str.lastIndexOf("o", 5)</code></li>
+<li><code>str.indexOf("ov", str.length() - 10)</code></li>
+<li><code>str.lastIndexOf("ov", str.length() - 4)</code></li>
+<li><code>str.lastIndexOf("o", str.indexOf("ro")</code></li>
+</ol>
+</html>
+
+==== Exercise 1.6 ====
+
+Declare the following:
+<code groovy>
+def str = "Groovy programming"
+</code>
+Then evaluate the following expressions:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><code>str.length()</code></li>
+<li><code>str.substring(7, 14)</code></li>
+<li><code>str.substring(1, str.length() - 1)</code></li>
+<li><code>str.endsWith("ming")</code></li></ol>
+</html>
+
+==== Exercise 1.7 ====
+
+Evaluate each of the following expressions:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><code>'Groovy' =~ /Groovy/</code></li>
+<li><code>'Groovy' =~ /oo/</code></li>
+<li><code>'Groovy' ==~ /Groovy/</code></li>
+<li><code>'Groovy' ==~ /oo/</code></li>
+<li><code>'Groovy' =~ /^G/</code></li>
+<li><code>'Groovy' =~ /G$/</code></li>
+<li><code>'Groovy' =~ /Gro*vy/</code></li>
+<li><code>'Groovy' =~ /Gro{2}vy/</code></li>
+</ol>
+</html>
+
+===== Part 2: Lists, Maps and Ranges =====
+
+These exercises support [[at-m42:lecture3|Lecture 3 Lists, Maps, Ranges]]. 
+
+==== Exercise 2.1 ====
+
+A list of the first few prime numbers is defined as:
+<code groovy>
+def primes = [2, 3, 5, 7, 11, 13]
+</code>
+Write some suitable assertions to determine:
+<html>
+<ol style="list-style:lower-alpha;">
+<li><code>primes[0]</code></li>
+<li><code>primes[primes.size() - 1]</code></li>
+<li><code>primes[table.size().intdiv(2)]</code></li>
+<li><code>primes[3..5]</code></li>
+<li><code>primes[5..<3]</code></li>
+<li><code>primes + [17]</code></li>
+<li><code>primes << [19]</code></li>
+<li><code>primes.reverse().sort()</code></li>
+</ol>
+</html>
+
+==== Exercise 2.2 ====
+
+The School of Engineering has a number of disciplines, each of which is responsible for one or more programs of study. For example the following shows that Electrical and Electronic Engineering has three programs, EEE, ECS and ICCT. Respectively these have 60, 10 and 20 enrolled students.
+<code groovy>
+def school = ['Electrical and Electronic Engineering' : ['EEE' : 60, 'ECS' : 10, 'ICCT' : 20],
+              'Mechanical Engineering' : ['Mechanical' : 100, 'Product Design': 30],
+              'Materials Engineering' : ['Materials' : 35]
+             ]
+</code>
+Write some suitable assertions to determine:
+<html>
+<ol style="list-style:lower-alpha;">
+<li>How mamy disciplines are there?</li>
+<li>How many programs are delivered by Mechanical Engineering?</li>
+<li>How many students are enrolled in ICCT?</li>
+</ol>
+</html>
+
+===== Part 3: Simple IO and Case Study I =====
+
+These exercises support [[at-m42:lecture3|Lecture 4 Simple IO and Case Study]]. 
+
+==== Exercise 3.1 ====
+
+Given the following
+<code groovy>
+def staffNumber = 123
+def staffSalary = 458.78
+</code>
+prepare a formatted output statement to produce the following output:
+  STAFF      PAY
+  123     456.78
+
+Note how the numerical values are directly aligned with the text.
+
+==== Exercise 3.2 ====
+
+Use the ''Console'' class to develop a program that reads a measure for the number of yards, feet and inches in an imperial measurement and returns the result in metres. Note there are 3 feet in a yard, 12 inches in a foot and one inch is 2.54 cm.
+
+==== Exercise 3.3 ====
+
+use the ''Console'' class to develop a program that calculates the perimeter and area of a rectangle given its length and breadth.
+
+==== Exercise 3.4 ====
+
+Extend the definition of an item for the ''Map'' implementation of a simple adventure game such that some items have a weight and value. Test your implementation by providing suitable assertions that test the addition of a //Magic amulet// with weight 10 and value 100 to ''Jenny'''s list of carried items, and the later retrieval of these properties.
+
+===== Part 4: Methods =====
+
+These exercises support the first part of [[at-m42:lecture5#Methods|Lecture 5]]. 
+
+==== Exercise 4.1 ====
+
+Prepare and test a method entitled ''square'' that returns the square of its single parameter.
+
+==== Exercise 4.2 ====
+
+Pre-decimal UK coinage had 12 pence in a shilling and 20 shillings in a pound. Write and test methods to add and subtract two of these monetary amounts. Both methods will require 6 parameters. The first three parameters will be pounds, shilling, pence for the first amount. The second will be pounds, shilling, pence for the second amount. The result should be returned in pence.
+
+==== Exercise 4.3 ====
+
+Ammend exercise 4.2 to take the parameters in two lists like ''[pounds, shilling, pence]''.
+
+==== Exercise 4.4 ====
+
+//Challenge//: Amend exercise 4.3 to also return the result as a list ''[pounds, shilling, pence]''.
+
+==== Exercise 4.5 ====
+
+//Challenging//: The greatest common divisor of two integers can be determined from Euclid's algorithm. It is defined [[wp>Recursion_(computer_science)|recursively]] as:
+
+<code groovy>
+gcd(n, m) = n              if n == m
+gcd(n, m) = gcd(n, n - m)  if n < m
+gcd(n, m) = gcd(n - m, m)  otherwise
+</code>
+
+Implement a method to realize ''gcd'' and verify that ''gcd(18, 27)'' is 9
+
+===== Part 5: Flow of Control =====
+
+These exercises support the second part of [[at-m42:lecture5#Flow of Control|Lecture 5]]. 
+
+==== Exercise 5.1 ====
+
+Write a program that reads a single positive integer data value and then displays each individual value as a word. For example the input 932 should display
+  932: nine three two
+
+==== Exercise 5.2 ====
+
+The Groovy language does not support the ''do-while'' statement:
+<code java>
+do {
+  // statements
+} while (condition)
+</code>
+
+Write a code that implements this structure.
+
+===== Part 6: Closures =====
+
+==== Exercise 6.1 ====
+
+A software house is contracted to develop Groovy, Java and C# projects. Each project has one or more programmers involved, with perhaps the same individual associated with more than one project. For example, the following shows Chris, Renate and Paul involved with the Groovy project:
+<code groovy>
+def softwareHouse = ['Goovy' : ['Chris', 'Renate', 'Paul'],
+                     'Java' : ['Chris', 'Paul'],
+                     'C#' ; ['Javier']
+                     ]
+</code>
+Predict the output of each of the following (verify by testing the code):
+<html>
+<ol style="list-style:lower-alpha;">
+<li><pre>softwareHouse.each {key, value -> if (value.size() >= 2) println "${value}"</pre></li>
+<li><pre>
+softwareHouse['Groovy'].each { g -> 
+	softwareHouse['Java'].each { j -> 
+		if (g == j) println "${g}"
+	}
+}
+</pre></li>
+</ol>
+</html>
+
+===== Part 7: Files =====
+
+==== Exercise 7.1 ====
+
+Re-write the ''cat.groovy'' file [[at-m42:lecture6#Read and display a file, line-at-a-time|Example 21]] so that it displays the file with line numbers to standard output.
+
+==== Exercise 7.2 ====
+
+Write a program the copy one text file to another, removing any blank lines in the original file. The file names are given as command line arguments.
+
+==== Exercise 7.3 ====
+
+
+Extend the ''cat.groovy'' program so that it takes a list of files as arguments and concatenates the file contents and prints the result on standard output.
+
+==== Exercise 7.4 ====
+
+
+Prepare a variant of ''sort.groovy'' file given in [[at-m42:lecture6#Sorting a file|Example 27]] with a command line option ''-r'' to reverse the direction of sorting. 
+
+===== Acknowledgements =====
+
+The exercises are based on those given //Programming Groovy//.
+
+----
+
+[[at-m42:home]] | [[at-m42:labs]] | [[lab2|Next Lab]]

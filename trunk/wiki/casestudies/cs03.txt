@@ -1,0 +1,258 @@
+===== Adventure Game (Objects) =====
+
+This case study is intended to be used for self study. It is designed to reinforce the materials covered in lectures and practised in the laboratories. It also forms the basis for the [[project|project work]].
+
+
+An index to the source code for all the examples in this case study is [[/~eechris/at-m42/Case-Studies/case-study-03|available]].
+
+===== Introduction =====
+
+The adventure game first appeared in [[at-m42:lecture4#case_studyan_adventure_game|Case Study 1]] in Lecture 4. In [[[[at-m42:lecture4|that lecture]] we showed how combining ''List''s and ''Map''s could produce complex data structures that can be used to manage the book-keeping required in a game. The data maintained in these collections where simple strings. We revisited the application again in [[at-m42:casestudies:cs02|Case Study 2]] and this time we included some procedural code that enhanced the capabilities our system. For example, methods were provided to find those items that were being carried by a player to to record that a player had picked up an item. 
+
+This case study is applied to the same problem domain using the object-oriented concepts introduced in the first part of [[at-m42:lecture7|Lecture 7]]. Rather than have simple strings for the player and the item name, we can now use objects to represent the game, its players and the items. Since we use objects, they have more interesting state information and behaviours. As in the two earlier versions of this application, we use containers to model the complex relationships established between objects. 
+
+
+===== Specification =====
+
+We assume a sufficient familiarity with the operation of a text-based adventure game to understand the following description: 
+> //The game has a name, holds a number of items each of which has a name, optional description, value and a unique identification number. There are a number of registered players, each of which has an email address, a unique identification number and a nickname. A player may pick up an item and drop an item, however each item transaction must be recorded by the game master. She is also expected to register new players, add new items, be able to display the entire stock of items, display those items available to be picked up, display those being carried by a player, and display the details of each player//
+
+These requirements are captured in the use cases:
+  * Add a new item to the game
+  * Record the pick-up and dropping of an item
+  * Display the details of the stock of items
+  * Register a new player
+  * Display details of the players 
+  
+The adventure game system we are asked to develop is relatively non-trivial and so it merits developing it in small iterations. For the first two iterations, we aim to demonstrate that our model is a good reflection of the problem domain. Clearly, if is not, then the rest of the development effort is severely jeopardized. In the [[#Iteration III: Reimplement the user interface|final iteration]], we introduce a simple text-based user interface into the application. To help minimise the danger of "hacking," each iteration has stated aims that we demonstrate have been achieved. 
+
+===== Iteration I: An Initial Model =====
+
+The specification mentions that that the game holds items. This suggests a class diagram similar to that shown in Figure 1 (seen also in [[at-m42:lecture7#composition|Lecture 7]]). Class ''Item'' represents an item in the game. It is a concrete class and carries the properties that are common to all items in the game, namely an //id// (which will serve later as a primary key for database persistence), a //name//, an optional //description// and a //value//. The class ''Game'' has a composite aggregation relationship with the ''Item'' class that represents the //inventory//. This is implemented as a ''Map'' with the item id as the key and the ''Item'' object as the value.
+
+In the example in the [[at-m42:lecture7#Composition|composition section]] of Lecture 7, we demonstrated that the initial functionality  of the classes was achieved by creating a number of objects, configuring the objects into the application architecture, and invoking various methods to ensure the integrity of our work. Here we do the same. We create s single ''Game'' object and a number of ''Item'' objects. We then add the ''Item'' objects to the game's inventory. Finally we request the game to display its full inventory. All of this is shown in Game 01 below. As in the lecture example, we have improved the stability of the classes by explicitly declaring the type of the method return values (''void'' if they have no return statement) and the formal method parameters.
+
+{{:at-m42:casestudies:game-item.png|Initial class diagram}}
+
+**Figure 1**: initial class diagram
+
+<code groovy 1| Game 01: Initial object configuration (at-m42/Case-Studies/case-study-03/game1.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Case-Studies/case-study-03/game1.groovy
+</code>
+
+Note that we have the closure's two formal parameters (the ''Map'''s key and its associated value) in:
+
+<code groovy>
+inventory.each { id, item -> println item }
+</code>
+even though we only make use of the value. This helps to make it clear that ''inventory'' references a ''Map'' and not a ''List''. This is good practice and will help future readers of the code understand our intentions.
+
+When we execute the Groovy script the output is:
+
+  Game: The Discworld
+  =====================
+  Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+  Item: 2; name = Pointy hat: value = 10;
+  Item: 3; name = A bag of gold: value = 100;
+
+The display reveals that the correct architecture is established and that we have the correct behaviour from our two classes. Therefore we consider the first iteration to be complete.
+
+===== Iteration II: Augment the Model =====
+
+We now need to introduce the notion of registered players into our model. The specification states that they are defined by a unique identification number, a nickname and an email address. Players are permitted to pick up and drop items. We capture this information with a class diagram as shown in Figure 2. The ''Player'' objects are registered with the ''Game'' and they each maintain a personal inventory of items being carried. 
+ 
+{{:at-m42:casestudies:game-item3.png|Introducing players}}
+
+**Figure 2**: Introducing players
+
+The implementation of Figure 2 involves introducing the ''Player'' class with //id//, //nickname// and //email// address as properties. The ''Player'' class also has methods to pick up and drop items. Observe how Item also refers to ''Item'' (with the role name ''carrier'') that is carrying that item. If this value is ''null'' then this indicates that the item is not being carried. If the value is not ''null'', then the ''Player'' object referenced by this value is the ''Player'' who is carrying the ''Item''. 
+
+The ''Game'' class is augmented with a method to register a new ''Player'' and a method to display each ''Player'' with the details of each ''Item'' they are carrying. The class also includes operations to allow a player to pick up and drop an ''Item''. The full listing is given in Game 02.
+
+<code groovy 1| Game 02: Text-based user interface (at-m42/Case-Studies/case-study-03/game2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Case-Studies/case-study-03/game2.groovy
+</code>
+
+As with the previous iteration, when we run this script, the results reveal that the classes behave as expected.
+  
+  
+  
+  Game: The Discworld
+  ==========================================
+    Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+    Item: 2; name = Pointy hat: value = 10;
+    Item: 3; name = A bag of gold: value = 100;
+  
+  
+  Game: The Discworld : Player Details
+  ==========================================
+    Player: 1; Rincewind (p1@diskworld.com)
+    Player: 2; Twoflower (p2@diskworld.com)
+  
+  
+  Game: The Discworld : Available items
+  ==========================================
+    Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+    Item: 2; name = Pointy hat: value = 10;
+    Item: 3; name = A bag of gold: value = 100;
+  
+  
+  Game: The Discworld : Available items
+  ==========================================
+    Item: 3; name = A bag of gold: value = 100;
+  
+  
+  Game: The Discworld : Items being carried
+  ==========================================
+    Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+    Item: 2; name = Pointy hat: value = 10;
+  
+  
+  Game: The Discworld : Player Details
+  ==========================================
+    Player: 1; Rincewind (p1@diskworld.com)
+      Item: 2; name = Pointy hat: value = 10;
+    Player: 2; Twoflower (p2@diskworld.com)
+      Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+  
+  
+  Game: The Discworld : Available items
+  ==========================================
+    Item: 2; name = Pointy hat: value = 10;
+    Item: 3; name = A bag of gold: value = 100;
+  
+  
+  Game: The Discworld : Items being carried
+  ==========================================
+    Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+  
+  
+  Game: The Discworld : Player Details
+  ==========================================
+    Player: 1; Rincewind (p1@diskworld.com)
+    Player: 2; Twoflower (p2@diskworld.com)
+      Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+
+===== Iteration III: Reimplement the user interface =====
+
+The previous iteration exercised the code by a "hard-wired" set of programmed instructions. In this final iteration, we give the application a text-based user interface controlled by a simple menu similar to the one implemented in [[at-m42:casestudies:cs02#iteration_iiimplementation_of_a_text-based_user_interface|Iteration II]] in [[at-m42:casestudies:cs02|Case Study 2]]. Through the menu, we make the application more flexible since the functionality performed is determined by the selections made by the user. 
+
+The menu is readily implemented with some simple procedural code. The method ''readMenuSelection'' presents the user with the application menu, invites the user to make a selection, and then returns that value as its result to the caller. A ''while'' loop ensures that the menu is repeated until the user indicates that the application run is complete. a series of selections with a ''switch'' statement picks off the suer choice and implements the required functionality.
+
+Although the interface is not especially difficult to implement, in the future, we may need to convert the application to have a graphical user interface or a web interface. If we consider the model developed in the previous iteration, the a  design weakness becomes apparent. It is that the ''Game'' class has various display methods that output to the console. Unfortunately, a change in user interface would necessitate significant changes to the ''game'' class and to possibly other classes too.
+
+A better design would be to ensure that the classes such as ''Item'', ''Player'' and ''Game'' should have no responsibility for input or output. Collectively, we refer to these three classes as the //domain model//. This ensures that the domain model classes require no revisions to accommodate a change in the user interface.
+
+A useful approach is to introduce a new object whose responsibility is to interact with the domain model and also be responsible for input and output, For this purpose, we introduce an ''Action'' class with a set of methods corresponding to each use case of the application. The realtion of the ''action'' clash with the domain model classes is shown in Figure 3. 
+
+{{:at-m42:casestudies:game-action.png|ncorporating the Action class}}
+
+**Figure 3**: Incorporating the ''Action'' class
+
+The final listing is given in Game 03. The main application code handles the presentation of the menu and the selection made by the user. The user choice is then routed to one of the ''Action'' class methods. For example, the method ''displayInventory'' in the class ''Action'' produces all the output from data obtained from the domain model ''Game'' class. Equally the method ''registerPlayer'' from the class ''Action'' asks the user for the player details, constructs a ''Player'' object, and then registers that ''Player'' with the ''Game''. 
+ 
+
+
+<code groovy 1| Reimplement the user interface (at-m42/Case-Studies/case-study-03/game3.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Case-Studies/case-study-03/game3.groovy
+</code>
+
+Of course we should test that we have the same functionality as before. This is easily accomplished by making the menu choices correspond to the "hard-wired" instructions used in the previous iteration and then comparing the outputs, For example with user input shown in bold italics, we might have:
+
+<html>
+<pre>
+e:\dev\at-m42-2009\Case-Studies\case-study-03><b><i>groovy game3.groovy</i></b>
+
+0: Quit
+1: Add new item
+2: Display inventory
+3: Display available items
+4: Display items being carried
+5: Register new player
+6: Display players
+7: Pick up an item
+8: Drop an item
+
+        Enter choice>>>> <b><i>1</i></b>
+Enter item id:<b><i>1</i></b>
+Enter item name:<b><i>Luggage</i></b>
+Enter item value:<b><i>Sentient pear wood with lots of little legs</i></b>
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>2</i></b>
+
+Game: The Discworld
+==========================================
+  Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>5</i></b>
+Enter player id:<b><i>1</i></b>
+Enter player nickname:<b><i>Twoflower</i></b>
+Enter player email address:<b><i>tf@discworld.com</i></b>
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>6</i></b>
+
+Game: The Discworld : Player Details
+==========================================
+  Player: 1; Twoflower (tf@discworld.com)
+
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>7</i></b>
+Enter item id:<b><i>1</i></b>
+Enter player id:<b><i>1</i></b>
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>3</i></b>
+
+Game: The Discworld : Available items
+==========================================
+
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>4</i></b>
+
+Game: The Discworld : Items being carried
+==========================================
+  Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>8</i></b>
+
+Enter item id: <b><i>1</i></b>
+
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>3</i></b>
+
+Game: The Discworld : Available items
+==========================================
+  Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>4</i></b>
+
+Game: The Discworld : Items being carried
+==========================================
+
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>0</i></b>
+
+Game closing ... thanks for playing
+
+e:\dev\at-m42-2009\Case-Studies\case-study-03>
+</pre>
+</html>
+
+Having established that we have the same outcomes, we consider this iteration and therefore Case Study 3 complete.
+
+
+----
+
+[[at-m42:home|Home]] | [[at-m42:lectures|Lectures]] | [[at-m42:casestudies:cs02|Previous Case Study]] | [[at-m42:casestudies|Case Studies]] | [[at-m42:casestudies:cs04|Next Case Study]] 

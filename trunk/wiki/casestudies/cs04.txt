@@ -1,0 +1,244 @@
+====== Adventure Game (Inheritance) ======
+
+
+
+
+===== Introduction =====
+
+The adventure game first appeared in [[at-m42:lecture4#case_studyan_adventure_game|Case Study 1]] in [[at-m42:lecture4|Lecture 4]]. There we showed how ''List''s and ''Map''s can be combined to produce data structures to manage the book-keeping required in a game. There, the data maintained in the collections where simple strings. in [[at-m42:casestudies:cs02|Case Study 2]] we enhanced the capabilities of the system by making use of procedural code and closures. A text-based menu was introduced to support user interaction. later in [[at-m42:casestudies:cs03|Case study 3]], we used objects with more interesting state information and behaviours to represent the game, the players and items. We also removed any input/output responsibilities from them and introduces another //action// class for this purpose. 
+
+In the first two iterations of this case study, we revisit the same case study and use class inheritance to model not just items with a name, description and values, but items in general. As with the earlier versions, we use containers to help model the relationships established between objects. Similarly we continue to make use of unit tests. In the [[third iteration]], we address the problem of error detection and user feedback as well as enhancing the functionality of the system. Finally, in the [[last iteration]], we demonstrate how easy it is to use Groovy to police constraints placed on the model.
+
+An index to the source code for all the examples in this case study is [[/~eechris/at-m42/Case-Studies/case-study-04|available]].
+
+===== Specification =====
+
+As in [[at-m42:casestudies:cs03|Case study 3]] we assume sufficient familiarity with the operation of a text-based adventure game to understand the following description:
+
+> //The game has a name, holds a number of items that may be have either weight or magical potency. weighty items and magical items both have a name, optional description, value and a unique identification number. Each weighty item has a weight and each magical item has a potency. The system should be able to display the items that can be picked up and those that are being carried. A some point in the future, the game can hold other items such as food and clothing.//
+> 
+> //There are a number of registered players, each of which has an email address, a unique identification number and a nickname. A player may pick up an item and drop an item. The system should record each transaction. To record the collection of an item, the id of the player and the id of the item are required. To record that an item has been dropped, on the item id is required.//
+> 
+> //The system should also be able to display details of the items that are being carried by players.//
+
+These requirements are captured in the use cases as shown in Table 1.
+
+**Table 1**: use cases for an Adventure Game
+<html>
+<table> 
+<tr><td>
+<ul>
+<li>Add new weighty item to game inventory</li>
+<li>Add new magical item to game inventory</li>
+<li>Display game inventory</li>
+<li>Display items available for collection</li>
+<li>Display items being carried by players</li>
+<li>Register a new player</li>
+<li>Display all players</li>
+<li>Player picks up a weighty item</li>
+<li>Player picks up a magic item</li>
+<li>Player drops a weighty item</li>
+<li>Player drops a magic item</li>
+</ul>
+</td>
+</tr>
+</table>
+</html>
+
+===== Iteration I: An Initial Model =====
+
+<code groovy 1| Initial object configuration (at-m42/Case-Studies/case-study-03/game1.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Case-Studies/case-study-03/game1.groovy
+</code>
+
+----
+
+Notes ...
+
+Output:
+  Game: The Discworld
+  =====================
+  Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+  Item: 2; name = Pointy hat: value = 10;
+  Item: 3; name = A bag of gold: value = 100;
+
+===== Iteration II: Augment the Model =====
+
+<code groovy 1| Text-based user interface (at-m42/Case-Studies/case-study-03/game2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Case-Studies/case-study-03/game2.groovy
+</code>
+
+----
+
+Notes ...
+
+Output:
+  
+  
+  Game: The Discworld
+  ==========================================
+    Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+    Item: 2; name = Pointy hat: value = 10;
+    Item: 3; name = A bag of gold: value = 100;
+  
+  
+  Game: The Discworld : Player Details
+  ==========================================
+    Player: 1; Rincewind (p1@diskworld.com)
+    Player: 2; Twoflower (p2@diskworld.com)
+  
+  
+  Game: The Discworld : Available items
+  ==========================================
+    Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+    Item: 2; name = Pointy hat: value = 10;
+    Item: 3; name = A bag of gold: value = 100;
+  
+  
+  Game: The Discworld : Available items
+  ==========================================
+    Item: 3; name = A bag of gold: value = 100;
+  
+  
+  Game: The Discworld : Items being carried
+  ==========================================
+    Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+    Item: 2; name = Pointy hat: value = 10;
+   
+  
+  Game: The Discworld : Player Details
+  ==========================================
+    Player: 1; Rincewind (p1@diskworld.com)
+      Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+    Player: 2; Twoflower (p2@diskworld.com)
+      Item: 2; name = Pointy hat: value = 10;
+  
+  
+  Game: The Discworld : Available items
+  ==========================================
+    Item: 2; name = Pointy hat: value = 10;
+    Item: 3; name = A bag of gold: value = 100;
+  
+  
+  Game: The Discworld : Items being carried
+  ==========================================
+    Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+  
+  
+  Game: The Discworld : Player Details
+  ==========================================
+    Player: 1; Rincewind (p1@diskworld.com)
+      Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lots of little legs;
+    Player: 2; Twoflower (p2@diskworld.com)
+
+===== Iteration III: Reimplement the user interface =====
+
+<code groovy 1| Reimplement the user interface (at-m42/Case-Studies/case-study-03/game3.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Case-Studies/case-study-03/game3.groovy
+</code>
+
+----
+
+Notes...
+
+Output:
+<html>
+<pre>
+e:\dev\at-m42-2009\Case-Studies\case-study-03><b><i>groovy game3.groovy</i></b>
+
+0: Quit
+1: Add new item
+2: Display inventory
+3: Display available items
+4: Display items being carried
+5: Register new player
+6: Display players
+7: Pick up an item
+8: Drop an item
+
+        Enter choice>>>> <b><i>1</i></b>
+Enter item id:<b><i>1</i></b>
+Enter item name:<b><i>Luggage</i></b>
+Enter item value:<b><i>Sentient pear wood with lots of little legs</i></b>
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>2</i></b>
+
+Game: The Discworld
+==========================================
+  Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lo
+ts of little legs;
+
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>5</i></b>
+Enter player id:<b><i>1</i></b>
+Enter player nickname:<b><i>Twoflower</i></b>
+Enter player email address:<b><i>tf@discworld.com</i></b>
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>6</i></b>
+
+Game: The Discworld : Player Details
+==========================================
+  Player: 1; Twoflower (tf@discworld.com)
+
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>7</i></b>
+Enter item id:<b><i>1</i></b>
+Enter player id:<b><i>1</i></b>
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>3</i></b>
+
+Game: The Discworld : Available items
+==========================================
+
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>4</i></b>
+
+Game: The Discworld : Items being carried
+==========================================
+  Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lo
+ts of little legs;
+
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>8</i></b>
+
+Enter item id: <b><i>1</i></b>
+
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>3</i></b>
+
+Game: The Discworld : Available items
+==========================================
+  Item: 1; name = Luggage: value = 1000; description: Sentient pear wood with lo
+ts of little legs;
+
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>4</i></b>
+
+Game: The Discworld : Items being carried
+==========================================
+
+// ...
+// Present menu to the user
+        Enter choice>>>> <b><i>0</i></b>
+
+Game closing ... thanks for playing
+
+e:\dev\at-m42-2009\Case-Studies\case-study-03>
+</pre>
+</html>
+
+===== Exercises =====
+
+
+----
+
+[[at-m42:home|Home]] | [[at-m42:lectures|Lectures]] | [[at-m42:casestudies:cs03|Previous Case Study]] | [[at-m42:casestudies|Case Studies]] | [[at-m42:casestudies:cs05|Next Case Study]] 

@@ -1,0 +1,12 @@
+====== AT-M42 Client Server Programming on the Java Platform ======
+
+
+===== Module Content =====
+
+  * [[Introduction]]
+  * [[lectures|The Lecture Course]]
+  * [[/~eechris/at-m42/Examples/|The Examples]]
+  * [[labs|Lab Work]]
+  * [[casestudies|Case Studies]]
+  * [[seminar|The Group Seminar]]
+  * [[project|The Mini Project]]

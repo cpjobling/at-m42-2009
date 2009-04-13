@@ -1,0 +1,773 @@
+~~SLIDESHOW~~
+====== Classes and Inheritance ======
+
+  * [[#Classes]]
+  * [[#Inheritance]]
+  * [[#Case Study]]
+
+The slides and notes in this presentation are adapted from //Groovy Programming// (See [[lecture0#Reading|Recommended Reading]]).
+
+An index to the source code for all the examples in this lecture is [[/~eechris/at-m42/Examples/lecture02|available]].
+
+===== Introduction =====
+
+A class is a collection of data the methods that operate on that data. Together the data and methods of a classes are used to represent some real-world object from the problem domain. 
+  * //Banking application//: account, bank, customer
+  * //Student records application//: student, course, module, program of study
+  * //Adventure game//: player, item, location, character
+
+----
+
+For example, if we were developing a banking application, we might expect to find classes to represent account objects, bank objects and perhaps customer objects. Similarly, in a student record system we might require classes to represent student objects, course and module objects as well as objects to represent programs of study.
+
+Observe how these real-world objects may have a physical presence or may represent some well-understood conceptual entity in the application. In our examples a student will most definitely exist, while a program of study has no physical existence.
+
+===== Classes =====
+
+  * [[#Introduction to classes]]
+  * [[#Composition]]
+
+
+===== Introduction to Classes =====
+
+  * A Groovy class represents some abstraction in the problem domain.
+  * It declares the state (data) and the behaviour of objects defined by that class.
+  * Describes both instance fields (properties) and methods:
+    * //Properties// specify the state information maintained by each object of the class.
+    * //Methods// define the behaviour we can expect from the objects.
+    
+===== A Simple Class =====
+
+<code groovy 1 | Example 1: A Simple Class (at-m42/Examples/lecture07/example1.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example1.groovy
+</code>
+----
+
+In Example 1 we define a class that might describe an item in our ongoing game example along with some code to create an instance of this class and display its state.
+
+The output when we execute the script is:
+  Item sword: Magical sword has value 1000.
+
+The Groovy keyword ''class'' is followed by the name of the class, in this case ''Item''. The class declares two public properties (''name'', and ''value'') and no methods. An instance of the class is created using the ''new'' operator, as in:
+<code groovy>
+def sword = new Item(name : 'Magical sword', value : 1000)
+</code> 
+
+The ''new'' keyword is follow by the name of the class of the object we are creating. The parameters comprises a list of //named parameters// specifying how the properties of the instance are to be initialized. Here, the ''Item'' object, referenced as ''sword'', has a name ''%%'Magical sword'%%'' and a value of 1000. Observe how the properties of th instance are referenced in the ''print'' statement (line 14). The expression ''sword.name'' is used to access the ''name'' property of the ''Item'' object ''sword''.
+
+As simple as this class may appear, there is a great deal going on under the surface. First, the two properties introduced in the ''Item'' class are said to have //public access//. This means that they can be used in any other part of the code to refer to the individual parts of the state of an instance of th ''Item'' class. This is how the print statement is able to access the state of the ''sword'' object.
+
+Second, this simple example demonstrates how Groovy seek to unify instance fields and methods. Properties remove the distinction between an instance field (sometimes also called an //attribute//) and a method. For a view external to the Groovy class, a property is is like both the instance field and its getter/setter method. In effect, the usage of a property reference like ''sword.name'' is actually implemented by the method ''sword.getName()''.
+
+
+===== Two object instances =====
+
+<code groovy 1 | Example 1: Two object instances (at-m42/Examples/lecture07/example2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example2.groovy
+</code>
+----
+
+A class is a template for creating instances of objects defined by that class. In this example, we create two ''Item'' objects and print their values. When we run the program we get:
+  Item sword: Magical sword has value 1000.
+  Item cloak: Cloak of invisibility has value 500.
+
+You should make particular note that although the properties have the same name, because they belong to the objects (respectively ''sword'' and ''cloak'') they are completely independent. In fact, each object reserves its own storage for the full set of its properties.
+
+
+===== Using the implicit getter and setter methods =====
+
+<code groovy | Example 3: Using the implicit getter and setter methods (at-m42/Examples/lecture07/example3.groovy)>
+    // Create two instances
+def sword = new Item(name : 'Magical sword', value : 1000)
+def cloak = new Item(name : 'Cloak of invisibility', value : 500)
+
+  // access the state using properties
+println "Item cloak: ${sword.name} has value ${sword.value}."
+
+  // access the state using getters
+println "Item cloak: ${cloak.getName()} has value ${cloak.getValue()}."
+
+  // modify the state using a property
+sword.value = sword.value - 100
+println "Item sword: ${sword.getName()} now has value ${sword.getValue()}."
+
+  // modify the state using a setter
+cloak.setValue(cloak.getValue() + 100)
+println "Item cloak: ${cloak.getName()} now has value ${cloak.value}."
+</code>
+----
+
+We noted that the Groovy class corresponds to the equivalent Java class((in fact compiled Groovy classes are indistinguishable from compiled Java classes, which is why we can call use all the classes from the Java API from Groovy)). This means that the getter and setter methods that are needed in Java to access the //private// instance fields, can also be used to access the properties of s Groovy class. In fact, we can mix and match their usage as shown in this example.
+
+Output is:
+  Item cloak: Magical sword has value 1000.
+  Item cloak: Cloak of invisibility has value 500.
+  Item sword: Magical sword now has value 900.
+  Item cloak: Cloak of invisibility now has value 600.
+
+
+===== Class methods =====
+
+<code groovy 3| Example 4: Class methods (at-m42/Examples/lecture07/example4.groovy)>
+class Item {
+    def name  // name of the item
+    def value // value of the item in game points
+    
+    def increaseValue(amount) {
+        value += amount
+    }
+    
+    def reduceValue(amount) {
+        if (value >= amount) { // only if result won't be negative
+            value -= amount
+        }
+    }
+    
+    def display() {
+        println "Item: ${name} has value ${value}"
+    }
+
+}
+</code>
+
+===== Class methods (continued) =====
+
+<code groovy 23 | Example 4: Class methods [continued] (at-m42/Examples/lecture07/example4.groovy)>
+    // Create a new instance
+def sword = new Item(name : 'Magical sword', value : 1000)
+sword.display()
+
+   // raise value
+sword.increaseValue(200)
+sword.display()
+
+  // other transactions
+sword.reduceValue(800)    // value now 400
+sword.reduceValue(500)    // value remains unchanged at 400
+sword.display()
+</code>
+----
+
+Although property-only class have their uses (for example to represent the equivalent of C's ''struct'', the real power of classes is only revealed when classes also have methods through which the state can be accessed and modified. In an adventure game, we might wish for the value of an item to be increased or decreased (for example when bought and sold). We can provide this behaviour by introducing methods ''increasevalue'' and ''reduceValue'' for this purpose. Additionally, we can add a method to ''display'' the state of the object. These methods have been added in Example 4, and they are exercised in lines 24--34. 
+
+The output is:
+  Item: Magical sword has value 1000
+  Item: Magical sword has value 1200
+  Item: Magical sword has value 400
+
+===== List of items =====
+
+<code groovy 3 | Example 5: List of items (at-m42/Examples/lecture07/example5.groovy)>
+class Item {
+    def name  // name of the item
+    def value // value of the item in game points
+    
+    def increaseValue(amount) {
+        value += amount
+    }
+    
+    def reduceValue(amount) {
+        if (value >= amount) { // only if result won't be negative
+            value -= amount
+        }
+    }
+    
+    String toString() { // redefines Object.toString()
+        return "Item: ${name} has value ${value}"
+    }
+
+}
+</code>
+
+---- 
+
+As an ''Item'' is an ''Object'', instances of the ''Item'' class can be used as elements of a ''List''. In this version we have replaced the ''display'' method with one with signature ''string toString()''. This method returns a description of the the object as a ''String''.
+===== List of items (continued) =====
+
+<code groovy 23 | Example 5: List of items (at-m42/Examples/lecture07/example5.groovy)>
+    // Create some instances
+def sword = new Item(name : 'Magical sword', value : 1000)
+def cloak = new Item(name : 'Cloak of invisibility', value : 500)
+def amulet = new Item(name : 'Amulet of protection', value : 700)
+
+   // populate a list with the instances
+def items = [sword, cloak, amulet]
+
+   // now display each
+items.each { item ->
+    println item.toString()
+}
+</code>
+----
+
+Now we create three instances of the ''Item'' class, place them in a ''List'', then display each by calling ''println item.toString()'' inside a the closure of an ''each'' method.
+
+The output is: 
+  Item: Magical sword has value 1000
+  Item: Cloak of invisibility has value 500
+  Item: Amulet of protection has value 700
+
+===== Redefining the toString method =====
+
+<code groovy 23 | Example 6: Redefining the toString method (at-m42/Examples/lecture07/example6.groovy)>
+    // Populate a list with the instances
+def items = [new Item(name : 'Magical sword', value : 1000),
+             new Item(name : 'Cloak of invisibility', value : 500),
+             new Item(name : 'Amulet of protection', value : 700)]
+
+   // now display each
+items.each { item ->
+    println item // automatically calls toString
+}
+</code>
+----
+By defining the ''toString'' method, we actually have a display method that can be called simply by passing a reference to the object to a print statement. in this situation. Groovy will automatically call ''toString'' in this context. Technically, we say we have //overridden// the default definition of ''toString'' (actually ''String Object.toString()'') to be one that is more appropriate for displaying objects of the ''item'' Class. In Example 6, the code for which is partially included in this slide, we demonstarte this behaviour.
+
+The output is the same as before, but the code is much simpler.
+
+===== A constructor method =====
+
+<code groovy 3 | Example 7: A constructor method (at-m42/Examples/lecture07/example7.groovy)>
+class Item {
+    
+    def Item(name, value) { // constructor method
+        this.name = name
+        this.value = value
+    }
+    
+    def increaseValue(amount) { ... }
+    
+    def reduceValue(amount) { ... }
+    
+    String toString() { ... }
+
+    def name  // name of the item
+    def value // value of the item in game points
+
+}
+</code>
+----
+The equivalent Java declaration for the ''Item'' class would normally include one or more ///constructor methods// for the initialization of objects of the class. We have not had to do this with our Groovy calsses, choosing instead to use named parameters with the ''new'' operator. We can, however, use explicit constructor methods in our Groovy classes. Where we explicitly provide one. we would normally expect a class declaration to include a //parameterized constructor// for the proper initialization of the ''class''. This is demonstrated in Example 7.
+
+Note how the constructor method is defined. The formal parameters have been give the same name as the properties. To disambiguate these in the method body we have used the ''this'' keyword to prefix the property. Hence, the statement ''this.name = name'' is interpreted to mean "assign the ''name'' property of ''this'' object, the value of (the parameter) ''name''.
+
+===== A constructor method (continued) =====
+
+<code groovy 29 | Example 7: A constructor method [continued] (at-m42/Examples/lecture07/example7.groovy)>
+    // Populate a list with the instances
+def items = [new Item('Magical sword', 1000),
+             new Item('Cloak of invisibility', 500),
+             new Item('Amulet of protection', 700)]
+
+   // now display each
+items.each { item ->
+    println item // automatically calls toString
+}
+
+//def grail = new Item(name : 'Holy Grail', value : 10000) // no matching constructor
+</code>
+----
+Observe how we now create instances of this class. We invoke the constructor, passing two actual parameters for the item name and value. This time they are //positional parameters//. Note also the last line of the program (line 39). this is commented out. When a Groovy class includes a user defined constructor, the auto generated default constructor is no longer produced. Statement (line 39) tries to create a new ''Item'' object in the familiar way. But as this requires the default constructor, which has not been generated for us, an error is reported stating that no matching constructor was available (remove the comment ant try it for yourself).
+
+A final comment to make about this version of the ''Item'' class is that the properties have been declared at the end of the class definition (lines 24 and 25). This is perfectly acceptable as neither Groovy nor Java require that all variables be defined above the methods in which they are used. A stylistic reason for defining properties at the end of a class is that the services provided by the class will be more visible to the reader of the code than the details of the implementation. 
+
+Output is:
+  Item: Magical sword has value 1000
+  Item: Cloak of invisibility has value 500
+  Item: Amulet of protection has value 700 
+
+We have preferred to use the named parameter scheme when creating an instance of an object with the ''new'' keyword. It is worth discussing how they actually work. The declaration of class properties in Groovy result in automatically generated getter and setter methods. Further, when no constructor is declared, the compiler will create a //default constrictor//:
+<code groovy>
+Item() {
+}
+</code>
+
+Object creation with:
+<code groovy>
+def sword = new Item(name : 'Magical sword', value : 1000)
+</code>
+is equivalent to the following:
+<code groovy>
+def sword = new Item() // default constructor: ''name = null; value = null;''
+sword.setName('Magical sword')
+sword.setValue(1000)
+</code>
+
+===== Composition =====
+
+Modelling a Game application using object composition with a //one to many// relationship.
+
+{{:at-m42:game-item.png|Class diagram}}
+
+----
+
+Examples 5 and 6 have shown how ''Item'' objects can be elements in a collection. we might use this technique to model an adventure game application in which items are added to the game and transactions are made on these items through the game. The architecture for this application is described by a one-to-many relationship: one game is associated with many accounts. This relationship is readily handled by a ''List'' or a ''Map'' collection. Since most of the methods will need to identify a particular item according to its name, we choose to use a ''Map'' with the item name as the key and the Item object as tjhe value. A simple map for two items is:
+<code groovy>
+[
+ 'sword'  : new Item(name : 'sword', value : 100), 
+ 'amulet' : new Item(name : 'amulet', value : 50)
+]
+</code>
+where we use the constructor syntax ''new Item(name : 'sword', value : 100)'' to create a new ''Item'' object.
+
+This problem is modelled with the class diagram shown in the slide. A composite //aggregation// relationship is defined between the ''Game'' and ''Item'' class. The //multiplicity// operator ''*'' shows that a single ''Game'' object //is made up of// zero or more ''Item'' objects. Further the //role// accounts is how a ''Game'' refers to the many ''Items''. The role name is realized as a property of the ''Game'' class.
+
+===== Game class in outline  =====
+
+<code groovy 1 | The Game class: method signatures and properties (at-m42/Examples/lecture07/Game.groovy)>
+class Game {
+    
+    void createItem(String name, Integer value, String description = '') { ... }    
+   
+    void increaseValueOfItem(String name, Integer amount) { ... }
+    
+    void decreaseValueOfItem(String name, Integer amount) { ... }
+    
+    Integer getValueOfItem(String name) { ... }
+    
+    Integer getTotalValueOfItems() { ... }
+    
+    Item findItem(name) { ... }
+ 
+    def name             // name of game
+    def items = [ : ]    // items in the game
+}
+</code>
+
+Full source code in the notes and available for [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/Game.groovy|download]].
+----
+
+In our application, we wish to be able to create new items through the game, increase and decrease the value of particular items, obtain the value of a particular value, and obtain the total value of all items in the game (the sum of the values of all the items in the game). The solution for this application is outlined in this and the following slides. 
+
+Here we outline the ''Game'' class. In the slide we show just the method signatures and the properties. Below, a listing of the file ''Game.groovy'' is given in full. Note that the ''Game'' class initializes the ''items'' property to be an empty ''Map''. Method ''createItem'' adds a new ''Item'' to the ''Map'' using ''name'' as the key and the item itself as the value. The item has an optional ''description'' property (see next slide) and this is supported in the ''Game'' class by use of the named formal parameter. If only two arguments are provided, e.g. ''createItem('An item', 50)'' description will have the empty ''String'' ''%%''%%''. If three arguments are used as in ''createItem('another item', 200, 'A really nice item')'', then the ''description'' will have a non-empty value. 
+
+<code groovy 1 | The Game class (at-m42/Examples/lecture07/Game.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/Game.groovy
+</code>
+
+Although it is not strictly necessary, we have chosen to define the actual type of the methods and their formal parameters. The methods ''createItem'', ''increaseValueOfItem'', ''decreaseValueOfItem'' are declared to be type ''void'' because they do not return anything. The other methods have types corresponding to the expected return types: ''Integer'' for ''getValueOfItem'' and ''getTotalValueOfItems'', and ''Item'' for ''findItem''. As in the previous examples seen so far, we could have used the generic type definition ''def'', but as ''Game'' is a reusable class definition, explicit declaration of method types provides better end-user documentation. Also, having given types to the formal parameters of the methods means that Groovy can enforce these types at run time and that provides a little more run-time stability.
+
+
+===== Item class in outline =====
+<code groovy  #3-27 groovy | The Item class: method signatures and properties (at-m42/Examples/lecture07/Item.groovy)>
+class Item {
+    
+    void increaseValue(Integer amount) { ... }
+    
+    void reduceValue(Integer amount) { ... }
+ 
+    String toString() { ... }
+    
+    Boolean hasDescription() { .... }
+	
+    def name  // name of the item
+    def value // value of the item in game points
+    def description = '' // a description of the item
+
+}
+</code>
+
+Full source code in the notes and available for [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/Item.groovy|download]].
+----
+The Item class is largely the same as the version seen before in this lecture. However, we have added an extra (optional) property ''description'', which can be used to give some explanatory text to describe the item and any special properties it might have in the game. The default value of ''description'' is set to the empty ''String''((If we had declared it as ''def description'' then the default value would have been ''null'')). We have a query method ''Boolean hasDescription()'' which returns ''true'' if the value of ''description'' has been set, e.g. by the default contructor, use of the ''setDescription'' method, or by the ''Game'' ''createItem'' method. 
+
+<code groovy 1 | Class Item in full>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/Item.groovy
+</code>
+
+===== Class composition =====
+
+<code groovy 3 | Example 8: Class composition (at-m42/Examples/lecture07/example8.groovy)>
+  // create game
+def atM42 = new Game(name : 'Client Server Programming on the Java Platform')
+
+ // add items
+atM42.createItem('labwork', 20, 'Exercises in programming')
+atM42.createItem('seminar', 30, 'Latest research in enterprise computing')
+atM42.createItem('project', 50)
+</code>
+===== Class composition (continued) =====
+
+<code groovy 10 | Example 8: Class composition [continued] (at-at-m42/Examples/lecture07/example8.groovy)>
+def project = atM42.findItem('project')
+project.description = """
+A development project involving the creation of a simple
+adventure game in Grails"""
+
+  // adjust "grades" for items
+atM42.increaseValueOfItem('labwork', 10) // now 30
+atM42.decreaseValueOfItem('project', 10) // now 40
+atM42.decreaseValueOfItem('project', 50) // remains at 40
+</code>
+
+===== Class composition (continued) =====
+
+<code groovy 20 | Example 8: Class composition [continued] (at-at-m42/Examples/lecture07/example8.groovy)>
+  // display details of the project item
+println "Value of project is: ${atM42.getValueOfItem('project')}"
+println "Project description: ${project}"
+println "${project.description}"
+
+  // calculate total value of items
+println "Total value of items: ${atM42.getTotalValueOfItems()}"
+</code>
+
+----
+
+Output:
+  Value of project is: 40
+  Project description: Item: project has value 40
+  
+  A development project involving the creation of a simple
+  adventure game in Grails
+  Total value of items: 100
+
+===== Inheritance =====
+
+  * [[#Inherited methods]]
+  * [[#Redefined methods]]
+  * [[#Polymorphism]]
+  * [[#Abstract class]]
+  * [[#Interface class]]
+
+----
+
+We now introduce the //inheritance// relationship relationship that may exist between classes. it is widely used in object-oriented relationships and brings to our designs and programs a powerful feature unique to object orientation.
+
+Inheritance (also known as //specialization//) is a way to form new classes from classes that have already been defined. The former, known as //derived classes//, inherit properties and behaviours of the latter, which are referred to as //base classes//. The terms //parent class// and //child class// as well as //superclass// and //subclass// are also used in this context. Inheritance is intended to help reuse existing code with little of no modification.
+
+Inheritance is also called //generalization//. For instance, an item in a game is a generalization of heavy items and magical items. We say that "item" is a generalization is an abstraction of heavy item, magical item, and so on. Conversely, we can say that because heavy items are items, that is they inherit all the properties common to all items, such as the item name, description and value. 
+
+===== Adding inheritance =====
+
+Consider a game in which players can carry items that have weight. Each item has a name, a value, an optional description and a weight. A possible implementation is shown on the next slide.
+
+
+===== A Weighty Item =====
+
+<code groovy 3 | Example 9: A weighty item (at-m42/Examples/lecture07/example9.groovy)>
+class WeightyItem {
+    
+    String toString() {
+        return "WeightyItem: ${name}; value: ${value}; weight: ${weight}"
+    }
+
+// ---- properties -------------------------
+
+    def name
+    def value
+    def description = ''
+    def weight = 0
+}
+</code>
+
+===== A Weighty Item (continued) =====
+
+<code groovy 17 | Example 9: A weighty item (at-m42/Examples/lecture07/example9.groovy)>
+  // populate a list with weighty items
+def items = [new WeightyItem(name : 'Magical sword', value : 1000, weight : 10),
+             new WeightyItem(name : 'Cloak of invisibility', value : 500)]
+
+items.each { item ->
+    println item
+}
+</code>
+----
+
+When we execute this program, the output is as we expect. The two ''WeightyItem''s in the the ''List'' variable ''items'' are printed using the definition of the ''toString'' method:
+
+  WeightyItem: Magical sword; value: 1000; weight: 10
+  WeightyItem: Cloak of invisibility; value: 500; weight: 0
+  
+Although there is nothing intrinsically wrong with this class, we can improve it significantly. For example, our game may also offer magical items to its players. If a game has this new type of item, then we also need a ''MagicalItem'' class. ''MagicalItem''s are also given a name, description and value, but no weight. ''MagicalItem'' however have potency. Both these types of item share some common characteristics, while each has additional properties. 
+
+===== Inheritance Illustrated =====
+
+{{:at-m42:inheritance.png|Inheritance}}
+----
+
+We can think of ''WeightyItem'' and a ''MagicalItem''  as special types of ''Item''. The ''Item'' class has the features common to both the ''WeightyItem'' and ''MagicalItem'' class, namely the name, value and description. The ''WeightyItem'' class is then related to the ''Item'' class by inheritance. The ''MagicalItem'' is also related to ''Item'' by inheritance. The ''Item'' us usually referred to as the superclass and the ''WeightyItem'' and ''MagicalItem'') are referred to as the subclass.
+
+The class diagram shown on this slide is used to denote this arrangement of classes. An inheritance relation (directed arrow) relates the subclass ''WeightyItem'' and ''MagicalItem'' to the superclass ''Item''.
+
+===== Class inheritance =====
+
+<code groovy 1 | Example 10: Class inheritance (at-m42/Examples/lecture07/Item.groovy)>
+class Item {
+    
+    void increaseValue(Integer amount) { ... }
+    
+    void reduceValue(Integer amount) { ... }
+    
+    String toString() { ... }
+
+	Boolean hasDescription() { ... }
+	
+    def name  // name of the item
+    def value // value of the item in game points
+    def description = '' // a description of the item
+
+}
+</code>
+----
+
+===== Class inheritance (continued) =====
+
+<code groovy| Example 10: Class inheritance [continued] (at-m42/Examples/lecture07/Example10.groovy)>
+class WeightyItem extends Item {
+    
+    String toString() {
+        return 'WeightyItem: ' + super.toString() + "; weight: ${weight}"
+    }
+
+// ---- properties -------------------------
+
+    def weight = 0
+}
+</code>
+
+The Groovy reserved word ''extends'' specifies that a class inherits from another class. This leads to the code shown in this slide ...
+
+===== Class inheritance (continued) =====
+
+<code groovy | Example 10: Class inheritance [continued] (at-m42/Examples/lecture07/Example10.groovy)>
+  // populate a list with weighty items
+def items = [new WeightyItem(name : 'Magical sword', value : 1000, weight : 10),
+             new WeightyItem(name : 'Cloak of invisibility', value : 500),
+             new Item(name : 'Magic Amulet', value : 700) ]
+
+items.each { item ->
+    println item
+}
+</code>
+
+
+Executing this program produces the output:
+  WeightyItem: Magical sword; value: 1000; weight: 10
+  WeightyItem: Cloak of invisibility; value: 500; weight: 0
+  Item: Magic Amulet has value 700
+
+Here we see that the last line differs from the first two. This is because the final object in the ''items'' variable is an ''Item'' object while the other two are ''WeightyItem'' objects. Since the last item in the ''List'' is an ''Item'' object, the implementation of the method ''toString'' in the ''Item'' class is responsible for what is displayed. The same message ''toString'' is also sent to the two ''WeightyItem'' objects. However, in this class ''toString'' has been redefined and is the reason for the first two lines of output.
+
+The ''WeightyItem'' class now has only those features that are special to it. Similarly, the ''Item'' class now has only those those relevant to accounts. This makes the ''WeightyItem'' class much easier to develop. It is important to realize that the ''Item'' class can be reused in this application or any other. Later we shall do exactly this and inherit ''MagicalItem'' from it.
+
+Note how the method ''toString'' is redefined in the subclass ''WeightyItem''. The behaviour we require from it is the superclass ''Item''. Hence the definition in ''WeightyItem'' calls the method defined in the superclass with the expression ''super.toString()''. The keyword ''super'' ensures that we invoke the method in the superclass. Without this keyword, the method ''toString'' would recursively call itself.
+
+===== Inherited Methods =====
+
+  * All the features declared in a superclass are inherited by a subclass. 
+  * ''WeightyItem'' class need declare only those methods and properties required by itself. 
+  * In this case it is the additional ''weight'' property. 
+  * In more complex examples this would represent a significant savings in effort.
+  
+[[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example11.groovy|Inherited features]] (see notes for listing)
+
+---- 
+<code groovy 1 | Example 11: Inherited featurese (at-m42/Examples/lecture07/example11.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example11.groovy
+</code>
+----
+
+Running this program, delivers the output shown below. The first three lines where described in the previous example. Line 4 is the weight from the object ''wine''. Because ''wine'' is an object of the class ''WeightyObject'' then the method ''getWeight'' is defined in its own class. The fifth line is the result of sending the message ''getName'' to the same ''weightyItem'' object. Since this class does not define this method, the system executes the inherited method from the superclass ''Item''. 
+
+Output:
+  WeightyItem: Item: Magical sword has value 1000; weight: 10
+  WeightyItem: Item: Cloak of invisibility has value 500; weight: 0
+  Item: Magic Amulet has value 700
+  Weight: 2
+  Name: A Flagon of Wine
+  Name: A Magic Spell
+
+Take note of the lines of code near the end of the listing (lines 26-31) in which the ''WeightyItem'' object ''wine'' is created, and then the properties ''weight'' and ''name'' are accessed. The ''weight'' property, is of course, defined in the ''WeightyItem'' class itself. However, the ''name'' property is inherited from the ''Item'' class. The remaining three lines in the code show that an ''Item'' can be asked for its ''name'' (defined in the ''Item'' class), but we cannot reference the ''weight'' for an ''Item'' object because there is no such property defined in that class. 
+ 
+
+===== Redefined methods =====
+
+<code groovy>
+String toString() {
+    return 'WeightyItem: ' + super.toString() + "; weight: ${weight}"
+}
+</code>
+
+----
+
+In Groovy, all features defined in a superclass are inherited by the subclass. This means that if the ''WeightyItem'' class did not define the ''toString'' method, then the one defined in the ''Item'' would be inherited and used by all ''WeightyItem'' objects. However, in Groovy, a method inherited by a subclass can be //redefined// (also called //overridden//) to have a different behaviour. an obvious strategy is for the ''toString'' method required in the ''WeaightyItem'' class to make use of the ''toString'' method in the ''Item'' superclass and to augment it with additional logic. Looking at Example 11, we see that the ''toString'' method in ''WeightyItem'' as shown in this slide.
+
+Again notice the use of the reserved keyword ''super''. This time it is used to ensure that the ''toString'' method defined in its superclass is called to get part of the ''String'' returned by this ''WeightyItem'' method.
+
+===== Polymorphism =====
+  * The //polymorphic effect// is a defining characteristic of object-oriented programming.
+  * If two objects have their own definition for a message, we may observe different behaviour.
+  * The use of polymorphism can achieve complex execution behaviour with simple code.
+
+===== The polymorphic effect =====
+
+
+<code groovy>
+def items = [new WeightyItem(name : 'Magical sword', value : 1000, weight : 10),
+             new WeightyItem(name : 'Cloak of invisibility', value : 500),
+             new Item(name : 'Magic Amulet', value : 700) ]
+
+items.each { item ->
+    println item    // automatically call toString
+}
+</code>
+
+===== Result =====
+
+  WeightyItem: Item: Magical sword has value 1000; weight: 10
+  WeightyItem: Item: Cloak of invisibility has value 500; weight: 0
+  Item: Magic Amulet has value 700
+
+----
+
+The ''print'' statement sends each ''item'' object the ''toString'' method (implicitly). The first item taken from the list is a ''WeightyItem'' object and this produces the first output line. This, of course, is produced by the method ''toString'' defined in the ''WeightyItem'' class. The first two lines or output are, however, different from the first even when the same message is being sent. This is a consequence of the recipients being ''WeightyItem'' objects for which the method ''toString'' has been redefined in the ''WeightyItem'' subclass.
+
+===== Game application =====
+{{:at-m42:inheritance2.png|Game application}}
+
+This is implemented in [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/Game.groovy|Game.groovy]] and [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example12.groovy|Example 12]] (full listing in notes)
+----
+ 
+The full extent of this polymorphic effect is present in Example 12. This application is concerned with modelling a ''Game'' shown by the class diagram in this slide.
+
+The ''Items'' comprise either ''WeightyItems'' or ''MagicalItems''. Methods are provided to add new items to the game and to obtain a report on the ''Game'' and its items.
+
+<code groovy 1 | Example 12: The game class (at-m42/Examples/lecture07/Game.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/Game.groovy
+</code>
+
+<code groovy 1 | Example 12: The game again (at-m42/Examples/lecture07/example12.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example12.groovy
+</code>
+
+The output from this program is:
+  Game: Lord of the Rings
+  ===========================
+  MagicItem: Item: The One Ring has value 1000; potency: 500.
+  WeightyItem: Item: Rations has value 10; weight: 20.
+  Item: clay pipe has value 0
+  This pipe is excellent for smoking a good tobacco.
+  
+Present in this example is the //[[wp>Liskov_substitution_principle|principle of substitution]]//. This states that where in our code an object of the superclass is expected, an object of a subclass can be used. Method ''addItem'' has a single parameter representing some kind of ''Item'' object. In the application code, we send this method to the ''Game'' object ''lotr'' with ''WeightyItem'' and ''MagicalItem'' objects. This is permissible, since the substitution principle ensures that when a superclass ''Item'' object is expected, then only methods of the class will be used on the parameter. Because the subclass objects automatically inherit the behaviour, correct operation is guaranteed. 
+
+Finally, we should point out that since the ''Game'' is a domain model class, then we choose not to include any display methods for the reasons given in [[at-m42:casestudies:cs03|Case study 3]].
+
+===== Abstract class =====
+
+  * Useful to act as a basis for other classes
+  * No instances expected
+  * Ensures that subclasses have a common set of features
+  * Referred to as an //abstract class//.
+
+===== Item as an abstract class  =====
+
+{{:at-m42:abstract-class.png|Abstract class}}
+----
+
+Let us assume that an ''Item'' will never actually be used, but only ''WeightyItem'' or ''MagicalItem'' objects will appear in the ''Game''. We intend that all items of the game share common features such as name, description and value. Therefore we decide that ''Item'' is //stereotypical// of an abstract class. In the class diagram shown on this slide the ''Item'' class name has been shown in italics to emphasize that it is abstract.
+
+===== No instances of an abstact class =====
+
+<code groovy>
+abstract class Item {
+
+    String toString() { ... }
+    
+    Boolean hasDescription() { ... }
+
+    def name  // name of the item
+    def value // value of the item in game points
+    def description = '' // a description of the item
+}
+
+class WeightyItem extends Item { ... }
+
+class MagicItem extends Item { ... }
+<code>
+
+Full [[ http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example13.groovy|source code]] in the notes.
+
+----
+We specify that a class is abstract with the keyword ''abstract'', as shown for the ''Item'' class shown in Example 13. Otherwise, the remainder of the class and its subclasses remain the same. The key observation is that Groovy supports the notion that there is never any intention of creating instances of an abstract class.
+
+<code groovy 1 | Example 13: Abstract classes (at-m42/Examples/lecture07/example13.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example13.groovy
+</code>
+
+The program delivers the same output as Example 12. The final line of coding in Example 13 confirms that it is not permitted to create instances of the abstract class ''Item''. 
+
+
+===== Abstract methods =====
+
+<code groovy>
+// class Item
+Boolean abstract canCarry(Player player)  // deferred method
+</code>
+
+Source code for [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example14.groovy|Example 14]] (listing in the notes)
+
+----
+
+It is common for an abstract class to include a //deferred method//, that is one that for which no method definition is given. This usually arises because the class is too abstract to determine how the method should be implemented. The inclusion of a deferred method in an abstract class infers that the subclasses must provide an implementation if they are to represent concrete classes from which instances can be created. in effect, the inclusion of a deferred method imposes a //protocol// on subclasses that must be respected if a concrete class is required. A deferred method in Groovy is known as an //abstract method// and is qualified with the //abstract// keyword. In Example 14, the abstract ''Item'' class includes an abstract method entitled ''canCarry'' with the declaration shown in this slide.
+
+<code groovy 1 | Example 14: Abstract methods (at-m42/Examples/lecture07/example14.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example14.groovy
+</code>
+The output is:
+
+  Game: Lord of the Rings
+  ===========================
+  MagicItem: Item: The One Ring has value 1000; potency: 500.
+  WeightyItem: Item: Rations has value 10; weight: 20.
+  WeightyItem: Item: Elvish Dagger has value 50; weight: 2.
+  Can Frodo Baggins carry The One Ring?: false
+  Can Frodo Baggins carry Rations?: false
+  Can Frodo Baggins carry Elvish Dagger?: true
+
+Observe the definitions for the method ''canCarry'' in both the ''WeightyItem'' and the ''MagicalItem'' classes. Both take a ''Player'' argument: a ''WeightyItem'' can be carried by the player if the weight  is less than the player's strength; a ''MagicalItem'' can be carried if the player's power is sufficiently great. 
+
+===== Interface Class =====
+
+{{:at-m42:interface-class.png|Interface class}}
+
+----
+
+It is possible to have an abstract class in which none of the methods has been defined. They are all //deferred// to a subclass for their implementation. Such a class is referred to as an //interface class//. Since no method is actually defined, an interface presents only a specification of its behaviours. An interface proves extremely useful, acting as the //protocol// to which one or more subclasses must conform, that is, provide definitions for all its methods.
+<code groovy 1 | Example 15: The interface calls (at-m42/Examples/lecture07/example15.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture07/example15.groovy
+</code>
+----
+
+Output:
+  Game: Lord of the Rings
+  ===========================
+  MagicItem: Item: The One Ring has value 1000; potency: 500.
+  WeightyItem: Item: Rations has value 10; weight: 20.
+  WeightyItem: Item: Elvish Dagger has value 50; weight: 2.
+  Can Frodo Baggins carry The One Ring?: false
+  Can Frodo Baggins carry Rations?: false
+  Can Frodo Baggins carry Elvish Dagger?: false
+
+===== Case Study =====
+
+[[at-m42:casestudies:cs03|Case Study 3]] further illustrates the use of classes and objects while continuing the development of the adventure game application. You should read through the case study and examine the source code provided in preparation for the [[project|Mini Project]]. 
+
+Inheritance will be examined further (along with [[lecture8|Unit Testing]]) in [[at-m42:casestudies:cs04|Case Study 4]].
+
+===== Summary of this Lecture ====
+ 
+The ....
+
+
+  * [[#Classes]]
+  * [[#Inheritance]]
+  * [[at-m42:casestudies:cs03|Case Study 3]]
+
+
+===== Lab Exercises =====
+
+  * [[at-m42:labs:lab2|Lab 2]]  all exercises from [[at-m42:labs:lab2#Part 1: Classes|Part 1]] and [[at-m42:labs:lab2#Part 2: Inheritance|Part 2]] .
+----
+
+[[Home]] | [[lecture6|Previous Lecture]] | [[Lectures]] | [[lecture8|Next Lecture]] 
