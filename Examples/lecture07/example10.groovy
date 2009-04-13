@@ -3,7 +3,7 @@
 class WeightyItem extends Item {
     
     String toString() {
-        return "WeightyItem: ${name}; value: ${value}; weight: ${weight}"
+        return 'WeightyItem: ' + super.toString() + "; weight: ${weight}"
     }
 
 // ---- properties -------------------------
