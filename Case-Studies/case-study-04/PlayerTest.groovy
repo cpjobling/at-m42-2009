@@ -77,10 +77,9 @@ class PlayerTest extends GroovyTestCase {
       * Test that successfully picking up an Item is detected
       */
      void testPickUp_5() {
-         def actual = player.pickUp(itm1)
-         def expected = 'Item picked up'
+         def result = player.pickUp(itm1)
          
-         assertTrue('unexpected message', actual == expected)
+         assertTrue('pickUp should be successful', result)
      }   
         
      /**
@@ -88,10 +87,9 @@ class PlayerTest extends GroovyTestCase {
       */
      void testPickUp_6() {
          player.pickUp(itm1)
-         def actual = player.pickUp(itm1)
-         def expected = 'Cannot pick up: already carrying item'
-         
-         assertTrue('unexpected message', actual == expected)
+         def result = player.pickUp(itm1)
+                  
+         assertFalse('pickUp should be unsuccessful', result)
      }
      
      /**
@@ -141,24 +139,21 @@ class PlayerTest extends GroovyTestCase {
     }
     
     /**
-     * Test that dropping an item results in the expected message
+     * Test that successfully dropping an item is detected
      */
     void testDrop_2() {
         player.pickUp(itm1)
-        def actual = player.drop(itm1)
-        def expected = 'Item dropped'
-        assertTrue('unexpected message', actual == expected)
+        def result = player.drop(itm1)
+        assertTrue('should have successfully dropped item', result)
     }
     
     /**
-     * Test that dropping a non-existent item results in the 
-     * expected message
+     * Test that unsuccessfully dropping an item is detected
      */
     void testDrop_3() {
         player.pickUp(itm1)
-        def actual = player.drop(itm2)
-        def expected = 'Cannot drop: no such item'
-        assertTrue('unexpected message', actual == expected)
+        def result = player.drop(itm2)
+        assertFalse('should have failed to drop item', result)
     }
      
 // ----- properties --------------------------
