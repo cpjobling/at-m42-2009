@@ -279,7 +279,6 @@ class GameTest extends GroovyTestCase {
            game.registerPlayer(player)
            player.pickUp(book)
            def actual =  game.pickupItem(book.id, player.id)
-           println actual
            def expected = 'Cannot pick up: item already being carried'
            
            assertTrue('unexpected message', actual == expected)
@@ -300,32 +299,54 @@ class GameTest extends GroovyTestCase {
         }
 
         /**
-         * Test item can has been dropped.
+         *  Test dropped item is not being carried.
          */
-         void testDropItem() {
+         void testDropedIsNotBeingCarriedItem() {
            game.addItem(book)
            game.registerPlayer(player)  
            game.pickupItem(book.id, player.id)
-           
-           game.dropItem(book.id)       
-           def expected = 'Item dropped'
-           
-           assertTrue('unexpected message', actual == expected)
+           assertTrue('book should have been picked up',
+                  book.carrier == player)
+           game.dropItem(book.id)    
+           assertFalse('book should have been dropped',
+                  book.carrier == player)
         }
         
-                /**
-         * Test item can be dropped.
+        /**
+         * Test dropped item is not being carried.
          */
-         void testDropItem() {
+         void testDroppedItemHasBeenDropped() {
            game.addItem(book)
            game.registerPlayer(player)  
            game.pickupItem(book.id, player.id)
-           
-           def actual = game.dropItem(book.id)       
-           def expected = 'Item dropped'
-           
-           assertTrue('unexpected message', actual == expected)
+           assertNotNull('book should have been picked up', book.carrier)
+           game.dropItem(book.id)    
+           assertNull('book should have been dropped', book.carrier)
         }      
+        
+        /**
+         * Test can't drop an item that isn't being carried
+         */
+         void testCannotDropItemThatIsNotBeingCarried() {
+           game.addItem(book)
+           game.registerPlayer(player)  
+           def actual = game.dropItem(book.id)
+           def expected = 'Cannot drop: item not being carried'
+           
+           assertTrue('should not be able to drop item', actual == expected)
+         }
+         
+        /**
+         * Test can't drop an item that isn't being carried
+         */
+         void testCannotDropItemThatIsNotInGame() {
+           game.registerPlayer(player)  
+           def actual = game.dropItem(book.id)
+           def expected = 'Cannot drop: item not present'
+           
+           assertTrue('should not be able to drop item', actual == expected)
+         }
+         
 // ----- properties --------------------------
 
     def game
