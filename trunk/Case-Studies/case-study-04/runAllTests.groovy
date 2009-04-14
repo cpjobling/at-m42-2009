@@ -11,6 +11,7 @@ class AllTests {
         allTests.addTestSuite(MagicalItemTest.class)
         allTests.addTestSuite(GameTest.class)
         allTests.addTestSuite(PlayerTest.class)
+        allTests.addTestSuite(ItemTest.class)
         
         return allTests
     }
