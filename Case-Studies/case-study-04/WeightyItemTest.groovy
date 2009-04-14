@@ -11,7 +11,7 @@ class WeightyItemTest extends GroovyTestCase {
 		   weight : 5)
 	 
      	def result = it1.toString()
-     	def expectFromItem = '111: name = Sword; value = 10; description: an old rusty sword;'
+     	def expectFromItem = '111; name = Sword; value = 10; description: an old rusty sword;'
      	def expectWeight = 'with weight: 5'
      	
       	assertTrue("result doesn't have items properties", 
