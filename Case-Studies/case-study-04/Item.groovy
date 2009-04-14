@@ -1,7 +1,7 @@
 abstract class Item {
 
     String toString() { // redefinition
-        def s = "${id}: name = ${name}; value = ${value};"
+        def s = "${id}; name = ${name}; value = ${value};"
         if ( description.size() > 0 ) {
             s += " description: ${description};"
         }
