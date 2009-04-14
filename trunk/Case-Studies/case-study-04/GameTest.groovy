@@ -136,6 +136,31 @@ class GameTest extends GroovyTestCase {
          assertTrue('unexpected message', actual == expected)
       }
 
+     /** 
+      * Test that the removing an item forces the item to be dropped.
+      */
+      void testRemoveCarriedItemCausesItemToBeDropped() {
+         game.addItem(book)
+         player.pickUp(book)
+         assertTrue('book not being carried by player', 
+                     player.inventory.containsKey(book.id))
+         game.removeItem(book.id)
+         assertFalse('book being carried by player', 
+                     player.inventory.containsKey(book.id))
+      }
+      
+     /** 
+      * Test that the removing an item null's item's carrier.
+      */
+      void testRemoveCarriedItemNullsCarrier() {
+         game.addItem(book)
+         book.pickedUpBy(player)
+         assertNotNull('book not being carried', book.carrier)
+         game.removeItem(book.id)
+         assertNull('book.carrier should be null', book.carrier)
+      }
+      
+      
       /**
        * Test that registering a new player results in one more
        * player in the game.
@@ -148,7 +173,159 @@ class GameTest extends GroovyTestCase {
          assertTrue('one less player than expected', post == pre + 1)
       }
       
+      /**
+       * Test that registering a new player results in player being registered
+       * as players[player.id].
+       */
+      void testRegisterPlayer_2() {
+         game.registerPlayer(player)
+         
+         assertTrue('player not registered',
+              game.players.containsKey(player.id))
+      }
       
+      /**
+       * Test that registering a new player results in player being registered.
+       */
+      void testRegisterPlayer_3() {
+         game.registerPlayer(player)
+         
+         assertSame('player not registered',
+              game.players[player.id], player)
+      }
+      
+      /**
+       * Test that successful player registration is detected.
+       */
+      void testRegisterPlayer_4() {
+         def actual = game.registerPlayer(player)
+         def expected = 'Player registered'
+        
+         assertTrue('unexpected message', actual == expected)
+      }
+      
+      /**
+       * Test that unsuccessful player registration is detected.
+       */
+      void testRegisterPlayer_r() {
+         game.registerPlayer(player)
+         def actual = game.registerPlayer(player)
+         def expected = 'Cannot register: player already registered'
+        
+         assertTrue('unexpected message', actual == expected)
+      }
+      
+      
+      
+      
+      /**
+       *  Test successful pickup: after pickup player is carrying item.
+       */
+       void testPlayerIsCarryingItemAfterSuccessfulPickup() {
+           game.addItem(book)
+           game.registerPlayer(player)
+           game.pickupItem(book.id, player.id)
+           assertSame('player is  not carrying book', 
+                  player.inventory[book.id], book)
+       }
+              
+      /**
+       *  Test successful pickup: after pickup item is being carried by item.
+       */
+       void testAfterSuccessfulPickupItemIsBeingCarriedByPlayer() {
+           game.addItem(book)
+           game.registerPlayer(player)
+           game.pickupItem(book.id, player.id)
+           assertSame('item is not being carried by player', 
+                  book.carrier, player)
+       }
+              
+      /**
+       *  Test successful pickup: message is correct.
+       */    
+       void testSuccesfulPickup() {
+           game.addItem(book)
+           game.registerPlayer(player)
+           def actual = game.pickupItem(book.id, player.id)
+           def expected = 'Item picked up'
+       }
+       
+       /**
+        * Test item can't be picked up when player is not registered.
+        */
+        void testItemNotPickedUpWhenPlayerNotRegistered() {
+           game.addItem(book)
+           def actual =  game.pickupItem(book.id, player.id)
+           def expected = 'Cannot pick up: player not registered'
+           
+           assertTrue('unexpected message', actual == expected)
+        }
+       
+       /**
+        * Test item can't be picked up if it is not present.
+        */
+        void testNonPresentItemCannotBePickedUp() {
+           def actual =  game.pickupItem(book.id, player.id)
+           def expected = 'Cannot pick up: item not present'
+           
+           assertTrue('unexpected message', actual == expected)
+        }
+        
+       /**
+        * Test item can't be picked up if it is already being carried.
+        */
+        void testCarriedItemCannotBePickedUp() {
+           game.addItem(book)
+           game.registerPlayer(player)
+           player.pickUp(book)
+           def actual =  game.pickupItem(book.id, player.id)
+           println actual
+           def expected = 'Cannot pick up: item already being carried'
+           
+           assertTrue('unexpected message', actual == expected)
+        }
+        
+        /**
+         * Test item can be dropped.
+         */
+         void testDropItem() {
+           game.addItem(book)
+           game.registerPlayer(player)  
+           game.pickupItem(book.id, player.id)
+           
+           def actual = game.dropItem(book.id)       
+           def expected = 'Item dropped'
+           
+           assertTrue('unexpected message', actual == expected)
+        }
+
+        /**
+         * Test item can has been dropped.
+         */
+         void testDropItem() {
+           game.addItem(book)
+           game.registerPlayer(player)  
+           game.pickupItem(book.id, player.id)
+           
+           game.dropItem(book.id)       
+           def expected = 'Item dropped'
+           
+           assertTrue('unexpected message', actual == expected)
+        }
+        
+                /**
+         * Test item can be dropped.
+         */
+         void testDropItem() {
+           game.addItem(book)
+           game.registerPlayer(player)  
+           game.pickupItem(book.id, player.id)
+           
+           def actual = game.dropItem(book.id)       
+           def expected = 'Item dropped'
+           
+           assertTrue('unexpected message', actual == expected)
+        }      
 // ----- properties --------------------------
 
     def game
