@@ -93,7 +93,7 @@ class Action {
 		print('\nEnter item name: ')
 		def name = Console.readLine()
 		print('\nEnter item value: ')
-		def value = Console.readLine()	
+		def value = Console.readInteger()	
 		print('\nEnter item description (return for none): ')
 		def description = Console.readLine()
 		

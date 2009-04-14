@@ -8,11 +8,20 @@ abstract class Item {
         return s
     }
 
+    void pickedUpBy(Player player) {
+        this.carrier = player
+    }
+    
+    void dropped() {
+        this.carrier = null        
+    }
+    
 // ----- properties -----------------------------
 
     def name
     def description = ''
     def id
     def value
+    def carrier
 
 }
