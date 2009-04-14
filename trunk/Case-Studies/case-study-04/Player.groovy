@@ -1,30 +1,25 @@
-// A player
-
 class Player {
     
-    String pickUp(Item item) {
-    	def message 
-    	if ( ! inventory.containsKey(item.id) ) {
-        	inventory[item.id] = item
-        	item.pickedUpBy(this)
-        	message = 'Item picked up'
-        } else {
-        	message = 'Cannot pick up: already carrying item'
-        }
-        return message
+    Boolean pickUp(Item item) {
+    	if (! inventory.containsKey(item.id)) {
+	        inventory[item.id] = item
+    	    item.pickedUpBy(this)
+    	    return true
+    	}
+    	else {
+    		return false
+    	}
     }
     
-    String drop(Item item) {
-    	def message
-    	if ( inventory.containsKey(item.id) == true ) {
+    Boolean drop(Item item) {
+    	if (inventory.containsKey(item.id)) {
         	inventory.remove(item.id)
         	item.dropped()
-        	message = 'Item dropped'
+        	return true
         }
         else {
-        	message = 'Cannot drop: no such item'
+        	return false
         }
-        return message
     }
     
     String toString() {

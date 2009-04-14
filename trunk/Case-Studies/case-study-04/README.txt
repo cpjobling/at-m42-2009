@@ -25,6 +25,7 @@ This folder contains all the examples from [Case study 4](/dokuwiki/at-m42:cases
 * [MagicalItemTest.groovy](MagicalItemTest.groovy) &ndash; test `MagicalItem`.
 * [GameTest.groovy](GameTest.groovy) &ndash; test `Game`.
 * [PlayerTest.groovy](PlayerTest.groovy) &ndash; test `Player`.
+* [ItemTest.groov](ItemTest.groovy) &ndash; test (abstract) class `Item`.
 
 
 ### Test suites
