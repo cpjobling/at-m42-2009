@@ -1,4 +1,4 @@
-class Item {
+abstract class Item {
 
     String toString() { // redefinition
         def s = "Item: ${id}; name = ${name}: value = ${value};"
