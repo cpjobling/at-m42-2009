@@ -1,5 +1,3 @@
-// TestCase for the Game class
-
 import groovy.util.GroovyTestCase
 
 class GameTest extends GroovyTestCase {
@@ -18,6 +16,9 @@ class GameTest extends GroovyTestCase {
             weight : 5)
         item3 = new WeightyItem (id : 2, name : 'a different satchel',
             value : 10, weight : 5)
+            
+        player = new Player(id : 1, nickname : 'Chris', 
+                            email : 'chris@swan.ac.uk')
     }
     
     /**
@@ -49,9 +50,7 @@ class GameTest extends GroovyTestCase {
       * Test that the addition of an Item with the same id as one
       * already present in the Game results in no change in the number
       * of items in the inventory.
-      * Uncomment to activate test
       */
-     /*
      void testAddItem_3() {
          game.addItem(book)
          game.addItem(satchel)
@@ -60,14 +59,12 @@ class GameTest extends GroovyTestCase {
          def post = game.inventory.size()
          
          assertTrue('one more item than expected', post == pre)
-     } 
-     */     
+     }    
 
      /**
       * Test that the addition of an Item with the same id as one
-      * already present in the Game results in no change in the number
-      * of items in the inventory.
-      * Uncomment to activate test
+      * already present in the Game results in no change in the item
+      * already in the collection.
       */
      void testAddItem_4() {
          game.addItem(satchel)
@@ -81,26 +78,76 @@ class GameTest extends GroovyTestCase {
      /**
       * Test that successfully adding an Item to the Game
       * is detected
-      * uncoment to activate
       */
      void testAddItem_5() {
-         def success = game.addItem(satchel)
+         def actual = game.addItem(satchel)
+         def expected = 'Item added'
          
-         assertTrue('addition should succeed', success)
+         assertTrue('unexpected message', actual == expected)
      }   
         
       /**
       * Test that unsuccessfully attempting to add Item with the same 
       * id as one already present in the Game is detected.
-      * uncoment to activate
       */
      void testAddItem_6() {
          game.addItem(satchel)
-         def success = game.addItem(item3)
+         def actual = game.addItem(item3)
+         def expected = 'Cannot add: item already present'
          
-         assertFalse('addition should fail', success)
+         assertTrue('unexpected message', actual == expected)
      }
+     
+     /** 
+      * Test that the Game had one Item after removal of
+      * an Item known to be in the Game
+      */
+      void testRemoveItem_1() {
+         // 
+         // book is created in the fixture
+         game.addItem(book)
+         def pre = game.inventory.size()
+         game.removeItem(book.id)
+         def post = game.inventory.size()
+         
+         assertTrue('one more item than expected', post == pre - 1)
+      }
 
+     /** 
+      * Test that the correct message is available to a client
+      */
+      void testRemoveItem_2() {
+         // 
+         // book is created in the fixture
+         game.addItem(book)
+         def actual = game.removeItem(book.id)
+         def expected = 'Item removed'
+         
+         assertTrue('unexpected message', actual == expected)
+      }
+
+     /** 
+      * Test that the correct message is available to a client
+      */
+      void testRemoveItem_3() {
+         def actual = game.removeItem(book.id)
+         def expected = 'Cannot remove: item not present'
+         
+         assertTrue('unexpected message', actual == expected)
+      }
+
+      /**
+       * Test that registering a new player results in one more
+       * player in the game.
+       */
+      void testRegisterPlayer_1() {
+         def pre = game.players.size()
+         game.registerPlayer(player)
+         def post = game.players.size()
+         
+         assertTrue('one less player than expected', post == pre + 1)
+      }
+      
       
 // ----- properties --------------------------
 
@@ -109,4 +156,6 @@ class GameTest extends GroovyTestCase {
     def book
     def satchel
     def item3
+    
+    def player
 }

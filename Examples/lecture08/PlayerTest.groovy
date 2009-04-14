@@ -22,7 +22,7 @@ class PlayerTest extends GroovyTestCase {
     /**
      * Test that a player with no items can pickUp an item.
      */
-     void testpickUp_1() {
+     void testPickUp_1() {
          def pre = player.inventory.size()
          player.pickUp(itm1)
          def post = player.inventory.size()
@@ -34,7 +34,7 @@ class PlayerTest extends GroovyTestCase {
      * Test that a player with no items can pickUp two items with 
      * different ids.
      */
-     void testpickUp_2() {
+     void testPickUp_2() {
          player.pickUp(itm1)
          player.pickUp(itm2)
          def expected = 2
@@ -48,7 +48,7 @@ class PlayerTest extends GroovyTestCase {
       * already present in the player's inventory results in no 
       * change in the number of items in the inventory.
       */
-     void testpickUp_3() {
+     void testPickUp_3() {
          player.pickUp(itm1)
          player.pickUp(itm2)
          def pre = player.inventory.size()
@@ -63,7 +63,7 @@ class PlayerTest extends GroovyTestCase {
       * already present in the player results in no change in the number
       * of items in the inventory.
       */
-     void testpickUp_4() {
+     void testPickUp_4() {
          player.pickUp(itm2)
          player.pickUp(itm3)
          def expected = itm2.toString()

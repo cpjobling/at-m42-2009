@@ -2,12 +2,12 @@
 
 class Player {
     
-    def pickUp(item) {
+    void pickUp(Item item) {
         inventory[item.id] = item
         item.pickedUpBy(this)
     }
     
-    def drop(item) {
+    void drop(Item item) {
         inventory.remove(item.id)
         item.dropped()
     }

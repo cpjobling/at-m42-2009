@@ -1,3 +1,5 @@
+import console.Console
+
 class Action {
 
 	void addWeightyItem() {
@@ -12,7 +14,7 @@ class Action {
 		print('\nEnter item weight: ')
 		def weight = Console.readInteger()
 		
-		def item = new Item(id : itemId, name : name, value : value,
+		def item = new WeightyItem(id : itemId, name : name, value : value,
 		                    description : description,
 		                    weight : weight)
 		
@@ -31,7 +33,7 @@ class Action {
 		print('\nEnter item potency: ')
 		def potency = Console.readInteger()
 		
-		def item = new Item(id : itemId, name : name, value : value,
+		def item = new MagicalItem(id : itemId, name : name, value : value,
 		                    description : description,
 		                    potency : potency)
 		
