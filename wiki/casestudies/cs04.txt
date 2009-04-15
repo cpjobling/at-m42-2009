@@ -870,7 +870,7 @@ Note that the method ''fail'' reports a failure only if the ''Exception'' has no
 
 Happily all the tests in the ''runAllTests'' script pass. Therefore, at this point, we conduct functional tests by executing a Groovy script from the previous iteration. As expected, no problems occur and we consider this iteration to be finished.
 
-===== Exercises =====
+
 
 
 ----
