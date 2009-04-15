@@ -31,6 +31,7 @@ class Player {
     def nickname
     def email
     def id
+    static public final LIMIT = 4
     def inventory = [ : ]
 
 }

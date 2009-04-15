@@ -347,6 +347,45 @@ class GameTest extends GroovyTestCase {
            assertTrue('should not be able to drop item', actual == expected)
          }
          
+     /**
+      * Test that over limit message works
+      */
+      void testPickupItemCannotExceedItemLimit() {
+      	def item4 = new WeightyItem(id : 444, name : 'item 4', value : 4, weight : 4)
+      	def item5 = new MagicalItem(id : 555, name : 'item 5', value : 5, potency : 5)
+      	def item6 = new WeightyItem(id : 666, name : 'item 6', value : 6, weight : 6)
+      	//
+      	// book, satchel and item3 are created in the fixture
+      	def itemList = [book, satchel, item3, item4, item5, item6]
+      	
+      	game.registerPlayer(player)
+      	
+      	def actual
+      	itemList.each{ item -> 
+      		game.addItem(item)
+      		actual = game.pickupItem(item.id, player.id)
+      	}
+      	
+      	def expected = 'Cannot pickup: player has reached limit'
+      	
+      	assertTrue('unexpected message', actual == expected)
+      }
+       
+      void testCheckItemCarrierLoopInvariant() {
+      	def mockPlayer = new MockPlayer(id : 1234, nickname : 'chris', 
+      	          email : 'cpj@swan.ac.uk')
+      	game.registerPlayer(mockPlayer)
+      	game.addItem(book)
+      	game.addItem(satchel)
+      	
+      	try {
+      		game.pickupItem(book.id, mockPlayer.id)
+      		fail('Expected: Game.checkItemCarrierLoopInvariant: Invariant failed')
+      	} catch (Exception e) {
+      		// ignore exception
+      	}
+      }
+         
 // ----- properties --------------------------
 
     def game
