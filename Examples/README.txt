@@ -11,6 +11,7 @@ Index to All the Examples from the Lectures
 * [Lecture 6](lecture06) _Closures and Files_
 * [Lecture 7](lecture07) _Classes and Inheritence_
 * [Lecture 8](lecture08) _Unit Testing_
+* [Notes](notes) _Examples from notes_
 
 ----
 
