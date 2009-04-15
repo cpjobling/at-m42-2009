@@ -1,14 +1,15 @@
 AT-M42 Client Server Programming for the Java Plaform
 ======================================================
 
-Examples for Lecture 8: Unit Testing
+Examples for Lecture 9: Multiple Threads
 ---------------------------------------------------
 
-This folder contains all the examples from [Lecture 8](/dokuwiki/at-m42:lecture8). Note that `Game.class` contains a bug that will make some of the tests fail. See the [lecture](/dokuwiki/at-m42:lecture8) for corrections. 
+This folder contains all the examples from [Lecture 9](/dokuwiki/at-m42:lecture9). 
 
-### Classes to be Tested
+* [simpleThread.groovy](simpleThread.groovy) &ndash; a simple thread class.
+* [yieldingThread.groovy](yieldingThread.groovy) &ndash; a yielding thread class.
+* [sleepingThread.groovy](sleepingThread.groovy) &ndash; a sleeping thread class.
 
-* [Item.groovy](Item1.groovy) &ndash; an item in the game.
 * [Game.groovy](Game.groovy) &ndash; the game class (contains a bug).
 * [Player.groovy](Player.groovy) &ndash; the player class (contains a bug).
 
@@ -27,6 +28,6 @@ This folder contains all the examples from [Lecture 8](/dokuwiki/at-m42:lecture8
 
 ----
 
-[Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 8](/dokuwiki/at-m42:lecture8) | [Previous Examples](../lecture06/index.php) | [All Examples](../index.php) | [Next Examples](../lecture10/index.php)
+[Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 9](/dokuwiki/at-m42:lecture9) | [Previous Examples](../lecture08/index.php) | [All Examples](../index.php) | [Next Examples](../lecture10/index.php)
   
 
