@@ -1,0 +1,39 @@
+
+====== Exceptions ======
+
+The Java programming language uses exceptions to provide error handling capabilities for its programs. An exception is an event that occurs during the execution of a program that disrupts the normal flow of execution. The Java runtime system requires that a method either catch or specify all checked exceptions that can be thrown by that method. A method can catch an exception by providing an exception handler for that type of exception or specify that it can throw exceptions by using the ''throws'' clause in the method declaration.
+
+Classes that extend the JDK ''Exception'' class are known as //checked exceptions//. The Java compiler checks to see whether two things occur in a program using these classes;
+  * Every method that throws a checked exception must advertise it in the ''throws'' clause in its method definition.
+  * Every method that calls a method that advertises a checked exception must either handle the exception (with ''try'' and ''catch'') or must, in turn advertise that exception in its ''throws'' clause.
+
+There are other errors that can occur, such a memory is exhausted, or network connection fails, that are outside programmer control. They prevent the Java virtual machine from fulfilling its specification. Since it is not possible to plan for such errors, it would be necessary to catch them everywhere/ This defeats the principle of maintaining uncluttered code. Therefore these errors are //unchecked exceptions//, meaning that you don't have to include a ''throws'' clause.
+
+Since Groovy does not distinguish between checked and unchecked exceptions, then the ''throws'' clause in method heads is not supported. As a consequence, the Groovy compiler does not enforce the rules described above. By default, Groovy assumes that all exceptions are unchecked unless the programmer provides an exception handler.
+
+===== Example =====
+
+An example exception handler:
+<code groovy 1|Example 1: try, catch, and finally (at-m42/Examples/notes/exceptions.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/notes/exceptions.groovy
+</code>
+Note that a type is mandatory in the ''catch'' expression.
+
+The method ''myMethod'' throws an ''IllegalArgumentException''. The method is called from the body of a ''try'' block. The exception handler
+<code groovy>
+catch (Exception e) {}
+</code>
+is executed when the ''Exception'' is thrown. The ''finally'' block is executed whenever the ''try'' block exits: whether an exception is thrown or not. It is typically used to clean up, e.g. to close opened files or network connections, or to roll-back a database transaction.
+
+There are no compile-time or runtime warnings from Groovy when checked exceptions are not declared, When a checked exception is not handled, it propagated up the execution stack like an (unchecked) ''RuntimeException''.
+
+When combining Groovy with Java, it may be necessary to add the ''throws'' clause to keep the Java compiler happy.
+<code groovy>
+def myMethod() throws IllegalArgumentException {
+    throw new IllegalArgumentException('throw exception')
+}
+</code>
+
+----
+
+[[Home]] | [[Lectures]]

@@ -806,7 +806,7 @@ The figure shows that if we start from a given ''Item'' and navigate to its ''Pl
     }
 </code>
 
-Since the violation of an invariant indicates that a serious error has occurred, we terminate the system by throwing an ''Exception'' with a suitable error message. Notice that we do not declare that the method throws an ''Exception''.
+Since the violation of an invariant indicates that a serious error has occurred, we terminate the system by throwing an ''Exception'' with a suitable error message. Notice that we do not declare that the method throws an ''Exception'' (see [[at-m42:Exceptions]]).
 
 As before, we only check methods that are likely to cause a violation. In this case it is just the method ''pickupItem''.
 

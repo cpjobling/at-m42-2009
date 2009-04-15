@@ -20,6 +20,11 @@
   * Lab 2: [[at-m42:labs:lab2|Exercises from Second Day]]
 
 ===== Part 2: Concurrency and Client-Server Programming =====
+
+  * [[lecture9|Concurreny]]
+  * [[lecture10|Network Programming]]
+  * [[lecture11|Distributed Computing]]
+
 ===== Part 3: Enterprise Applications =====
 
 ===== Additional Notes =====
@@ -30,3 +35,4 @@ These additional notes can be regarded as appendices to the lectures.
   * [[Logical Operators]] (see [[lecture2#Relational and Equality Operators|Lecture 2]])
   * [[Formatted Output]] (see [[lecture4#Formatted output|Lecture 4]])
   * [[The Console Class]] (see [[lecture4#The Console class|Lecture 4]])
+  * [[Exceptions]] (see [[lecture8#|Case Study 4]])
