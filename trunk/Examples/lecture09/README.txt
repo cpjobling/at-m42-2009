@@ -9,22 +9,9 @@ This folder contains all the examples from [Lecture 9](/dokuwiki/at-m42:lecture9
 * [simpleThread.groovy](simpleThread.groovy) &ndash; a simple thread class.
 * [yieldingThread.groovy](yieldingThread.groovy) &ndash; a yielding thread class.
 * [sleepingThread.groovy](sleepingThread.groovy) &ndash; a sleeping thread class.
+* [producerConsumer.groovy](producerConsumer.groovy) &ndash; classic producer/consumer class.
+* [responsiveUI.groovy](responsiveUI.groovy) & a responsive user interface.
 
-* [Game.groovy](Game.groovy) &ndash; the game class (contains a bug).
-* [Player.groovy](Player.groovy) &ndash; the player class (contains a bug).
-
-### Test Cases
-
-* [example1.groovy](example1.groovy) &ndash; Testing with `println`.
-* [example2.groovy](example2.groovy) &ndash; Testing with assertions.
-* [ItemTest.groovy](ItemTest.groovy) &ndash; Testing with JUnit.
-* [GameTest.groovy](GameTest.groovy) &ndash; Testing the `Game` class (complete with some methods commented out).
-* [PlayerTest.groovy](PlayerTest.groovy) &ndash; Testing the `Player` class (complete with some methods commented out).
-
-### Test Suites
-
-* [runAllTests.groovy](runAllTests.groovy) &ndash; run all Game/Item tests.
-* [runAllTests2.groovy](runAllTests2.groovy) &ndash; run all Game/Item/Player tests.
 
 ----
 
