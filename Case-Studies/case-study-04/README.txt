@@ -11,13 +11,14 @@ This folder contains all the examples from [Case study 4](/dokuwiki/at-m42:cases
 * [Item.groovy](Item.groovy) &ndash; an `Item`.
 * [MagicalItem.groovy](MagicalItem.groovy) &ndash; a `MagicalItem`.
 * [WeightyItem.groovy](WeightyItem.groovy) &ndash; a `WeightyItem`.
-* [Game.groovy](Game.groovy &ndash; a `Game`.
+* [Game.groovy](Game.groovy) &ndash; a `Game`.
 * [Player.groovy](PlayerTest.groovy) &ndash; a `Player`.
 
 ### User inteface
 
 * [Action.groovy](Action.groovy) &ndash; the `Action` class.
 * [game1.groovy](game1.groovy) &ndash; the game runner.
+* [game2.groovy](game2.groovy) &ndash; game runner with error messages and user feedback.
 
 ### Test cases
 
@@ -31,6 +32,7 @@ This folder contains all the examples from [Case study 4](/dokuwiki/at-m42:cases
 ### Test suites
 
 * [runAllTests.groovy](runAllTests.groovy) &ndash; `GroovyTestSuite` for this case study.
+
 ----
 
 [Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Case Study 4](/dokuwiki/at-m42:casestudies:cs04)
