@@ -27,6 +27,7 @@ This folder contains all the examples from [Case study 4](/dokuwiki/at-m42:cases
 * [GameTest.groovy](GameTest.groovy) &ndash; test `Game`.
 * [PlayerTest.groovy](PlayerTest.groovy) &ndash; test `Player`.
 * [ItemTest.groov](ItemTest.groovy) &ndash; test (abstract) class `Item`.
+* [MockPlayer.groovy](MockPlayer.groovy) &ndash; mock object for testing violation of loop invariant.
 
 
 ### Test suites

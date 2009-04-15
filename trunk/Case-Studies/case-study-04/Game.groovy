@@ -48,8 +48,14 @@ class Game {
         	if ( item.carrier == null ) {
         		if ( players.containsKey(playerId) == true ) {
         			def player = players[playerId]
-        			player.pickUp(item)
-        			message = 'Item picked up'
+        			if (player.inventory.size() < Player.LIMIT) {
+	        			player.pickUp(item)
+	        			this.checkItemCarrierLoopInvariant('Game.pickupItem')
+    	    			message = 'Item picked up'
+    	    		}
+    	    		else {
+    	    			message = 'Cannot pickup: player has reached limit'
+    	    		}
         		}
         		else {
         			message = 'Cannot pick up: player not registered'
@@ -80,6 +86,20 @@ class Game {
         else {
         	message = 'Cannot drop: item not present'
         } 
+    }
+    
+    private void checkItemCarrierLoopInvariant(String methodName) {
+    	def items = inventory.values().asList()
+    	
+    	def carriedItems = items.findAll{ item -> item.carrier != null }
+    	
+    	def allOK = carriedItems.every { item ->
+    		item.carrier.inventory.containsKey(item.id)
+    	}
+    	
+    	if (! allOK ) {
+    		throw new Exception("${methodName}: Invariant failed")
+    	}
     }
         
 // ----- properties -----------------------------
