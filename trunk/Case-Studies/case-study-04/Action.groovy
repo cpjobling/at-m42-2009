@@ -18,7 +18,8 @@ class Action {
 		                    description : description,
 		                    weight : weight)
 		
-		game.addItem(item)		
+		def message = game.addItem(item)
+		println "\nResult: ${message}"		
 	}
 	
 	void addMagicalItem() {
@@ -36,20 +37,19 @@ class Action {
 		def item = new MagicalItem(id : itemId, name : name, value : value,
 		                    description : description,
 		                    potency : potency)
-		
-		game.addItem(item)		
+			
+		def message = game.addItem(item)
+		println "\nResult: ${message}"		
 	}
 	
     void displayInventory() {
-        println "\n\nGame: ${game.name}"
-        println "=========================================="
+        this.printHeader('')
         
         game.inventory.each { id, item -> println "  ${item}" }
     }	
     
     void displayAvailableItems() {
-        println "\n\nGame: ${game.name} : Available items"
-        println "=========================================="
+        this.printHeader('Available items')
         
         game.inventory.each { id, item -> 
             if (item.carrier == null) {
@@ -59,8 +59,7 @@ class Action {
     }    
 
     void displayItemsBeingCarried() {
-        println "\n\nGame: ${game.name} : Items being carried"
-        println "=========================================="
+        this.printHeader('Items being carried')
         
         game.inventory.each { id, item -> 
             if (item.carrier != null) {
@@ -80,12 +79,12 @@ class Action {
 		def player = new Player(id : playerId, nickname : nickname, 
 		                        email : email)
 
-		game.registerPlayer(player)
+		def message = game.registerPlayer(player)
+		println "\nResult: ${message}"	
     }
     
     void displayPlayers() {
-        println "\n\nGame: ${game.name} : Player Details"
-        println "=========================================="
+        this.printHeader('Player Details')
         
         game.players.each { id, player -> 
             println "  ${player}"
@@ -98,17 +97,104 @@ class Action {
     	def itemId = Console.readInteger()
     	print '\nEnter player id: '
     	def playerId = Console.readInteger()
-        game.pickupItem(itemId, playerId)
+        
+    	def message = game.pickupItem(itemId, playerId)
+        println "\nResult: ${message}"	
     }
     
     void dropItem() {
     	print '\nEnter item id: '
     	def itemId = Console.readInteger()
-        game.dropItem(itemId)
+        
+    	def message = game.dropItem(itemId)
+        println "\nResult: ${message}"	
+    }
+    
+    def removePublication() {
+    	print('\nEnter item id: ')
+    	def itemId = Console.readInteger()
+    	
+    	def message = game.removeItem(itemId)
+    	println "\nResult: ${message}"
+    }
+    
+    def displayOneItem() {
+    	print('\nEnter item id: ')
+    	def itemId = Console.readInteger()
+    	
+    	def item = game.inventory[itemId]
+    	if ( item != null ) {
+    		this.printHeader('One item display')
+    		println item
+    	}
+    	else {
+    		println '\nCannot print: no such item\n'
+    	}
+    }
+    
+    def displaySelectedItems() {
+    	print('\nEnter start of item ids: ')
+    	def pattern = Console.readLine()
+    	pattern = '^' + pattern + '.*'
+    	def found = false
+    	
+    	this.printHeader('Selected publications display')
+    	game.inventory.each { itemId, item -> 
+    		if ( itemId.toString() =~ pattern ) {
+    			found = true
+    			println " ${item}" 
+    		}
+    	}
+    	
+    	if (found == false) {
+    		println '\nCannot print: No such publications\n'
+    	}
+    }
+    	
+    def displayOnePlayer() {
+    	print('\nEnter player id: ')
+    	def playerId = Console.readInteger()
+    	
+    	def player = game.players[playerId]
+    	if ( player != null ) {
+    		this.printHeader('One player display')
+    		println player
+    		def items = player.inventory
+    		items.each { id, item -> println " ${item}" }
+    	}
+    	else {
+    		println '\nCannot print: no such player\n'
+    	}
+    }
+    
+    def displaySelectedPlayers() {
+    	print('\nEnter start of player ids: ')
+    	def pattern = Console.readLine()
+    	pattern = '^' + pattern + '.*'
+    	def found = false
+    	
+    	this.printHeader('Selected players display')
+    	game.players.each { playerId, player -> 
+    		if ( playerId.toString() =~ pattern ) {
+    			found = true
+    			println player
+    			def items = player.inventory
+    			items.each { itemId, item -> println " ${item}" }
+    		}
+    	}
+    	
+    	if (found == false) {
+    		println '\nCannot print: No such borrowers\n'
+    	}
+    }	
+    
+    private printHeader(detail) {
+    	println "\nGame: ${game.name}: ${detail}"
+    	println '===============================\n'
     }
     
 // ----- properties -----------------------
 
-	def game
+	private game
 
 }
