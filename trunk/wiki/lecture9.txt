@@ -1,0 +1,560 @@
+~~SLIDESHOW~~
+====== Multiple Threads ======
+
+Sometimes you need more than multiple objects; you need multiple subtasks. The Java Virtual Machine supports multi-threading -- independent subtasks in the program’s address space.
+
+The slides and notes in this presentation are adapted either from //Thinking in Java// or //Groovy in Action// (see [[lecture0#Reading|Recommended Reading]]).
+
+An index to the source code for all the examples in this lecture is [[/~eechris/at-m42/Examples/lecture09|available]].
+
+===== The Thread =====
+
+  * Each thread acts like its own program.
+  * Underlying mechanism divides up CPU time between multiple threads.
+  * Typically used for more responsive user interfaces, animation, networking.
+
+===== Basic threads ===== 
+  * Simplest way to create a thread is to inherit from ''Thread''
+  * Override ''run()''
+  * Body of ''run()'' method is executed "simultaneously" with other threads in program
+  
+===== Class SimpleThread ======
+
+{{ :at-m42:thread.png?146|"thread".}}
+
+{{:at-m42:thread-class.png|The class diagram.}} 
+
+[[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture09/simpleThread.groovy|Example 1: simpleThread.groovy]] creates five threads, each with a unique id. run() method counts down from 5 to 0.
+
+----
+<code groovy 1|Example 1: SimpleThread (at-m42/Examples/lecture09/simpleThread.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture09/simpleThread.groovy
+</code>
+
+===== Class SimpleThread (at run time) ======
+
+{{ :at-m42:thread.png?146|"thread".}}
+
+{{:at-m42:thread-execution.png|The thread execution (activity diagram).}}
+
+----
+
+===== Typical Run =====
+
+  #1: 5		
+  #1: 4		
+  #1: 3		
+  #1: 2		
+  #1: 1		
+  #2: 5		
+  #2: 4		
+  #2: 3		
+   ...  
+  #5: 2
+  #5: 1
+
+
+===== Yielding control =====
+
+  * ''Thread'''s ''yield()'' method gives hint to JVM that task is complete and another thread can be scheduled.
+  * Hint may be ignored ... particularly if ''run()'' takes too long.
+    * //Pre-emptive scheduler// may interrupt thread before ''yield()'' is reached. 
+    * E.g. for I/O
+
+
+===== A Yielding Thread =====
+{{  :at-m42:yield.png?165|Yield!}}
+<code groovy>
+public class YieldingThread extends Thread {
+  // ...
+  void run() {
+    while(true) {
+      println this
+      if (--countDown == 0) {
+          return
+      }
+      yield()
+    }
+  }
+  // ...
+}
+</code>
+
+[[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture09/yieldingThread.groovy|Example 2: yieldingThread.groovy]].
+
+===== Typical Run =====
+
+<html>
+<table><tr><td><pre>
+#1: 5
+#2: 5
+#4: 5
+#5: 5
+#3: 5
+#1: 5
+#5: 4
+#3: 4
+#1: 4
+#4: 4
+#5: 3
+#3: 3
+#1: 3
+#4: 3
+</pre>
+</td><td>
+<pre>
+#5: 2
+#3: 2
+#1: 2
+#4: 2
+#5: 1
+#3: 1
+#1: 1
+#4: 1
+#2: 4
+#2: 3
+#2: 2
+#2: 1
+</pre>
+</td>
+</tr>
+</table>
+</html>
+
+===== A Sleeping Thread =====
+
+{{ :at-m42:sleeping.png?278|Sleeping!}}
+<code groovy>
+public class SleepingThread extends Thread {
+  // ...
+  void run() {
+    while(true) {
+       println this
+      if (--countDown == 0) {
+      	return
+      }
+      try {
+        sleep(100) // 100 ms      
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e)
+      }
+    }
+  }
+  // ...
+}
+</code>
+
+[[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture09/sleepingThread.groovy|Example 3: sleepingThread.groovy]].
+----
+
+Method ''sleep(100)'' schedules a time delay of 100 ms. The ''Thread'' is suspended until this time is up. Call to sleep() must be put in a ''try'' block because it could be interrupted before it times out. You should use ''wait()'' rather than ''sleep()'' if you expect the interrupt!
+
+
+===== Priority =====
+
+  * Tells the scheduler how important this thread is.
+  * The order that threads will be scheduled is indeterminate.
+  * Scheduler will schedule a higher priority before others.
+  * All threads will run eventually, lower priority threads just run less often.
+    * Use ''Threads setPriority(int)''.
+    * Only portable settings ''Thread.MIN_PRIORITY'', ''Thread.MAX_PRIORITY'' and ''Thread.NORM_PRIORITY''. 
+
+
+===== Daemon Threads =====
+  * A //daemon// is a process that is typically started as a background task and runs as long as the programme runs.
+  * An example of such a process is a a server process running in a client server system. E.g. a web server, a servlet or a database connection.
+  * "Daemonhood" of a thread can be tested with ''isDaemon()''
+  * ''Thread'' can be made into a daemon using ''setDaemon()''.
+
+===== Joining a Thread =====
+
+  * One thread may call ''join()'' on another thread
+  * Thread waits for first thread to complete before completing
+  * Example:
+    * thread ''a'' calls ''b.join()'' on thread ''b''.
+    * thread ''a'' is suspended until thread ''b'' finishes (when ''b.isAlive()'' is ''false'')
+    * ''join()'' can be called with a timeout argument so that if the joined thread does not complete before the timeout, ''join()'' will return early
+
+===== Coding Variations =====
+
+  * One way to make a thread is to inherit from ''Thread'' class and override ''run()''.
+  * Can't do this if your class already inherits from another class (single inheritance property).
+  * Alternative is to implement the ''Runnable'' interface (also implemented by ''Thread'')
+  * ''Runnable'' interface defines only the ''run()'' method.
+  * Implement ''Runnable'', define a ''run()'' method, pass object of class to ''new Thread(Runnable)'' constructor.
+  
+===== Runnable in Groovy ===== 
+
+  * Groovy ''Closure'' implements runnable.
+<code groovy>
+def t = new Thread () {/* closure body */}
+t.start()
+</code>
+  * Even simpler:
+<code groovy>
+Thread.start{/* closure body */}
+</code>
+
+===== More Threads with closures =====
+
+  * A daemon thread:
+<code groovy>
+Thread.startDaemon() {/* closure body */}
+</code>
+  * Deferred start with a time:
+<code groovy>
+new Timer().runAfter(1000) {/* closure body */}
+</code>
+===== Producer consumer =====
+
+[[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture09/producerConsumer.groovy|Example 4]]: using threads with synchronization for the producer/consumer problem.
+
+----
+The //producer// pushes integers on a stack, //consumer// pops items when available. The push/pop actions are reported. Actual sequence is not predictable. We use closures to run //something// (producing and consuming) and ''sleep'' to slow down the consumer. We introduce a ''Storage'' class that holds the stack and synchronizes access to it. If we try to ''pop'' from an empty stack, we will ''wait'' until the producer has caught up.
+
+<code groovy 1|Example 4:  using threads with synchronization for the producer/consumer problem (at-m42/Examples/lecture09/producerConsumer.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture09/producerConsumer.groovy
+</code>
+
+
+===== An  unresponsive user interface =====
+
+{{ :at-m42:unresponsiveui.png |Unresponsive UI}}
+
+[[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture09/responsiveUI.groovy|Example 5]]: a responsive user interface.
+
+----
+
+<code groovy 1|Example 5:  a responsive user interface (at-m42/Examples/lecture09/responsiveUI.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture09/responsiveUI.groovy
+</code>
+
+Explanation: this program simulates a problem often encountered with distributed programs, and programs that have a graphical user interface. In the first class, the ''while'' loop simulates some long running process that the user interface may have launched. Unfortunately, it never terminates, so the input statement at line 10 is never executes: in other words, the user interface has become unresponsive.
+
+In the second example, the class is made into a daemon and the long running process is coded in the run method. This time the user interface is in a separate thread (and after 300 ms) input can be accepted from the user (which in this case allows the current version of ''d'' to be printed). 
+
+In interactive programs, the placing of long-running computation (e.g. processing of some distributed process across a network) into a separate thread, is a commonly used technique.
+
+===== Sharing Limited Resources =====
+  * Having multiple threads causes problems when they new to share resources.
+  * Presentation given here are from "Head First Java", by Kathy Sierra and Bert Bates, O'Reilly 2003.
+
+===== Sharing an Object =====
+
+  * Imagine that Ryan and Monica share a bank account.
+  * They both have odd behaviour when making a withdrawal.
+    * Check balance
+    * //Sleep//
+    * Make the withdrawal
+===== The Bank Account =====
+{{  :at-m42:piggy-bank.png?300|A piggy bank}}
+
+<code groovy l|A bank account (at-m42/Examples/lecture09/BankAccount.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture09/BankAccount.groovy
+</code>
+
+===== The Demo =====
+
+[[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture09/ryanAndMonicaJob.groovy|Example 6]] {{  :at-m42:deposit.png?236|Making a deposit}}
+
+  * Makes one instance of Ryan and Monica job
+  * Makes two threads with the same ''Runnable''
+  * Name and starts the threads
+  * Watches the threads check the balance and attempt withdrawal
+<code groovy>
+if (account.balance >= amount) {
+  try {
+       Thread.sleep(500);  
+  }  catch (InterruptedException ex)  {  
+     ex.printStackTrace();
+  }
+</code>
+
+
+
+----
+
+<code groovy l| Shared resource problems (at-m42/Examples/lecture09/ryanAndMonicaJob.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture09/ryanAndMonicaJob.groovy
+</code>
+
+
+===== Results =====
+
+  * Ryan checks the balance, sees there's enough money, goes to sleep
+  * Monica comes in and checks the balance. See's there enough money (Ryan hasn't withdrawn it yet) but doesn't realise that Ryan is going to withdraw it.
+  * Monica falls asleep.
+  * Ryan wakes up and completes the withdrawal.
+  * Monica wakes up and completes the withdrawal ... but Ryan has already taken the money, and Monica goes overdrawn.
+
+----
+
+Monica's check was invalid because Ryan was already making a withdrawal. We need a way to prevent Monica starting a withdrawal if Ryan is already making a withdrawal.
+
+===== Need a Lock! =====
+
+<html>
+<table>
+<tr>
+<td>
+<ul>
+<li class="level1">Associate a lock with withdraw method.</li>
+<li class="level1">If Ryan or Monica wants to make a withdrawal, he/she must acquire the lock, and keep the key.</li>
+<li class="level1">If Ryan has the key, only he can access the bank account.</li>
+<li class="level1">Lock prevents Monica accessing the bank account.</li>
+</ul>
+</td>
+<td>
+<ul>
+<li class="level1">When Ryan has finished the transaction, he unlocks the object and the key becomes available.</li>
+<li class="level1">Monica can now take the key and lock the bank account to prevent Ryan making a withdrawal.</li>
+<li class="level1">Lock ensures that only one ''Thread'' has access to shared object at a time.</li>
+</ul>
+</td>
+</tr>
+</table>
+</html>
+
+
+{{ :at-m42:lock.png?245 |a lock}}
+===== Creating a Lock in Java =====
+{{:at-m42:synchronized.png  |}}   
+  * ''synchronized'' method runs as an atomic transaction and while running cannot be entered by another thread.
+  * Associated object holds the //lock//.
+  * ''Thread'' holds the key. 
+
+[[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture09/ryanAndMonicaJob2.groovy|Example 7]] {{  :at-m42:locks_and_threads.png?244|Locks and threads.}}
+
+----
+
+<code groovy l| Example 7: Using a lock to control access to a shared resource (at-m42/Examples/lecture09/ryanAndMonicaJob2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture09/ryanAndMonicaJob2.groovy
+</code>
+
+
+===== Object Locks =====
+
+  * One lock per object for object's data members
+  * One lock per class for class' ''static'' data members
+  * Typically data is ''private'', only accessed through methods
+  * If a method is ''synchronized'', entering that method acquires the lock
+  * No other thread may call that method until the lock is released
+
+===== How JVM Shares Resources =====
+
+  * Only one ''synchronized'' method can be called at any time for a particular object 	
+<code groovy>
+synchronized f() { /* ... */ }	
+synchronized g(){ /* ... */ }
+</code>
+  * ''synchronized'' efficiency
+    * Each object has a lock
+    * Typical 6x method call overhead, theoretical minimum 4x
+
+===== The "Lost Update" problem =====
+  * Occurs when a two-step (or more-step) process is accessed by another thread before it completes.
+  * E.g.
+<code groovy>
+def increment(){ 
+  i = balance;
+  balance = i + 1
+}
+</code> 
+
+----
+
+Increment ''balance'' by adding 1 to value **AT TIME IT WAS READ** rather than **CURRENT** value.
+
+===== Thread A runs for a while =====
+
+{{ :at-m42:threada.png?171|Thread A}}
+
+  * ''Thread'' A enters ''increment'' method:
+    - Put the value of ''balance'' into variable ''i''.
+    - ''balance'' is 0, so ''i'' is now 0.
+    - Set the ''balance'' to the result of ''i + 1''.
+    - Now ''balance'' is 1.
+  * ''Thread'' A re-enters ''increment'' 
+    - Put the value of ''balance'' into variable ''i''.
+    - ''balance'' is 1, so ''i'' is now 1.
+    - Set the ''balance'' to the result of ''i + 1''.
+    - Now ''balance'' is 2.
+
+===== Thread B runs for a while =====
+
+{{ :at-m42:threadb.png?171|Thread B}}
+
+  * ''Thread'' B enters ''increment'' method:
+    - Put the value of ''balance'' into variable ''i''.
+    - ''balance'' is 2, so ''i'' is now 2.
+    - Set the ''balance'' to the result of ''i + 1''.
+    - Now ''balance'' is 3.
+  * ''Thread'' B re-enters ''increment'' 
+    - Put the value of ''balance'' into variable ''i''.
+    - ''balance'' is 3, so ''i'' is now 3.
+    
+----
+
+Scheduler now makes ''Thread'' B //runnable// (ready to run) rather than running.
+Note that this is before ''balance'' has been incremented.  
+    
+===== Thread A Runs again ======
+
+{{ :at-m42:threada.png?171|Thread A}}
+
+Picking up where it left off:
+  * ''Thread'' A re-enters ''increment'' 
+    - Put the value of ''balance'' into variable ''i''.
+    - ''balance'' is 3, so ''i'' is now 3.
+    - Set the ''balance'' to the result of ''i + 1''.
+    - Now ''balance'' is 4.
+  * ''Thread'' A re-enters ''increment'' 
+    - Put the value of ''balance'' into variable ''i''.
+    - ''balance'' is 4, so ''i'' is now 4.
+    - Set the ''balance'' to the result of ''i + 1''.
+    - Now ''balance'' is 5.
+
+===== Thread B runs again =====
+
+{{ :at-m42:threadb.png?171|Thread B}}
+
+And picks up //exactly// where it left off:
+  * Set the ''balance'' to the result of ''i + 1''.
+  * **But balance is //now// 4 !!!!.**
+  
+----
+
+''i'' had value 3 when ''Thread'' B was stopped. Value of ''3 + 1 = 4'' passed to ''balance''. Update done by A is completely overridden. Hence "Missing Update". A common problem in distributed systems e.g. database transactions.
+
+===== Make increment atomic ======
+<code groovy>
+synchronized void increment() {
+  i = balance
+  balance = i + 1
+}
+</code>
+
+----
+
+The assignment and increment code will run to end.
+
+
+===== Thread A Runs for a While =====
+{{ :at-m42:threada-has-key.png?174|Thread A has the key}}
+{{ :at-m42:locked-object.png?230|object is locked}}
+
+  * ''Thread A'' attempts to enter ''increment'' method.
+    - ''synchronized'' code, so **get the key for this object**.
+    - put the value of ''balance'' into variable ''i''.
+    - ''balance'' is 0, so ''i'' is now 0.
+    - Set the ''balance'' to the result of ''i + 1''.
+    - Now ''balance'' is 1.
+    - **Return the key**.
+  * Thread A re-enters ''increment'' method. **Gets the key**. 
+    - Put the value of ''balance'' into variable ''i''.
+    - ''balance'' is 1, so ''i'' is now 1.
+
+===== Thread B is selected to run =====
+
+{{ :at-m42:threadb.png?171|Thread B}}
+{{ :at-m42:locked-object.png?230|Locked object}}
+
+  * ''Thread'' B attempts to enter ''increment'' method.
+    - The method is ''synchronized'' so we need to get the key.
+    - The **key is not available**.
+    - ''Thread'' B is "//blocked//" (waiting for key to become available).
+
+===== Thread A Runs again =====
+
+{{ :at-m42:threada.png?171|Thread A}}
+{{ :at-m42:key-available.png?236|Key is available}}
+  * Picking up where it left off
+    - Set the ''balance'' to the result of ''i + 1''.
+    - Now ''balance'' is 2.
+    - **Return the key**
+
+===== Thread B is selected to run =====
+
+{{ :at-m42:threadb.png?171|Thread B}}
+{{ :at-m42:key-available.png?236|Key is available}}
+
+  * ''Thread B'' attempts to enter ''increment'' method.
+    - The method is ''synchronized'' so we need to get the key.
+    - The **key is available, get the key**
+    - Put the value of ''balance'' into variable ''i''.
+    - Balance is 2, so ''i'' is now 2.
+    - Set the ''balance'' to the result of ''i + 1''.
+    - Now ''balance'' is 3.
+    - **Return the key**
+   
+
+===== Synchronizing on other resources =====
+  * Synchronizing on something other than the memory inside an object
+  * Using non-''synchronized'' objects
+  * Best to wrap everything inside an object and guard it with the object's own ''synchronized'' methods, but you can also:	<code groovy>
+synchronized(syncObject) {
+    // This code can only be accessed
+    // by one thread at a time
+}
+</code>
+
+===== Blocking =====
+
+Four states of a thread:
+  - //New//: the thread object has been created but it hasn’t been started yet so it cannot run
+  - //Runnable//: thread can be run, when the time-slicing mechanism has CPU cycles available
+  - //Dead//: normally after thread returns from its ''run'' method
+  - //Blocked//: the thread could be run but there’s something that prevent it. While a thread is in the blocked state the scheduler will simply skip over it and not give it any CPU time
+===== Becoming Blocked =====
+
+  * Thread is //sleeping//: ''sleep(milliseconds)''.
+  * Thread is //suspended//: ''suspend( )''. It will not become runnable again until the thread gets the ''resume( )'' message.
+  * Thread is //waiting// with ''wait( )''. It will not become //runnable// again until the thread gets the ''notify( )'' or ''notifyAll( )'' message.
+  * The thread is waiting for some I/O to complete.
+  * The thread is trying to call a ''synchronized'' method on another object and that object's lock is not available.
+
+===== Deadlock =====
+
+  * A chain of threads waiting on each other, looping back to the beginning
+  * No language support to prevent it
+  * Tough to debug
+  * To create a deadlock only need two threads and two objects
+
+===== Thread deadlock =====
+
+{{:at-m42:deadlock1.png?768 |Deadlock}}
+
+===== Thread deadlock scenario =====
+
+{{:at-m42:deadlock2.png?344 | Deadlock 2.}}
+
+  * ''Thread'' A enters ''synchronized'' method of object ''foo'' and gets the key.
+  * ''Thread'' A goes to sleep
+
+===== Thread deadlock scenario =====
+
+{{:at-m42:deadlock3.png?455 |}}
+
+  * ''Thread'' B enters ''synchronized'' method of object ''bar'' and gets the key.
+  * ''Thread'' B tries to enter a ''synchronized'' method of object ''foo'', but can't get that key (A has it).
+  * B "blocks" waiting for ''foo'''s key to become available.
+  * B keeps the ''bar'' key.
+
+===== Thread deadlock scenario =====
+{{:at-m42:deadlock4.png?455 |Deadlock1}}
+  * ''Thread'' A wakes up and tries to enter a ''synchronized'' method on object ''bar'', but can't get **that** key because B has it.
+  * A "blocks" waiting for ''bar'''s key to become available.
+  * ''Thread'' A can't run until it gets ''bar'' key that B is holding.
+  * Thread B can't run until it gets the ''foo'' key that A is holding.
+  * **Deadlock!**
+
+===== Summary =====
+  * Single-threaded programming: live by yourself, own everything, no contention for resources
+  * Multi-threading: suddenly you can have collisions and destroy information, get locked up over the use of resources
+  * Multi-threading makes programming on the Java Platform complicated.
+  * Groovy multithreading easier because of the use of the closure.
+  * **Multi-threading is hard**!
+
+----
+
+[[Home]] | [[lecture1|Previous Lecture]] | [[Lectures]] | [[lecture3|Next Lecture]] 
