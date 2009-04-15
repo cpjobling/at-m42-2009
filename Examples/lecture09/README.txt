@@ -10,8 +10,10 @@ This folder contains all the examples from [Lecture 9](/dokuwiki/at-m42:lecture9
 * [yieldingThread.groovy](yieldingThread.groovy) &ndash; a yielding thread class.
 * [sleepingThread.groovy](sleepingThread.groovy) &ndash; a sleeping thread class.
 * [producerConsumer.groovy](producerConsumer.groovy) &ndash; classic producer/consumer class.
-* [responsiveUI.groovy](responsiveUI.groovy) & a responsive user interface.
-
+* [responsiveUI.groovy](responsiveUI.groovy) &ndash; a responsive user interface.
+* [BankAccount.java](BankAccount.java) &ndash; a banmk account.
+* [ryanAndMonicaJob.groovy](ryanAndMonicaJob.groovy) &ndash; shared resource problems.
+* [ryanAndMonicaJob2.groovy](ryanAndMonicaJob2.groovy) &ndash; controlled access to a shared resource.
 
 ----
 
