@@ -7,13 +7,10 @@ Examples for Lecture 10: Network Programming
 This folder contains all the examples from [Lecture 9](/dokuwiki/at-m42:lecture9). 
 
 * [whoAmI.groovy](whoAmI.groovy) &ndash; examine ''InetAddress'' object.
-* [yieldingThread.groovy](yieldingThread.groovy) &ndash; a yielding thread class.
-* [sleepingThread.groovy](sleepingThread.groovy) &ndash; a sleeping thread class.
-* [producerConsumer.groovy](producerConsumer.groovy) &ndash; classic producer/consumer class.
-* [responsiveUI.groovy](responsiveUI.groovy) &ndash; a responsive user interface.
-* [BankAccount.java](BankAccount.java) &ndash; a banmk account.
-* [ryanAndMonicaJob.groovy](ryanAndMonicaJob.groovy) &ndash; shared resource problems.
-* [ryanAndMonicaJob2.groovy](ryanAndMonicaJob2.groovy) &ndash; controlled access to a shared resource.
+* [JabbaServer.groovy](JabbaServer.groovy) &ndash; simple client/server class.
+* [groovyClient.groovy](groovyClient.groovy) &ndash; a simple groovy client.
+* [groovyServer.groovy](groovyServer.groovy) &ndash; a simple groovy server.
+
 
 ----
 
