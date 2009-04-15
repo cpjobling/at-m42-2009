@@ -6,7 +6,7 @@ Examples for Lecture 10: Network Programming
 
 This folder contains all the examples from [Lecture 9](/dokuwiki/at-m42:lecture9). 
 
-* [simpleThread.groovy](simpleThread.groovy) &ndash; a simple thread class.
+* [whoAmI.groovy](whoAmI.groovy) &ndash; examine ''InetAddress'' object.
 * [yieldingThread.groovy](yieldingThread.groovy) &ndash; a yielding thread class.
 * [sleepingThread.groovy](sleepingThread.groovy) &ndash; a sleeping thread class.
 * [producerConsumer.groovy](producerConsumer.groovy) &ndash; classic producer/consumer class.
