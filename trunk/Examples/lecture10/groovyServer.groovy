@@ -1,27 +1,22 @@
-def s = new ServerSocket(JabberServer.PORT);
+// a simpler groovy server
+
+
+def s = new ServerSocket(ClientServer.PORT)
 println "Started: ${s}"
 try {
 	// Blocks until a connection occurs:
 	def socket = s.accept();
-	try {
-		println "Connection accepted: ${socket}"
-		BufferedReader input = new BufferedReader(new InputStreamReader(
-				socket.getInputStream()));
-		// Output is automatically flushed
-		// by PrintWriter:
-		PrintWriter output = new PrintWriter(new BufferedWriter(
-				new OutputStreamWriter(socket.getOutputStream())), true);
+	println "Connection accepted: ${socket}"
+	socket.withStreams { input, output -> 
+		// Output is automatically flushed by PrintWriter:
+		def w = new PrintWriter(output, true)
+		def r = new BufferedReader(new InputStreamReader(input))
 		while (true) {
-			def string = input.readLine();
-			if (string.equals("END"))
-				break;
+			def string = r.readLine()
+			if (string.equals("END")) break
 			println "Echoing: ${string}"
-			output.println string
+			w.println string
 		}
-		// Always close the two sockets...
-	} finally {
-		println("closing...");
-		socket.close();
 	}
 } finally {
 	s.close();
