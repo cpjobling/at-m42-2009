@@ -1,0 +1,265 @@
+~~SLIDESHOW~~
+====== Network Programming ======
+
+  * Historically error- prone, difficult, complex
+  * I/O stream library works quite well for TCP/IP
+  * Threading is also very useful and relatively easy here
+  * Networking support on the Java Platform fits well with (and supports) standard protocols: HTTP, FTP, TELNET, SMTP etc.
+===== Identifying a Machine =====
+  * Uniquely identify a machine from all the others in the world
+  * **IP** (Internet Protocol) address that can exist in two forms:
+    - DNS (Domain Name Service) form:  ''%%www.swan.ac.uk%%''
+    - "Dotted quad" form: ''137.44.1.7''
+  * Represented internally by 32 bit number (4.3 billion possibilities).
+<code java>
+static InetAddress.getByName()
+</code>
+  * Produces ''InetAddress'' object containing address.
+
+===== Who Am I? =====
+
+Finds out your network address when you're connected to the Internet.
+<code groovy 1 | Example 1: Examine the java.net.InetAddress object (at-m42/Examples/lecture10/whoAmI.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/whoAmI.groovy
+</code>
+
+----
+
+<cli prompt='$'>
+$ java WhoAmI
+Usage: WhoAmI MachineName
+$ java WhoAmI www.swan.ac.uk
+www.swan.ac.uk/137.44.1.7
+</cli>
+May be useful if your ISP dynamically allocates IP addresses for your dial-up connection.
+
+===== Clients and Servers =====
+
+  * Two machines must connect
+  * Server waits around for connection
+  * Client initiates connection
+  * Once the connection is made, server & client look identical
+  * Both ends are turned into ''InputStream'' and ''OutputStream'' objects, which can then be converted to ''Reader'' and ''Writer'' objects.
+
+===== Testing without a Network =====
+
+  * ''localhost'' : the "local loopback" IP address for testing without a network 	
+<code groovy>
+InetAddress addr = InetAddress.getByName(null)
+</code>
+  * Equivalently:	
+<code groovy>
+InetAddress.getByName("localhost")
+</code>
+  * Or using the reserved IP number for the loopback:
+<code groovy>
+InetAddress.getByName("127.0.0.1")
+</code>
+
+===== Port =====
+  * Unique "place" in a Machine
+  * IP address isn’t enough to identify a unique server
+  * Many servers can exist on one machine
+  * Process address includes a port number
+  * When you set up client and server, you must specify IP address and port, so they can find each other
+  * Not a physical location, but a software abstraction to represent a service
+  * Ports 1-1023 are reserved, others may be used (up to 64K)((Windows firewall may not allow connections!))
+
+===== Sockets =====
+
+  * Software abstraction used to represent the "terminals" of a connection between two machines.
+  * Socket is the actual 2-way connector. Can initiate a connection with a server.
+  * ''ServerSocket'' isn't really a socket but more of a "Server Connector" that produces a ''Socket'' as the return value of ''accept( )'', which waits for a connection.
+  * In the end, you get a ''Socket'' on each machine.
+
+===== Just Like Files =====
+
+  * in Java, once you have a ''Socket'', you call ''getInputStream()'' and ''getOutputStream()'' to produce the corresponding ''InputStream'' and ''OutputStream'' objects
+  * You convert these to readers and writers, wrap them in a ''BufferedReader'' or ''BufferedWriter'' and ''PrintWriter''
+  * From then on, it’s like reading and writing any other I/O stream!
+  * groovy simplifies this further by the judicious use of closures.
+
+===== Simple Client and Server =====
+
+  * [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/javaServer.groovy|Example 2]] very simple server that just echoes whatever the client sends (code in the notes) which is closely based on Java equivalent.
+[[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/javaServer.groovy|{{:at-m42:javaserver.png|The Java Server}}]]
+----
+
+<code groovy 1| Example 2: very simple server that just echoes whatever the client sends (at-m42/Examples/lecture10/javaServer.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/javaServer.groovy
+</code>
+
+Explanation: references to listing ...
+  - Line 7 -- create server socket at ''ClientServer.PORT'' and wait for a connection
+  - Lines 10 and 14 -- attach I/O to connection and act as a server
+  - Lines 16-22 -- act as an echo server
+  - Lines 24 and 28  -- finally: always close the two sockets
+
+===== The Client =====
+
+  * [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/javaClient.groovy|Example 3]] Very simple client that just writes to server and echoes what's returned (code in the notes) which is closely based on Java equivalent.
+[[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/javaClient.groovy|{{:at-m42:javaclient.png|The Java Client}}]]
+----
+
+<code groovy 1| Example 3: Very simple client that just writes to server and echoes what's returned (at-m42/Examples/lecture10/javaClient.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/javaClient.groovy
+</code>
+
+Explanation: references to code ...
+  - Line 3 -- open loop-back address
+  - Line 6 -- create socket and connect to ''ClientServer.PORT''
+  - Lines 11 and 15 -- attach I/O to connection and act as a client
+  - Lines 17--21 -- write to server and echo reply
+  - Line 23 -- finally: close client socket
+  
+
+===== The First Run =====
+{{:at-m42:server-run1.png|The first server run}}
+----
+
+This slide shows a run of these programs. 
+
+Server started first:
+<cli prompt='>'>
+$ groovy javaServer.groovy
+</cli>
+client started in a second command shell window.
+<cli prompt='>'>
+$ groovy javaClient.groovy
+</cli>
+
+===== Groovy-Socket =====
+
+  * In Groovy ''ServerSocket.accept'' can take a closure.
+  * Also adds a method ''withStreams'' that takes a closure to the ''java.net.Socket'' class. 
+  * Streams and sockets are closed after these closures return (even if an IO error occurs) so we don't need any ''try''-''catch'' blocks. 
+
+===== Groovy-server =====
+
+<code groovy 1|Example 3: A simpler Groovy server (at-m42/Examples/lecture10/groovyServer.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/groovyServer.groovy
+</code>
+
+----
+
+Here we see how the use of closures simplify the logic of the server application, and also makes it much more readable. The necessary ''try''-''catch''-''finally'' code that Java needs can be hidden inside the definition of the ''server.accept(Closure)'' and ''socket.withStreams(Closure)'' methods. Similar usability improvements are to be found throughout the Groovy-I/O system. Most commonly used cases are supported, but if you need tighter control, you can always go back to the full Java patterns.
+
+===== Groovy-client =====
+
+<code groovy 1|Example 4: A simpler Groovy client (at-m42/Examples/lecture10/groovyClient.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/groovyClient.groovy
+</code>
+
+----
+
+Similarly, the client is made much more understandable by use of the ''socket.withStreams'' method. You will also have noted the similarity of the actual code of the client/server logic.
+
+===== Serving Multiple Clients via Threads =====
+
+Since the Groovy closure implements the ''Runnable'' interface, to create a server that can handle multiple threads, we simply wrap the ''server.accept'' closure in a ''while(true)'' loop.
+
+<code groovy 1|Example 5: A multi-threaded server (at-m42/Examples/lecture10/groovyMultiServer.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/groovyMultiServer.groovy
+</code>
+
+----
+
+When a new client request comes into the server, the ''accept'' closure is activated in a new thread and the server can immediately go back to waiting. 
+
+===== Creating Multiple Clients via Threads =====
+
+<code groovy|Example 6: Client that tests the multiClientServer by starting up multiple clients (at-m42/Examples/lecture10/groovyMultiClient.groovy)>
+// ...
+def address = InetAddress.getByName("127.0.0.1")
+while (true) {
+	if (threadCount < MAX_THREADS) {
+		Thread.start() {
+			// ...
+			def socket = new Socket(address, ClientServer.PORT)
+			socket.withStreams { input, output -> 
+				// client-server code
+			}
+			// ...
+		}
+	}
+	Thread.currentThread().sleep(100)
+}
+</code>
+
+Full listing in the notes.
+----
+
+<code groovy 1|Example 6: Client that tests the multiClientServer by starting up multiple clients (at-m42/Examples/lecture10/groovyMultiClient.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/groovyMultiClient.groovy
+</code>
+
+As before, we use the power of closures this time to continually create client threads,
+connect to the server, and echo some numbers before sending the end message and shutting down.
+
+===== The Second Run =====
+{{:at-m42:server-run2.png|The second server run}}
+----
+
+This slide shows a run of these programs. 
+
+As before the server started first:
+<cli prompt='>'>
+$ groovy groovyMultiServer.groovy
+</cli>
+client started in a second command shell window.
+<cli prompt='>'>
+$ groovy groovyMultiClient.groovy
+</cli>
+
+The client and server will continue to run until you kill the processes (with windows <key>C-c</key>).
+
+
+===== User Datagram Protocol (UDP) =====
+
+  * Previous examples used //Transmission Control Protocol// (TCP).
+  * Very high reliability, message will always get there.
+  * Also high overhead.
+  * //User Datagram Protocol// (UDP) is an "unreliable" protocol which is much faster, but the messages won’t always get there.
+
+===== Datagrams =====
+
+  * You make your own packets and write the address on the outside, send it.
+  * Based on packet contents, recipient decides whether they got everything, sends a message if they didn’t, you retransmit.
+  * Reliability must be enforced by your program, not by the UDP protocol.
+  
+===== Communicating with Datagrams =====
+
+  * ''DatagramSocket'' on both server and client.
+  * Sends and receives ''DatagramPacket''s.
+  * No "connection": datagram just shows up.
+  * Only server must have fixed IP & port number
+  * ''DatagramPacket'' contains message of any length up to 64K bytes, IP address and socket # of destination.
+  * ''DatagramPacket'' objects are used for holders of both sent and received datagrams
+
+===== For Sending and Receiving =====
+
+  * For receiving, needs a buffer:
+<code groovy>
+DatagramPacket(buf, length)
+</code>
+  * For sending, needs buffer, IP address and port number:
+<code groovy>
+DatagramPacket(buf, length, inetAddress, port)
+</code>
+  * Here, ''buf'' already contains data to be sent, ''length'' is amount of buffer you want in datagram.
+  * In the example, the server just echoes datagrams, client threads send datagrams & wait for echo.
+  
+===== Examples (online for Self Study) =====
+
+  * [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/Dgram.groovy|Dgram.groovy]] –- defines a UPD datagram
+  * [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/chatterServer.groovy|chatterServer.groovy]] –- a version of groovyMultiServer using ''Dgram'' objects.
+  * [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/chatterClient.groovy|chatterClient.groovy]] –- a version of groovyMultiClient using ''Dgram'' objects.
+
+===== Firewall Warning =====
+
+You may find that the examples scripts will not run in the PC lab because either Groovy or Java be prevented from openning a port by Windows Firewall. You won't have the necessary privileges to allow. Should work on your own machine.
+
+
+----
+
+[[Home]] | [[lecture9|Previous Lecture]] | [[Lectures]] | [[lecture11|Next Lecture]] 
