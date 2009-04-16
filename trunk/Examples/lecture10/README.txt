@@ -14,6 +14,9 @@ This folder contains all the examples from [Lecture 9](/dokuwiki/at-m42:lecture9
 * [groovyClient.groovy](groovyClient.groovy) &ndash; a simpler Groovy client.
 * [groovyMultiServer.groovy](groovyMultiServer.groovy) &ndash; A server that can service multiple clients.
 * [groovyMultiClient.groovy](groovyMultiClient.groovy) &ndash; client that tests the multiClientServer by starting up multiple clients.
+* [Dgram.groovy](Dgram.groovy) &ndash; a utility class to convert back and forth between `String`s and `DataGramPacket`s.
+* [chatterClient.groovy](chatterClient.groovy) &ndash; tests the `chatterServer` by starting multiple clients, each of which sends datagrams.
+* [chatterServer.groovy](chatterServer.groovy) &ndash; a server that echoes datagrams.
 
 
 

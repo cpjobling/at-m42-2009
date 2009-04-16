@@ -21,7 +21,7 @@
 
 ===== Part 2: Concurrency and Client-Server Programming =====
 
-  * [[lecture9|Concurreny]]
+  * [[lecture9|Multi-Threading]]
   * [[lecture10|Network Programming]]
   * [[lecture11|Distributed Computing]]
 
