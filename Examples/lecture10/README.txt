@@ -13,6 +13,7 @@ This folder contains all the examples from [Lecture 9](/dokuwiki/at-m42:lecture9
 * [groovyServer.groovy](groovyServer.groovy) &ndash; a simpler Groovy server.
 * [groovyClient.groovy](groovyClient.groovy) &ndash; a simpler Groovy client.
 * [groovyMultiServer.groovy](groovyMultiServer.groovy) &ndash; A server that can service multiple clients.
+* [groovyMultiClient.groovy](groovyMultiClient.groovy) &ndash; client that tests the multiClientServer by starting up multiple clients.
 
 
 
