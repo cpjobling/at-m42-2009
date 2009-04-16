@@ -1,11 +1,10 @@
 // a simpler groovy server
 
 
-def s = new ServerSocket(ClientServer.PORT)
-println "Started: ${s}"
-try {
-	// Blocks until a connection occurs:
-	def socket = s.accept();
+def server = new ServerSocket(ClientServer.PORT)
+println "Started: ${server}"
+// Blocks until a connection occurs:
+server.accept() { socket ->
 	println "Connection accepted: ${socket}"
 	socket.withStreams { input, output -> 
 		// Output is automatically flushed by PrintWriter:
@@ -18,6 +17,4 @@ try {
 			w.println string
 		}
 	}
-} finally {
-	s.close();
 }

@@ -3,7 +3,7 @@
 InetAddress address = InetAddress.getByName(null)
 
 println "address = ${address}"
-Socket socket = new Socket(address, ClientServer.PORT)
+def socket = new Socket(address, ClientServer.PORT)
 // Guard everything in a try-finally to make
 // sure that the socket is closed:
 try {
