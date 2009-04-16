@@ -1,10 +1,10 @@
 // Very simple server that just echoes whatever the client sends.
 
-ServerSocket s = new ServerSocket(ClientServer.PORT)
+def server = new ServerSocket(ClientServer.PORT)
 println "Started: ${s}"
 try {
     // Blocks until a connection occurs:
-    Socket socket = s.accept()
+    socket = server.accept()
     try {
         println "Connection accepted: ${socket}"
         def r = new BufferedReader(new InputStreamReader(
@@ -24,5 +24,5 @@ try {
         socket.close()
     }
 } finally {
-    s.close()
+    server.close()
 }

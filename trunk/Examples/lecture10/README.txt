@@ -12,6 +12,7 @@ This folder contains all the examples from [Lecture 9](/dokuwiki/at-m42:lecture9
 * [javaClient.groovy](javaClient.groovy) &ndash; very simple client that just writes to server and echoes what's returned (Java-like).
 * [groovyServer.groovy](groovyServer.groovy) &ndash; a simpler Groovy server.
 * [groovyClient.groovy](groovyClient.groovy) &ndash; a simpler Groovy client.
+* [groovyMultiServer.groovy](groovyMultiServer.groovy) &ndash; A server that can service multiple clients.
 
 
 

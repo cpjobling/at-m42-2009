@@ -2,7 +2,7 @@
 
 def address = InetAddress.getByName(null);
 println "address = ${address}"
-socket = new Socket(address, ClientServer.PORT)
+def socket = new Socket(address, ClientServer.PORT)
 println "socket = ${socket}"
 socket.withStreams { input, output -> 
 	// Output is automatically flushed by PrintWriter:
