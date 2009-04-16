@@ -255,10 +255,60 @@ DatagramPacket(buf, length, inetAddress, port)
   * [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/chatterServer.groovy|chatterServer.groovy]] –- a version of groovyMultiServer using ''Dgram'' objects.
   * [[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/chatterClient.groovy|chatterClient.groovy]] –- a version of groovyMultiClient using ''Dgram'' objects.
 
+===== Even Simpler Groovy Servers =====
+
+  * The ''-l'' option lets you run a ''Groovy'' script in client-server mode. 
+  * You execute a script (using ''-e'' or by specifying a file) and groovy starts a TCP server on port 1960((Or another port if you wish to override it).
+  * You can then connect to that port using a suitable client (e.g. Telnet)
+
+===== whoAmI again =====
+
+<cli prompt=">">
+e:\dev\at-m42-2009\Examples\lecture10> groovy -l 5000 -e "println 'ip address: ' + InetAddress.getByName(line).hostAddress"
+</cli>
+Now in another command window:
+<cli prompt=">">
+e:\dev\at-m42-2009\Examples\lecture10> telnet localhost 5000
+localhost
+ip address: 127.0.0.1
+java.sun.com
+ip address: 72.5.124.55
+www.swan.ac.uk
+ip address: 137.44.1.7
+</cli>
+
+===== Ridiculously simple echo server =====
+
+When a script is started in listening mode, standard-output is attached to the socket's output stream and the messages from the socket's input stream are available line-by-line to the programmer in variable ''line''. Thus our echo server can be reimplemented as:
+<code groovy|Example 7: a really simple echo server (at-m42/Examples/lecture10/simpleServer.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture10/simpleServer.groovy
+</code>
+
+Run this as 
+<cli prompt='>'>
+e:\dev\at-m42-2009\Examples\lecture10> groovy -l 12345 simpleServer.groovy
+</cli>
+Then run any of the TCP clients developed earlier.
+
+===== A 75 Line Web Server ======
+
+To demonstrate the power of Groovy, Jeremy Rayner, one of the core Groovy developers, wrote a simple HTTP server in less than 75 lines of code!
+
+[[http://svn.codehaus.org/groovy/trunk/groovy/groovy-core/src/examples/commandLineTools/SimpleWebServer.groovy|Listing]] is in the notes.
+
+It really works:
+<cli prompt='>'>
+e:\dev\at-m42-2009\Examples\lecture10>groovy -l 80 SimpleWebServer.groovy
+</cli>
+
+----
+<code groovy 1|Example 8: a web server in 74 lines of code>
+extern> http://svn.codehaus.org/groovy/trunk/groovy/groovy-core/src/examples/commandLineTools/SimpleWebServer.groovy
+</code>
+
 ===== Firewall Warning =====
 
 You may find that the examples scripts will not run in the PC lab because either Groovy or Java be prevented from openning a port by Windows Firewall. You won't have the necessary privileges to allow. Should work on your own machine.
-
 
 ----
 

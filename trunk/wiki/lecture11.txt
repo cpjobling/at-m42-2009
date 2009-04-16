@@ -1,0 +1,328 @@
+~~SLIDESHOW~~
+====== Distributed Computing ======
+
+  * Run a method of a Java class that lives somewhere on a network using remote method invocation (RMI)
+  * Find an object that provides a remote service using JNDI.
+  * Run a method of a remote component that may be written in some language other than Java using CORBA.
+  * Dynamically add the services of a device to an application running on a network using JINI.
+  * Mention remote procedure calls using Simple Object Access Protocol (SOAP)
+
+===== Distributed Computing APIs =====
+
+  * **[[#RMI (Remote Method Invocation)|Remote Method Invocation]]**
+  * [[#Object Serialization]]
+  * [[#Naming and Directory Services|Java Naming and Directory Interface (JNDI)]]
+  * [[#CORBA and SOAP]]
+  * [[#Restful Web Services]]
+  * [[#JINI: distributed services|JINI]]
+
+
+===== RMI (Remote Method Invocation) =====
+
+  * Imagine that you could send a message to an object that lived somewhere on the network as if it was on your local machine.
+  * With Java RMI you can!
+
+{{:at-m42:rmi-1.png?726|Java RMI}}
+
+===== Remote Interfaces =====
+
+  * RMI makes heavy use of interfaces
+  * You talk to the remote object through its interface
+
+----
+
+  - Remote interface must be public.
+  - Must extend ''java.rmi.Remote''.
+  - Must declare ''java.rmi.RemoteException'' in its ''throws'' clause (plus any other application-specific exceptions).
+  - Any object passed as an argument must be ''serializable''.
+  - A remote object, passed as an argument or return value must be declared as the remote interface, not the implementation class.
+===== Structure of an RMI Application =====
+{{:at-m42:rmi-app.png?644|An RMI Application}}
+
+===== A remote time service =====
+
+<code java 1|Example 1: a remote time service (at-m42/Examples/lecture11/TimeHereI.java)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture11/TimeHereI.java
+</code>
+
+===== The remote object =====
+
+<code java 1|Example 2: the remote object (at-m42/Examples/lecture11/TimeHere.java)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture11/TimeHere.java
+</code>
+
+===== Setting up the server =====
+  * Create and install a security manager that supports RMI. Sun provides ''RMISecurityManager''.
+  * Create one or more instances of the remote objects.
+  * Register at least one of the remote objects with the RMI object registry (for bootstrapping).
+    * One remote object can have methods that produce handles to other remote objects.
+    * Client only needs to go to registry once to get the first remote object.
+
+===== Starting the registry =====
+
+  * An RMI registry server process (default port 1099) must be running on the server before remote objects can be registered:
+  * Windows
+
+	start rmiregistry 2005
+
+===== The Server =====
+
+<code groovy 1|Example 3: register the remote method via Groovy (at-m42/Examples/lecture11/startTimeHere.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture11/startTimeHere.groovy
+</code>
+
+
+  * Unix
+
+	rmiregistry  2005 &
+
+  * Once the registry is running, you may bind your remote object to it by calling static method ''Naming.bind(String address, Object remote_object)''
+
+
+===== Some potential problems =====
+
+  * ''localhost'' may not be a valid name for the server host. If testing locally you need the system’s host name (''dell-laptop'' in the example).
+  * RMI must have an active TCP/IP connection. On a dial-up service you must allow the network to connect!
+===== Registration for RMI serving =====
+
+  * Some additional factoids	
+  * Once main exits the object is still left around and alive by the registry.
+  * To destroy an object use ''Naming.unbind()'' or shut down ''rmiregistry''. 
+  * Awkward when testing!
+  * You can start a registry from a program (useful for testing) using
+
+	LocateRegistry.createRegistry(2005);
+
+===== We’re not finished yet! =====
+
+  * We now need to create the networking infrastructure
+{{:at-m42:infrastructure.png?765|networking infrastructure for RMI}}
+===== The stub and skeleton =====
+
+  * Created for you by ''rmic'' (RMI compiler)((must be full path to class rooted at remote server’s classpath.))
+
+	rmic uk.ac.swan.egm42.rmi.TimeHere
+
+  * Creates ''TimeHere_Stub.class''.
+  * Stub is placed in classpath of client
+
+===== Now we can write the client =====
+
+<code groovy l|Example 4: RMI client in Groovy (at-m42/Examples/lecture11/displayTimeHere.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture11/displayTimeHere.groovy
+</code>
+
+===== RMI Deployment =====
+
+
+{{:at-m42:rmi-deployment.png?520|RMI deployment}}
+
+===== Calling the remote method =====
+{{:at-m42:remote-method-call.png?757|Calling the remoet method}}
+
+===== To Make it Work (1) =====
+  * Need a policy file entry (.java.policy located in your "home" directory) to give access to RMI tool. 
+  * I've always had problems with this so I use:
+
+  grant {
+    permission java.security.AllPermission;
+  };
+
+  * Use ''policytool'' (installed with JDK) to set this up.
+
+----
+
+Not this setting effectively turns Java's security system. It should never be used on a production server!
+
+===== To Make it Work (2) =====
+  * Run the server process:
+	
+<cli prompt='>'>
+e:\dev\at-m42-2009\Examples\lecture11>groovy startTimeHere.groovy
+Ready to tell time
+</cli>
+  * Run the client from another command window:
+<cli prompt='>'>
+e:\dev\at-m42-2009\Examples\lecture11>groovy displayTimeHere.groovy
+Time on remote server: Thu Apr 16 19:44:33 BST 2009
+Time on remote server: Thu Apr 16 19:44:33 BST 2009
+Time on remote server: Thu Apr 16 19:44:33 BST 2009
+Time on remote server: Thu Apr 16 19:44:33 BST 2009
+Time on remote server: Thu Apr 16 19:44:33 BST 2009
+Time on remote server: Thu Apr 16 19:44:33 BST 2009
+Time on remote server: Thu Apr 16 19:44:33 BST 2009
+Time on remote server: Thu Apr 16 19:44:33 BST 2009
+Time on remote server: Thu Apr 16 19:44:33 BST 2009
+Time on remote server: Thu Apr 16 19:44:33 BST 2009
+</cli>
+
+===== Distributed Computing APIs =====
+
+  * [[#RMI (Remote Method Invocation)|Remote Method Invocation]]
+  * **[[#Object Serialization]]**
+  * [[#Naming and Directory Services|Java Naming and Directory Interface (JNDI)]]
+  * [[#CORBA and SOAP]]
+  * [[#Restful Web Services]]
+  * [[#JINI: distributed services|JINI]]
+
+===== Object Serialization =====
+
+  * Sometimes you need to pass objects (i.e. method parameters) to and return objects (i.e. return values) from a remote object.
+  * You cannot use //pass-by-reference// when objects are distributed, instead you have to use //pass-by-value//.
+  * Objects are serialized at one end, passed across the network and reconstructed at the other (called //marshalling//).
+  * All Java/groovy objects can be serialized (work done by ''Object'' class) but this ability is turned off by default.
+  * You just have to implement ''Serializable'' and hey-presto it’s done!
+
+===== How RMI uses Serialization =====
+
+  * Recall that in Groovy, method parameters are passed by value
+    * a copy of the reference (handle) is passed
+    * actual object is in the heap in the JVM
+  * In RMI, you cannot pass a reference to a remote object, since the object only exists in the local heap.
+  * Following scenarios illustrate RMI in action
+    * Adapted from Sierra and Bates, Head First EJB, O’Reilly, 2003.
+
+===== Passing an Object 1 =====
+ {{:at-m42:passing-and-object-1.png?797|Passing an Object 1}}
+
+===== Passing an Object 2 =====
+{{:at-m42:passing-and-object-2.png?757|Passing an Object 2}}
+
+===== Passing an Object 3 =====
+{{:at-m42:passing-and-object-3.png?757|Passing an Object 3}}
+
+===== Passing an Object 4 =====
+{{:at-m42:passing-and-object-4.png?757|Passing an Object 4}}
+
+===== Thought Question =====
+  * Suppose you want to return a reference to another remote object. How would this be achieved?
+
+{{:at-m42:passing-and-object-5.png?728|Thought question}}
+
+===== Hint =====
+  * After the process ... your two heaps have to look like this
+  
+{{:at-m42:passing-and-object-6.png?728|hint}}
+
+===== Distributed Computing APIs =====
+
+===== Distributed Computing APIs =====
+
+  * [[#RMI (Remote Method Invocation)|Remote Method Invocation]]
+  * [[#Object Serialization]]
+  * **[[#Naming and Directory Services|Java Naming and Directory Interface (JNDI)]]**
+  * [[#CORBA and SOAP]]
+  * [[#Restful Web Services]]
+  * [[#JINI: distributed services|JINI]]
+
+===== Naming and Directory Services =====
+Naming service — associates a name with a component:
+E.g. a file system associates a file name with a physical location of data on a hard drive
+Directory service — allows you to associate attributes as well as a name to a component
+E.g. Address book associates person with a name and allows attributes such as the person’s phone number, title, address with that name.
+
+
+JNDI: Accessing Naming and Directory Services
+JNDI = Java Naming and Directory Interface
+Java Enterprise API for working with networked naming and directory services. 
+Allows Java programs to use name servers and directory servers to look up objects or data by name and search for objects or data according to a set of specified attribute values.
+Implemented in the javax.naming package and its sub-packages as a standard extension to the Java 2 platform.
+JNDI – the facts
+Not specific to any particular name or directory server protocol.
+Provides a generic API that will work with any name or directory server.
+To support a particular protocol:
+Plug in a service provider for that protocol into a JNDI installation.
+Service providers for common protocols: NIS, LDAP, and Novell’s NDS available.
+Service providers also available for RMI and CORBA object registries.
+
+===== Distributed Computing APIs =====
+
+  * [[#RMI (Remote Method Invocation)|Remote Method Invocation]]
+  * [[#Object Serialization]]
+  * [[#Naming and Directory Services|Java Naming and Directory Interface (JNDI)]]
+  * **[[#CORBA and SOAP]]**
+  * [[#Restful Web Services]]
+  * [[#JINI: distributed services|JINI]]
+  
+
+===== CORBA and SOAP =====
+Need to interface with legacy data stores?
+Need to call methods of a language other than Java?
+Need services from a server object regardless of its physical location?
+Then you need some form of remote procedure call (RPC):
+Common Object Request Broker Architecture (CORBA) is an integration specification defined by the Object Management Group.
+Simple Object Access Protocol (SOAP) uses XML and networking technology to achieve much the same ends.
+Both promise distributed, language independent object interoperability.
+
+What is CORBA?
+CORBA vs. RMI
+One of the main CORBA features is RPC support, which allows your local objects to call methods in remote objects.
+RMI makes RPC possible between Java objects.
+CORBA makes RPC possible between objects implemented in any language.
+RMI can be used to call services on remote, non-Java code.
+you need is some kind of wrapper Java object around the non-Java code on the server side.
+The wrapper object connects externally to Java clients via RMI, and internally connects to the non-Java code using Java Native Interface (JNI).
+This approach requires you to write a kind of integration layer, which is exactly what CORBA does for you, but the advantage is that you don’t need a third party ORB.
+
+RMI-IIOP
+RMI over Internet Inter-Orb Protocol
+A variation of RMI that uses the standard Object Request Broker (ORB) to provide RMI services.
+A One Slide Guide to SOAP
+
+===== Distributed Computing APIs =====
+
+  * [[#RMI (Remote Method Invocation)|Remote Method Invocation]]
+  * [[#Object Serialization]]
+  * [[#Naming and Directory Services|Java Naming and Directory Interface (JNDI)]]
+  * [[#CORBA and SOAP]]
+  * **[[#Restful Web Services]]**
+  * [[#JINI: distributed services|JINI]]
+
+===== Restful Web Services =====
+
+===== Distributed Computing APIs =====
+
+  * [[#RMI (Remote Method Invocation)|Remote Method Invocation]]
+  * [[#Object Serialization]]
+  * [[#Naming and Directory Services|Java Naming and Directory Interface (JNDI)]]
+  * [[#CORBA and SOAP]]
+  * [[#Restful Web Services]]
+  * **[[#JINI: distributed services|JINI]]**
+
+===== JINI: distributed services =====
+
+Jini is a set of APIs and network protocols that can help you build and deploy distributed systems that are organized as federations of services.
+A service can be anything that sits on the network and is ready to perform a useful function. Hardware devices, software, communications channels—even human users themselves—can be services.
+A Jini-enabled disk drive could offer a “storage” service.
+A Jini-enabled printer could offer a “printing” service.
+A federation of services is a set of services, currently available on the network, that a client (meaning a program, service, or user) can bring together to help it accomplish some goal.
+JINI: Peer-to-Peer Networking
+In Jini there is no central controlling authority.
+Because no one service is in charge, the set of all services available on the network form a federation—a group composed of equal peers. 
+Jini’s run-time infrastructure merely provides a way for clients and services to find each other via a lookup service.
+After services locate each other, they are on their own. The client and its enlisted services perform their task independently of the Jini run-time infrastructure.
+If the Jini lookup service crashes, any distributed systems brought together via the lookup service before it crashed can continue their work.
+Jini includes a network protocol that clients can use to find services in the absence of a lookup service. 
+An example of JINI in use 
+To perform a task, a client enlists the help of services, e.g.:
+client program might upload pictures from the image storage service in a digital camera
+download the pictures to a persistent storage service offered by a disk drive
+send a page of thumbnail-sized versions of the images to the printing service of a colour printer.
+The client program builds a distributed system consisting of itself, the image storage service, the persistent storage service, and the colour-printing service. 
+The client and services of this distributed system work together to perform the task: to offload and store images from a digital camera and print a page of thumbnails. 
+
+Summary
+Distributed computing is when you have some part of the application on one machine and some part(s) on another machine perhaps separated geographically.
+If both parts of the application are written in Java you can use RMI or RMI/IIOP.
+To find the services available on a server you can use JNDI
+If some part of the application uses legacy code or is not written in Java then use CORBA
+SOAP is a recent attempt to simplify distributed computing by use of XML and standard internet technologies like HTTP.
+JINI is a networking technology that allows small applications or networked devices to communicate with other and dynamically configure themselves to create distributed applications.
+Labs
+Simply get the RMI example to work on your setup.
+Experiment with passing and receiving objects.
+
+
+----
+
+[[Home]] | [[lecture10|Previous Lecture]] | [[Lectures]] | [[lecture11|Next Lecture]] 

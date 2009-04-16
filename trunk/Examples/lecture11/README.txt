@@ -8,7 +8,8 @@ This folder contains all the examples from [Lecture 11](/dokuwiki/at-m42:lecture
 
 * [TimeHereI.java](TimeHereI.java) &ndash; the `TimeHere` remote interface.
 * [TimeHere.java](TimeHere.java) &ndash; the implementation of the `TimeHere` remote object.
-* [DisplayTimeHere.java](DisplayTimeHere.java]) &ndash; uses remote object `TimeHere`.
+* [displayTimeHere.groovy](displayTimeHere.groovy) &ndash; uses remote object `TimeHere`.
+* [startTimeHere.groovy](startTimeHere.groovy) &ndash; register remote object `TimeHere`.
 
 ----
 
