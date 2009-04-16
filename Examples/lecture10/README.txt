@@ -7,7 +7,8 @@ Examples for Lecture 10: Network Programming
 This folder contains all the examples from [Lecture 9](/dokuwiki/at-m42:lecture9). 
 
 * [whoAmI.groovy](whoAmI.groovy) &ndash; examine ''InetAddress'' object.
-* [JabbaServer.groovy](JabbaServer.groovy) &ndash; simple client/server class.
+* [ClientServer.groovy](ClientServer.groovy) &ndash; simple class that defines `PORT` for client server examples.
+* [javaServer.groovy](javaServer.groovy) &ndash; Very simple server that just echoes whatever the client sends (Java-like).
 * [groovyClient.groovy](groovyClient.groovy) &ndash; a simple groovy client.
 * [groovyServer.groovy](groovyServer.groovy) &ndash; a simple groovy server.
 

@@ -2,18 +2,17 @@
 
 def address = InetAddress.getByName(null);
 println "address = ${address}"
-socket = new Socket(address, JabberServer.PORT)
+socket = new Socket(address, ClientServer.PORT)
 println "socket = ${socket}"
 socket.withStreams { input, output -> 
-	def writer = new PrintWriter(output)
-	def reader = new BufferedReader(new InputStreamReader(input))
+	def w = new PrintWriter(output, true)
+	def r = new BufferedReader(new InputStreamReader(input))
 	for (i in 0..<10) {
-		writer.println "howdy ${i}"
-		writer.flush()
-	    def string = reader.readLine()
+		w.println "howdy ${i}"
+		//w.flush()
+	    def string = r.readLine()
 	    println string
     }
-	writer.println "END"
-	writer.close()
-	reader.close()
+	w.println "END"
+	//w.close()
 }
