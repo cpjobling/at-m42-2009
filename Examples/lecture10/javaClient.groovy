@@ -8,10 +8,9 @@ Socket socket = new Socket(address, ClientServer.PORT)
 // sure that the socket is closed:
 try {
     println "socket = ${socket}"
-    def r = new BufferedReader(new InputStreamReader(socket
-            .getInputStream()))
-    // Output is automatically flushed
-    // by PrintWriter:
+    def r = new BufferedReader(new InputStreamReader(
+    		socket.getInputStream()))
+    // Output is automatically flushed by PrintWriter:
     def w = new PrintWriter(new BufferedWriter(
             new OutputStreamWriter(socket.getOutputStream())), true)
     for (i in 0..<10) {

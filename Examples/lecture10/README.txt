@@ -8,9 +8,11 @@ This folder contains all the examples from [Lecture 9](/dokuwiki/at-m42:lecture9
 
 * [whoAmI.groovy](whoAmI.groovy) &ndash; examine ''InetAddress'' object.
 * [ClientServer.groovy](ClientServer.groovy) &ndash; simple class that defines `PORT` for client server examples.
-* [javaServer.groovy](javaServer.groovy) &ndash; Very simple server that just echoes whatever the client sends (Java-like).
-* [groovyClient.groovy](groovyClient.groovy) &ndash; a simple groovy client.
-* [groovyServer.groovy](groovyServer.groovy) &ndash; a simple groovy server.
+* [javaServer.groovy](javaServer.groovy) &ndash; very simple server that just echoes whatever the client sends (Java-like).
+* [javaClient.groovy](javaClient.groovy) &ndash; very simple client that just writes to server and echoes what's returned (Java-like).
+* [groovyServer.groovy](groovyServer.groovy) &ndash; a simpler Groovy server.
+* [groovyClient.groovy](groovyClient.groovy) &ndash; a simpler Groovy client.
+
 
 
 ----

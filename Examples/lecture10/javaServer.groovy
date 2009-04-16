@@ -9,14 +9,12 @@ try {
         println "Connection accepted: ${socket}"
         def r = new BufferedReader(new InputStreamReader(
                 socket.getInputStream()))
-        // Output is automatically flushed
-        // by PrintWriter:
+        // Output is automatically flushedby PrintWriter:
         def w = new PrintWriter(new BufferedWriter(
                 new OutputStreamWriter(socket.getOutputStream())), true)
         while (true) {
             def string = r.readLine()
-            if (string.equals("END"))
-                break
+            if (string.equals("END")) break
             println "Echoing: ${string}"
             w.println string
         }
