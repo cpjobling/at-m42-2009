@@ -204,7 +204,7 @@ Time on remote server: Thu Apr 16 19:44:33 BST 2009
   
 {{:at-m42:passing-and-object-6.png?728|hint}}
 
-===== Distributed Computing APIs =====
+
 
 ===== Distributed Computing APIs =====
 
@@ -216,24 +216,26 @@ Time on remote server: Thu Apr 16 19:44:33 BST 2009
   * [[#JINI: distributed services|JINI]]
 
 ===== Naming and Directory Services =====
-Naming service — associates a name with a component:
-E.g. a file system associates a file name with a physical location of data on a hard drive
-Directory service — allows you to associate attributes as well as a name to a component
-E.g. Address book associates person with a name and allows attributes such as the person’s phone number, title, address with that name.
+  * Naming service -- associates a name with a component:
+    * E.g. a file system associates a file name with a physical location of data on a hard drive
+  * Directory service -- allows you to associate attributes as well as a name to a component
+    * E.g. Address book associates person with a name and allows attributes such as the person’s phone number, title, address with that name.
 
 
-JNDI: Accessing Naming and Directory Services
-JNDI = Java Naming and Directory Interface
-Java Enterprise API for working with networked naming and directory services. 
-Allows Java programs to use name servers and directory servers to look up objects or data by name and search for objects or data according to a set of specified attribute values.
-Implemented in the javax.naming package and its sub-packages as a standard extension to the Java 2 platform.
-JNDI – the facts
-Not specific to any particular name or directory server protocol.
-Provides a generic API that will work with any name or directory server.
-To support a particular protocol:
-Plug in a service provider for that protocol into a JNDI installation.
-Service providers for common protocols: NIS, LDAP, and Novell’s NDS available.
-Service providers also available for RMI and CORBA object registries.
+===== JNDI: Accessing Naming and Directory Services =====
+
+  * JNDI = Java Naming and Directory Interface
+  * Java Enterprise API for working with networked naming and directory services. 
+  * Allows Java programs to use name servers and directory servers to look up objects or data by name and search for objects or data according to a set of specified attribute values.
+  * Implemented in the ''javax.naming'' package and its sub-packages as a standard extension to the Java 2 platform.
+===== JNDI – the facts =====
+
+  * Not specific to any particular name or directory server protocol.
+  * Provides a generic API that will work with any name or directory server.
+  * To support a particular protocol:
+    * Plug in a service provider for that protocol into a JNDI installation.
+    * Service providers for common protocols: NIS, LDAP, and Novell’s NDS available.
+    * Service providers also available for RMI and CORBA object registries.
 
 ===== Distributed Computing APIs =====
 
@@ -246,28 +248,51 @@ Service providers also available for RMI and CORBA object registries.
   
 
 ===== CORBA and SOAP =====
-Need to interface with legacy data stores?
-Need to call methods of a language other than Java?
-Need services from a server object regardless of its physical location?
-Then you need some form of remote procedure call (RPC):
-Common Object Request Broker Architecture (CORBA) is an integration specification defined by the Object Management Group.
-Simple Object Access Protocol (SOAP) uses XML and networking technology to achieve much the same ends.
-Both promise distributed, language independent object interoperability.
+  * Need to interface with legacy data stores?
+  * Need to call methods of a language other than Java?
+  * Need services from a server object regardless of its physical location?
+  * Then you need some form of remote procedure call (RPC):
+    * Common Object Request Broker Architecture (CORBA) is an integration specification defined by the Object Management Group.
+    * Simple Object Access Protocol (SOAP) uses XML and networking technology to achieve much the same ends.
+  * Both promise distributed, language independent object interoperability.
 
-What is CORBA?
-CORBA vs. RMI
-One of the main CORBA features is RPC support, which allows your local objects to call methods in remote objects.
-RMI makes RPC possible between Java objects.
-CORBA makes RPC possible between objects implemented in any language.
-RMI can be used to call services on remote, non-Java code.
-you need is some kind of wrapper Java object around the non-Java code on the server side.
-The wrapper object connects externally to Java clients via RMI, and internally connects to the non-Java code using Java Native Interface (JNI).
-This approach requires you to write a kind of integration layer, which is exactly what CORBA does for you, but the advantage is that you don’t need a third party ORB.
+===== What is CORBA? =====
+  * Common Object Request Broker Architecture (CORBA) is not a language feature; it’s an integration technology. 
+  * It's a specification that vendors can follow to implement CORBA-compliant integration products.
+  * CORBA is part of the OMG's effort to define a standard framework for distributed, language-independent object interoperability.
+  * CORBA supplies the ability to make remote procedure calls into Java objects and non-Java objects, and to interface with legacy systems in a location-transparent way.
+  * Java complements CORBA rather than competing with it. 
 
-RMI-IIOP
-RMI over Internet Inter-Orb Protocol
-A variation of RMI that uses the standard Object Request Broker (ORB) to provide RMI services.
-A One Slide Guide to SOAP
+===== CORBA vs. RMI =====
+
+  * One of the main CORBA features is RPC support, which allows your local objects to call methods in remote objects.
+  * RMI makes RPC possible between Java objects.
+  * CORBA makes RPC possible between objects implemented in any language.
+  * RMI can be used to call services on remote, non-Java code.
+    * you need is some kind of wrapper Java object around the non-Java code on the server side.
+    * the wrapper object connects externally to Java clients via RMI, and internally connects to the non-Java code using Java Native Interface (JNI).
+  * This approach requires you to write a kind of integration layer, which is exactly what CORBA does for you, but the advantage is that you don’t need a third party ORB.
+
+===== RMI-IIOP =====
+
+  * RMI over Internet Inter-Orb Protocol
+  * A variation of RMI that uses the standard Object Request Broker (ORB) to provide RMI services.
+
+===== A One Slide Guide to SOAP =====
+
+  * Simple Object Access Protocol (SOAP) is a lightweight protocol for the exchange of information in a decentralized, distributed environment. 
+  * It is an XML based protocol that consists of three parts:
+    * an envelope that defines a framework for describing what is in a message and how to process it,
+    * a set of encoding rules for expressing instances of application-defined data-types,
+    * a convention for representing remote procedure calls and responses. 
+  * SOAP can potentially be used in combination with a variety of other protocols; however, the only bindings defined in [the specification] describe how to use SOAP in combination with HTTP and HTTP Extension Framework.
+  * Big part of Microsoft’s .NET strategy. Java Support for SOAP from IBM. Support from Sun in J2EE 1.4. Possibly easier to use than CORBA.
+
+//Source//: Technical Note: SOAP 1.1, 8/5/2000.  http://www.w3.org/TR/SOAP.
+
+----
+
+A problem with SOAP is that it uses HTTP as a transport protocol, primarily to avoid firewall problems (HTTP messages are normally allowed through corporate firewalls). 
 
 ===== Distributed Computing APIs =====
 
@@ -280,6 +305,104 @@ A One Slide Guide to SOAP
 
 ===== Restful Web Services =====
 
+> "Representational state transfer (REST) is a style of software architecture for distributed hypermedia systems such as the World Wide Web. The terms 'representational state transfer' and 'REST' were introduced in 2000 in Roy Fielding's doctoral thesis((Fielding, Roy Thomas (2000) (HTML), [[http://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm|Architectural Styles and the Design of Network-based Software Architectures]], Doctoral dissertation, University of California, Irvine))." [[wp>Representational_State_Transfer|Wikipedia article]]
+
+In summary, the five key principles((Stefan Tilkov, Stefan (2007), [[http://www.infoq.com/articles/rest-introduction|A Brief Introduction to REST]], InfoQ, Dec 10.))
+
+    * Give every "thing" an ID
+    * Link things together
+    * Use standard methods
+    * Resources with multiple representations
+    * Communicate statelessly
+
+----
+
+**Notes**: Fielding was one of the principal authors of the Hypertext Transfer Protocol (HTTP) specification. REST is a set of principles that define how Web standards, such as HTTP and URIs, are supposed to be used. If you adhere to REST principles you will end up with a system that exploits the Web's architecture to your benefit.
+
+===== Give every "thing" an ID =====
+
+On the web any individual object can have a URL:
+  http://game.com/players/1234
+  http://game.com/actions/2009/04/17/26
+  http://game.com/items/4554
+  http://game.com/processes/move/east
+
+But so can collections:
+
+  http://example.com/actions/2007/11
+  http://example.com/items?weight=10 
+
+----
+
+This makes it easy for both web browsers and other programs to be able to find objects that need to be manipulated in a distributed system.
+
+===== Link things together =====
+
+Some made up XML:
+  <inventory carrier='http://game.com/players/1234' > 
+     <weight>120</weight> 
+     <potency>12</potency>
+     <item ref='http://games.com/items/4554' /> 
+     <item ref='http://games.com/items/4556' /> 
+  </order> 
+
+----
+
+Represents the inventory of a player in our game (could of course be HTML is a web application, but I wanted to emphasize machine-to-machine communication). Note that we are using familiar concept to link to define relationships. Thus to find out more, e.g. about one of the items being carried, the application can navigate to that resource via its URL.
+
+===== Use standard methods =====
+
+  * Traditional Service-Oriented Architecture: must use API as defined.
+  * Might be implemented in RMI, CORBA, SOAP 
+{{:at-m42:soa-game.png|A traditional Object-Based distributed game}}
+
+
+
+----
+
+You can see that there are two services defined here (without implying any particular implementation technology). The interface to these services is specific to the task -- it's a ''GameManagement'' and ''PlayerManagement'' service we are talking about. If a client wants to consume these services, it needs to be coded against this particular interface -- there is no way to use a client that was built before these interfaces were specified to meaningfully interact with them. The interfaces define the services' application protocol.
+
+===== RESTful services =====
+
+  * Must use ''verbs'' from the HTTP application protocol.
+{{:at-m42:restful-game.png|}}
+
+----
+
+You can see that what have been specific operations of a service have been mapped to the standard HTTP methods -- and to disambiguate, we have created a whole set of new resources.
+
+Essentially, this makes your application part of the Web -- its contribution to what has turned the Web into the most successful application of the Internet is proportional to the number of resources it adds to it. In a RESTful approach, an application might add a few million game item URIs to the Web; if it’s designed the same way applications have been designed in CORBA times, its contribution usually is a single "endpoint" -- comparable to a very small door that provides entry to a universe of resource only for those who have the key.
+
+The uniform interface also enables every component that understands the HTTP application protocol to interact with your application. 
+
+To summarize: For clients to be able to interact with your resources, they should implement the default application protocol (HTTP) correctly, i.e. make use of the standard methods GET, PUT, POST, DELETE.
+
+===== Resources with multiple representations =====
+
+  * An HTTP client is expected to be able to handle multiple resources types and to make use of //content negotiation// to request a particular format:
+
+  GET /players/1234 HTTP/1.1
+  Host: game.com 
+  Accept: text/html
+
+  GET /players/1234 HTTP/1.1
+  Host: game.com 
+  Accept: application/atom+xml
+
+----
+
+There is a significant benefit of having multiple representations of a resource in practice: If you provide both an HTML and an XML representation of your resources, they are consumable not only by your application, but also by every standard Web browser — in other words, information in your application becomes available to everyone who knows how to use the Web.
+
+===== Communicate statelessly =====
+  * HTTP is a //stateless// protocol: every request is a //new request//. 
+  * Therefore state must be stored in the client or in the resources.
+
+===== Impact of REST =====
+
+  * World-wide web is built on a RESTful architecture, so you could argue that it's already proved its worth.
+  * Becoming more popular for distributed computing: key feature of application frameworks like Rails and Grails.
+  * Needs a rethink: away from traditional OO design based around a few nouns and a rich vocabulary of verbs to few verbs and many nouns.
+
 ===== Distributed Computing APIs =====
 
   * [[#RMI (Remote Method Invocation)|Remote Method Invocation]]
@@ -291,36 +414,42 @@ A One Slide Guide to SOAP
 
 ===== JINI: distributed services =====
 
-Jini is a set of APIs and network protocols that can help you build and deploy distributed systems that are organized as federations of services.
-A service can be anything that sits on the network and is ready to perform a useful function. Hardware devices, software, communications channels—even human users themselves—can be services.
-A Jini-enabled disk drive could offer a “storage” service.
-A Jini-enabled printer could offer a “printing” service.
-A federation of services is a set of services, currently available on the network, that a client (meaning a program, service, or user) can bring together to help it accomplish some goal.
-JINI: Peer-to-Peer Networking
-In Jini there is no central controlling authority.
-Because no one service is in charge, the set of all services available on the network form a federation—a group composed of equal peers. 
-Jini’s run-time infrastructure merely provides a way for clients and services to find each other via a lookup service.
-After services locate each other, they are on their own. The client and its enlisted services perform their task independently of the Jini run-time infrastructure.
-If the Jini lookup service crashes, any distributed systems brought together via the lookup service before it crashed can continue their work.
-Jini includes a network protocol that clients can use to find services in the absence of a lookup service. 
-An example of JINI in use 
-To perform a task, a client enlists the help of services, e.g.:
-client program might upload pictures from the image storage service in a digital camera
-download the pictures to a persistent storage service offered by a disk drive
-send a page of thumbnail-sized versions of the images to the printing service of a colour printer.
-The client program builds a distributed system consisting of itself, the image storage service, the persistent storage service, and the colour-printing service. 
-The client and services of this distributed system work together to perform the task: to offload and store images from a digital camera and print a page of thumbnails. 
+  * Jini is a set of APIs and network protocols that can help you build and deploy distributed systems that are organized as federations of services.
+  * A service can be anything that sits on the network and is ready to perform a useful function. Hardware devices, software, communications channels--even human users themselves--can be services.
+    * A Jini-enabled disk drive could offer a "storage" service.
+    * A Jini-enabled printer could offer a “printing” service.
+  * A federation of services is a set of services, currently available on the network, that a client (meaning a program, service, or user) can bring together to help it accomplish some goal.
 
-Summary
-Distributed computing is when you have some part of the application on one machine and some part(s) on another machine perhaps separated geographically.
-If both parts of the application are written in Java you can use RMI or RMI/IIOP.
-To find the services available on a server you can use JNDI
-If some part of the application uses legacy code or is not written in Java then use CORBA
-SOAP is a recent attempt to simplify distributed computing by use of XML and standard internet technologies like HTTP.
-JINI is a networking technology that allows small applications or networked devices to communicate with other and dynamically configure themselves to create distributed applications.
-Labs
-Simply get the RMI example to work on your setup.
-Experiment with passing and receiving objects.
+===== JINI: Peer-to-Peer Networking =====
+
+  * In Jini there is no central controlling authority.
+  * Because no one service is in charge, the set of all services available on the network form a federation—a group composed of equal peers. 
+  * Jini's run-time infrastructure merely provides a way for clients and services to find each other via a lookup service.
+  * After services locate each other, they are on their own. The client and its enlisted services perform their task independently of the Jini run-time infrastructure.
+  * If the Jini lookup service crashes, any distributed systems brought together via the lookup service before it crashed can continue their work.
+  * Jini includes a network protocol that clients can use to find services in the absence of a lookup service. 
+===== An example of JINI in use =====
+ 
+  * To perform a task, a client enlists the help of services, e.g.:
+    * client program might upload pictures from the image storage service in a digital camera
+    * download the pictures to a persistent storage service offered by a disk drive
+    * send a page of thumbnail-sized versions of the images to the printing service of a colour printer.
+  * The client program builds a distributed system consisting of itself, the image storage service, the persistent storage service, and the colour-printing service. 
+  * The client and services of this distributed system work together to perform the task: to offload and store images from a digital camera and print a page of thumbnails. 
+
+===== Summary =====
+
+  * Distributed computing is when you have some part of the application on one machine and some part(s) on another machine perhaps separated geographically.
+  * If both parts of the application are written in Java you can use RMI or RMI/IIOP.
+  * To find the services available on a server you can use JNDI
+  * If some part of the application uses legacy code or is not written in Java then use CORBA
+  * SOAP is a recent attempt to simplify distributed computing by use of XML and standard internet technologies like HTTP.
+  * RESTful services recognizes that HTTP itself can provide many of the benefits of CORBA or SOAP at much lest cost.
+  * JINI is a networking technology that allows small applications or networked devices to communicate with other and dynamically configure themselves to create distributed applications.
+
+===== What Should You Remember? =====
+
+Apart from some special cases, current trend (as we'll see) is away from distributed computing using RMI, CORBA and SOAP towards a Web-Based architecture constructed from user-facing HTML clients consuming RESTful services over HTTP and with machine-to-machine communications exploiting XML resource exchange over HTTP. JINI is a niche technology that was in the doldrums for a long time. JNDI, RMI, and SOAP are still important in Enterprise Application Development, but over time, I would expect them to become relegated to very specialized "back office" applications. 
 
 
 ----
