@@ -1,0 +1,11 @@
+====== Lab Exercise 3: Case Studies ======
+
+You should study the write-up and code for the following case studies.
+
+  * Case Study 2: [[at-m42:casestudies:cs02|Adventure Game (Methods and Closures)]]
+  * Case Study 3: [[at-m42:casestudies:cs03|Adventure Game (Classes)]]
+  * Case study 4: [[at-m42:casestudies:cs04|Adventure Game (Inheritance)]]
+
+----
+
+[[at-m42:home]] | [[at-m42:labs]]

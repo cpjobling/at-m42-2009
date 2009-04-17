@@ -454,4 +454,4 @@ Apart from some special cases, current trend (as we'll see) is away from distrib
 
 ----
 
-[[Home]] | [[lecture10|Previous Lecture]] | [[Lectures]] | [[lecture11|Next Lecture]] 
+[[Home]] | [[lecture10|Previous Lecture]] | [[Lectures]] | [[part3|Next Lecture]] 

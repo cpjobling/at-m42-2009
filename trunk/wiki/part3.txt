@@ -1,0 +1,83 @@
+~~SLIDESHOW~~
+
+====== Enterprise Java ======
+
+  * Although the title of this module is "Client Server Programming on the Java Platform". 
+  * Our emphasis reflects the concerns that are current in the world of distributed computing. 
+  * Today, the emphasis is on "Enterprise Applications". 
+  * Java has established a niche in the development of applications that have to be distributed, scalable, secure, and reliable.
+  * This will be our concern for the remainder of the module. 
+
+
+===== The Java Platform =====
+{{:at-m42:javaplatform.png?657|The Java platform}}
+
+===== Java APIs =====
+{{:at-m42:platform-features.png?716|Java Platform Features}}
+
+===== What is “Enterprise” Java =====
+
+  * A “sexy” name for distributed computing
+  * Server-side computing
+    - "Legacy" Enterprise Information Systems systems
+    - Access to enterprise databases
+    - E-Commerce applications
+    - Lots of money to be made if the market can be cornered!
+  * Client-side computing
+    * Ubiquitous web browser (HTML and forms)
+    * Applets or applications
+
+===== De-mystifying the term =====
+
+  * Heterogeneous networks 
+    * common feature TCP/IP
+  * Variety of server applications
+    * E.g. database products with incompatible extensions
+  * Many different network protocols and standards
+    * Much overlap
+    * Vendor specific, non-standard extensions
+    * "Old"
+  * Relatively new discipline
+    * Lots of legacy systems integrated in //ad-hoc// ways to be updated
+
+
+===== Reasons to keep quiet =====
+
+  * Air of mystery is good for those in the know
+  * But distributed computing is somewhat more challenging in some aspects
+    * Distributed transactions
+    * Finding services
+    * Coping with network failure, etc.
+
+----
+
+It wouldn't do to reveal the truth – that it's not //that// difficult -- can earn more as a guru or wizard!
+
+
+===== "The Network is the Computer" =====
+
+  * The ability to access and use applications and computing resources anywhere in the world.
+  * It means forgetting all the barriers that separate machines and treating them all as one huge computer.
+  * JDBC (for database access) is one element but Sun’s Java Enterprise Edition (JEE) is designed to provide the remaining components.
+  * These lectures provide a quick overview of the more important JEE Components
+===== Reading =====
+  * Solveig Haugland, //et al//., J2EE 1.4 //The Big Picture//, Prentice Hall, 2004.
+  * George Reese, //Database programming with JAVA and JDBC// (2nd Edition), O'Reilly, 2000.
+  * Martin Fowler, //Patterns of Enterprise Application Architecture//, Addison Wesley, 2003.
+  * Deepak Alur et al., //Core J2EE Patterns//, (2nd Ed.), Prentice Hall, 2003. 
+  * Sun Microsystems, //J2EE 1.4 Specification//, http://java.sun.com/j2ee/j2ee-1_4-fr-spec.pdf.
+
+
+===== Coming in Part 3 =====
+
+  * Distributed Application Architecture — scene setting for the rest of the module. 
+  * Grails -- a modern enterprise application framework, an introduction and motivation for discussing:
+    * The //Presentation Tier// -- the web browser as client and web container as a presentation service for business objects. We will describe Servlets and JSP and Grails Views.
+    * The //Enterprise Integration Tier// —- the most important enterprise integration tier component is the relational database. We discuss Grails models and the object-relational mapping system that implements them, SQL, and JDBC.
+    * The //Business Tier// — there are many ways to implement business objects from plain-old-java objects (POJOs) to Enterprise Java Beans (EJBs). However, issues of resource management, data integrity and security mean that some form of framework is usually needed. We will consider the issues and compare and contrast the EJB and Grails approaches. 
+  * State-of-the-Art Report —- what is new or news worthy in the Java Enterprise Computing community.
+
+
+----
+
+[[Home]] | [[lecture11|Previous Lecture]] | [[Lectures]] | [[lecture12|Next Lecture]] 

@@ -11,21 +11,22 @@
   * Lecture 4: [[lecture4|Simple IO and Case Study 1]]
   * Lecture 5: [[lecture5|Methods and Flow of Control]]
   * Lecture 6: [[lecture6|Closures and Files]]
-  * Lab 1: [[at-m42:labs:lab1|Exercises from First Day]]
-  * Case Study 2: [[at-m42:casestudies:cs02|Adventure Game (Methods and Closures)]]
   * Lecture 7: [[lecture7|Classes and Inheritance]]
-  * Case Study 3: [[at-m42:casestudies:cs03|Adventure Game (Classes)]]
   * Lecture 8: [[lecture8|Unit Testing]]
-  * Case study 4: [[at-m42:casestudies:cs04|Adventure Game (Inheritance)]]
-  * Lab 2: [[at-m42:labs:lab2|Exercises from Second Day]]
+
+  * [[at-m42:labs|Lab Exercises]]
+  * [[at-m42:casestudies|Case Studies]]
 
 ===== Part 2: Concurrency and Client-Server Programming =====
 
-  * [[lecture9|Multi-Threading]]
-  * [[lecture10|Network Programming]]
-  * [[lecture11|Distributed Computing]]
+  * Lecture 9: [[lecture9|Multi-Threading]]
+  * Lecture 10: [[lecture10|Network Programming]]
+  * Lecture 11: [[lecture11|Distributed Computing]]
 
 ===== Part 3: Enterprise Applications =====
+
+  * [[part3|Java Platform for the Enterprise]]
+  * [[lecture12|Lecture 12]]: 
 
 ===== Additional Notes =====
 
