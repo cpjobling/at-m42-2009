@@ -1,0 +1,333 @@
+  * ~~SLIDESHOW~~
+====== Distributed Application Architecture ======
+
+  * In isolation Java or Groovy objects have no meaning.
+  * They represent things in the real world: a customer, a savings account.
+  * Before you can understand the details of an object you need to understand the space in which it operates.
+  * Architecture is the space in which software objects operate.
+  * This lecture examines the architecture of a distributed application.
+===== Lecture Content =====
+
+  * **[[#What is an Enterprise?|The Enterprise]]**
+  * [[#Enterprise Development on the Java Platform]] 
+  * [[#Architecture]]
+  * [[#Distributed Application Architecture]]
+  * [[#Software Design Patterns]]
+   
+
+===== What is an Enterprise? =====
+  * "Enterprise:" marketing hype for any product aimed at a business customer!
+  * However, hidden in the name, is the idea of a business taken “holistically”
+  * Enterprise solution
+    * Identifies common problem domains within the business
+    * Provides a shared infrastructure for solving those problems
+    * Abstracts away from irrelevant differences in local procedures to identify and exploit common features
+===== Enterprise Systems =====
+
+  * An enterprise system provides the proper abstractions for business concepts that are constant across a business so that they may be shared by all the business units within a company.
+  * In the internet age, enterprise systems go beyond sharing those concepts within a company to sharing them with vendors, clients and customers.
+===== Case Study: Wombles inc. =====
+
+  * Makes toasters, blenders, tire irons, light bulbs etc.
+  * Has three major business units: North America, Europe and Asia Pacific.
+  * Company started in North America and acquired other companies as it grew.
+  * Each business unit has its own systems and are mostly ignorant about the issues involved in doing business in the other two regions.
+  * Marketing has worked hard and successfully at creating a single, world recognized brand.
+===== Three Independent Units =====
+
+  * While each unit works within its own realm all runs smoothly because each is essentially a separate company.
+  * However, it is hard to move beyond the realm of a single business unit.
+    * What happens if there is a light-bulb shortage in Asia-Pacific but a light-bulb surplus in North America?
+    * How can Wombles Inc. provide a single interface into its inventory system for its distributors?
+    * How can Wombles Inc satisfy the demands of its customers for a single point of web access? 
+===== An Enterprise Solution =====
+
+  * Would provide a single repository of inventory and pricing information:
+    * Individual business units can customize and share pricing information
+    * Vendors are presented with a single interface into inventory management
+    * Web enabling the access to inventory and pricing systems is simply a matter of writing some servlets.
+===== Requirements for an Enterprise System =====
+
+  * //An enterprise system must have minimal propriety components//.
+     * E.g. platform and database independent.
+     * Able to integrate new components as technology develops.
+  * //An enterprise system must be capable of supporting personalised user experiences//.
+    * Internationalisation, localisation, accessibility, personalisation, customization.
+  * //An enterprise system must be the authoritative, shared source of the business concepts that it represents//.
+===== Three Key Services =====
+
+  * **Resource Management**
+    * Handle many simultaneous users
+    * Cope with periods of high demand
+    * //Solution//: distribute application across many CPUs
+  * **Data Integrity**
+    * You change your data and you see your changes
+    * You do not have access to other people’s data
+    * Your data survives a crash
+    * //Solution//: handle user sessions and database updates within transactions
+  * **Security**
+    * You can identify yourself (authentication)
+    * You can only do what you are authorized to do (authorization)
+    * //Solution//: provide a gatekeeper that controls who does what.
+
+===== Lecture Content =====
+
+  * [[#What is an Enterprise?|The Enterprise]]
+  * **[[#Enterprise Development on the Java Platform]]**
+  * [[#Architecture]]
+  * [[#Distributed Application Architecture]]
+  * [[#Software Design Patterns]]
+
+===== Enterprise Development on the Java Platform =====
+  * Java Platform is standards based and platform independent.
+  * Supports accessibly, internationalisation and localisation.
+    * E.g. Characters are Unicode.
+  * Object-oriented.
+  * Support for database computing (for repository services) and distributed computing built-in.
+
+===== The Java APIs and Platform Independence =====
+
+  * The Java Virtual Machine (JVM) is an open specification which anyone can write an implementation for:
+  * Furthermore, Java provides a set of standard APIs that allow access to low-level hardware and software resources.
+  * The Core API specifies a minimally viable implementation.
+  * The Java platform specification encompasses many other APIs.
+  * Additional APIs defined by the Java Enterprise Edition.
+  * Very rich eco-system of third-party and open source APIs
+
+===== Some of the important Java APIs (1)=====
+  * //JavaBeans// -- platform neutral software components.
+  * //Java Commerce// -- secure economic transactions across networks
+  * //Java Core// -- all the JDK 1.0 APIs, ''java.applet'', ''java.awt'', ''java.io'', ''java.lang'', ''java.net'' and ''java.util''.
+  * //Java Mobile Edition// -- for cellular phones, and toasters. Offers a subset of Java Core.
+  * //Java Management// -- allows an application to perform network administration
+
+===== Some of the important Java APIs (2) =====
+  * //Java Database Connectivity// (JDBC) -- Provides database-independent database access. One application can be written, compiled once, and run against any database engine supported by a JDBC driver.
+  * //Interface Definition Language// (IDL) -- Enables Java applications to provide a language-neutral interface between Java objects and objects located across the network. It follows the Object Management Group (OMG) IDL specification.
+  * //Remote Method Invocation// (RMI) -- A Java specific API that lets objects call methods in objects located across the network. 
+
+===== Some of the important Java APIs (3) =====
+  * //Java Media// -- a single API that enables developers to write rich multimedia applications interfacing with a variety of multimedia hardware devices. 
+    * The media frameworks provides clocks for synchronising audio, video, and MIDI.
+    * The 2D and 3D libraries provide imaging classes. 
+    * The Animation API enables applications to perform transformations on 2D images. 
+    * Telephony provides an application with a single API for accessing a range of telephone devices.
+
+===== Some of the important Java APIs (4) =====
+  * //Java Security// -- provides developers with a simple API for enhancing applet or application security, including the ability to add cryptography, encryption, and authentication.
+  * //Java Server// -- Java's answer to CGI. This API allows developers to interface and enhance internet servers using servlets, executable programs that users upload to run on networks or servers. Apache Tomcat is the standard implementation.
+  * //Java Server Faces// -- A component library for building web applications.
+  * //Enterprise Java Beans// -- Set of standards that allow distributed objects (using RMI) to operate in an environment in which resource management, data integrity and security can be managed by the provision of suitable container services.
+  * //Java Web Services// -- Set of APIs allowing Java to use SOAP and related standards for distributed computing.
+
+===== Some of the most Important Third Party APIs =====
+
+  * //Apache Tomcat// -- a web server and web applications container written in java. The standard implementation of the //Java Server// APIs. 
+  * //Hibernate// -- an Object-Relational Mapping system for persisting java Objects that has become the basis for the //Java Persistence API//
+  * //Spring// -- a set of loosely coupled APIs that are designed to make transactional enterprise application development more straightforward. 
+  * //Struts//, //Tapestry//, //Spring MVC//, //Google Web Toolkit//, //Wicket// -- Web Frameworks
+  * //Grails// -- web application framework built on Spring and Hibernate and written in Groovy.
+
+----
+
+[[http://www.springsource.com/|SpringSource]], the company behind [[http://www.springsource.org/|Spring]] has since 11th November [[http://www.springsource.com/g2one|owned G2One]] the company that developed and supports the Groovy programming language and the Grails web application development framework.
+
+===== Internationalisation, Localization, Accessibility =====
+  * First major language with internationalisation and localization built into it.
+  * Java character data type is two bytes and strings are Unicode.
+  * Can store in a Java string a phrase in any human language without any programming fixes.
+  * Java provides applications direct access to the locale information to provide the proper display of locale-sensitive strings such as date, currency, and numbers.
+  * Accessibility is even simpler, (in Swing) you just need to follow the user interface guidelines, Java does the rest.
+
+===== Sharing Business Concepts =====
+
+  * Business objects are shared objects that represent a concept within the problem domain.
+  * Java has built-in support for distributed computing.
+  * Java RMI provides this support.
+  * Business objects created in Java can be exported and shared by multiple user interfaces.
+  * The same business object that represents a toaster you have in stock can immediately be referenced by an employee in Singapore, a distributor in Houston and a customer shopping on the web.
+
+===== Lecture Content =====
+
+  * [[#What is an Enterprise?|The Enterprise]]
+  * [[#Enterprise Development on the Java Platform]] 
+  * **[[#Architecture]]**
+  * [[#Distributed Application Architecture]]
+  * [[#Software Design Patterns]]
+
+===== Architecture =====
+  * An architecture is the space in which objects operate. It defines the contracts through which they interact with external components and each other. 
+  * In this section we examine the following architectural issues that face a systems architect:
+    * //The role of strategic versus tactical design//
+    * //Architectural questions that should be asked//
+    * //Common architectures that are used//
+
+===== Strategic Versus Tactical Thought =====
+
+  * Tactical thought is concerned with solving the problem at hand and ignores hypothetical issues.
+  * Strategic thought means thinking about all possible worlds and weighing their probability.
+  * As an example, a strategic idea would be to abstract your design to a generic "product" when you only make widgets.
+    * Designing for //widgets// limits your choices later.
+    * Designing for //products// supports growth when you make other things in the future.
+  * A good systems architect will be a strong strategic thinker.
+
+===== Architectural Questions =====
+
+  * Resist designing for failure: "I know that this is the correct way to do this, but in actual fact we only need to ..."
+  * A successful software application will be used in realms well beyond is original design.
+  * A good architect assumes success and designs the system in the same way.
+  * Typical architectural questions:
+    * How do I partition my system?
+    * Should I support diverse user types?
+    * How do I enable the system to integrate with third-party applications?
+    * What standards should the design and development teams adhere to?
+    * What tools best meet these needs?
+
+===== Common Architectures =====
+
+  * Two main architectures -- two tier and three tier.
+  * Both focus on how the solution to a system design will be distributed across machines and/or processes on machines -- answers the question //on what machine or in which process will this piece of code run?//
+  * //Client-server// is a generic term for any application architecture that divides processing among two or more processes, often on two or more machines.
+  * Any database application is client-server if it handles data storage and retrieval in the database process and data manipulation & presentation somewhere else. //Server// is the database engine, //client// is the process that gets or creates the data. Client-server is used so that all clients see the same data.
+
+===== Two-tier client/server =====
+
+  * Most common client/server architecture.
+    * Client provides uniform presentation layer to multiple workstations.
+    * Centralised data storage layer is in the server. 
+{{:at-m42:2-tier.png?590|A two-tier architecture.}}
+
+===== Adding Application Logic =====
+
+  * If we move beyond simple information presentation we end up with "fat clients" and start to break simple two tier architectures
+  * Client has knowledge of application
+  * Difficult to change application, or support a range of applications
+{{:at-m42:fat-client.png?591|A fat client architecture.}}
+
+===== Object Reuse =====
+
+  * Object reuse is usually associated with the reuse of source code.
+  * In a client server system you want to exploit the reuse of //instances of objects//.
+  * For example for a bank application you want the same business object "my account" to be seen by an ATM application, bank teller application or internet banking client.
+  * If I am about to make a purchase and my wife withdraws my last £100, I want to see that change!
+
+===== When to use a two-tier design =====
+
+  * Use two tier if you can answer yes to all of the following
+    * Do you have to develop something quickly?
+    * Will you be using a single database?
+    * Is your database engine located on a single host?
+    * Is your database likely to stay approximately the same size over time?
+    * Is your user base likely to stay the same size over time?
+    * Are your requirements fixed with little or no possibility of change?
+    * Do you expect minimal maintenance after delivery?
+  * If not, then you need to consider three tier.
+
+===== Three Tier =====
+
+  * Isolates data processing in a central location and maximises object reuse.
+{{:at-m42:3-tier.png?705.5|Three-tier architecture.}}
+
+===== Isolated data store connectivity =====
+
+  * In two tier any change in the data model means a change in the client. As there are many clients, this may be expensive and difficult to guarantee.
+  * In three tier, application objects will need to store their state in a database, but client does not need to be aware of how the storage is achieved or even that a database is being used.
+  * If data model changes, only business objects will see the change.
+  * Client only talks to the objects on the server.
+
+===== Centralized Business Processing =====
+
+  * Objects on server model the business (business objects)
+  * Database interface of business object is hidden. Client and other objects see only the public API.
+  * If client wants to change an object, it does it through the API. The server is responsible for ensuring change is recorded in database.
+  * Rules for processing data are called business rules and are recorded in central location. All objects then obey the rules
+
+===== Business Object Presentation =====
+
+  * User interfaces change constantly during the development process as users play with them.
+  * The final appearance depends on
+    * The hardware being used
+    * The application's user base
+    * The purpose of the application in question.
+  * E.g. banking objects presented as:
+    * The teller window’s console at the branch
+    * The ATM machine
+    * The internet banking application in the web browser
+    * Mobile phone or interactive TV access to accounts
+
+===== Drawbacks to the three-tier architecture =====
+
+  * Level of complexity it adds to the system.
+  * You will have more distinct components and therefore more to manage.
+  * You’ll need software engineers who are competent in three-tier programming skills such as transaction management and computing.
+  * While tools like Java EE, EJB Spring and Grails aim to minimise the complexity, they cannot eliminate it. 
+
+===== Lecture Content =====
+
+  * [[#What is an Enterprise?|The Enterprise]]
+  * [[#Enterprise Development on the Java Platform]] 
+  * [[#Architecture]]
+  * **[[#Distributed Application Architecture]]**
+  * [[#Software Design Patterns]]
+
+===== Distributed Application Architecture ====
+
+{{:at-m42:daa.png?693|Distributed Application Architecture}}
+
+===== Presentation Tier =====
+
+{{:at-m42:daa-presentation-tier..png?693|Presentation tier.}}
+
+===== Web Container =====
+{{:at-m42:web-container.png?693|Web container.}}
+
+===== Business Tier =====
+
+{{:at-m42:business-tier.png?733.5|Business Tier.}}
+
+===== Integration Tier =====
+
+{{:at-m42:integration-tier.png?708|Integration tier.}}
+
+===== Implementation technologies: presentation tier =====
+{{:at-m42:presentation-tier.png?438|Choices at the presentation tier.}}
+
+===== Implementation technologies: business tier =====
+{{:at-m42:business-tier-choices.png?592|Business-tier choices.}}
+
+===== Implementation technologies: integration tier =====
+{{:at-m42:integration-tier-choices.png?722|Integration-tier choices.}}
+
+===== Lecture Contents =====
+
+  * [[#What is an Enterprise?|The Enterprise]]
+  * [[#Enterprise Development on the Java Platform]] 
+  * [[#Architecture]]
+  * [[#Distributed Application Architecture]]
+  * **[[#Software Design Patterns]]**
+
+===== Software Design Patterns =====
+  * Popularised by the book: //Design Patterns// by Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides (Addison Wesley) [Gang of Four or GoF].
+  * They are recurring forms of software development that you can capture at a low level and reuse across dissimilar applications.
+  * Within any application scope there are problems that you have encountered: patterns are the result of your recognising those problems and creating (and documenting) a common solution.
+
+===== Recognising Patterns =====
+
+  * First identify problems in generic terms
+  * Need to relate GUI widgets on the client to business objects in the application server
+    * GUI widgets should observe changes in the centralised business objects
+    * Need to make business objects persistent by saving them to a database
+  * We will describe some patterns that help us to achieve these goals as we develop our theme.
+  * Many more((Some of which are now thought to be //anti-patterns//)) are to be found in Core J2EE Patterns and on the [[http://java.sun.com/blueprints/corej2eepatterns/Web]]
+
+===== Lecture Summary =====
+
+  * [[#What is an Enterprise?|The Enterprise]]
+  * [[#Enterprise Development on the Java Platform]] 
+  * [[#Architecture]]
+  * [[#Distributed Application Architecture]]
+  * [[#Software Design Patterns]]
+
+
+----
+[[Home]] | [[part3|Previous Lecture]] | [[Lectures]] | [[lecture13|Next Lecture]] 

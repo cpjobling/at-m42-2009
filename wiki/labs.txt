@@ -3,8 +3,9 @@
 Some introductory blurb goes here
 
   * [[at-m42:labs:setup|Setting Up]]
-  * [[at-m42:labs:lab1|Lab Exercise 1]]
-  * [[at-m42:labs:lab2|Lab Exercise 2]]
+  * [[at-m42:labs:lab1|Lab Exercise 1]] Exercises from the First Day
+  * [[at-m42:labs:lab2|Lab Exercise 2]] Exercises from the Second Day
+  * [[at-m42:casestudies|Lab Exercise 3]] Case Studies
 
 
 ----
