@@ -130,7 +130,7 @@ An sample is provided in the examples for this lecture. Just take ''at-m42\Examp
 ===== Hello world =====
 
   * A Groovlet: (run http://localhost:8080/at-m42-examples/helloGroovlet.groovy)
-<code groovy 1|Example 1: hello world (at-m42/Examples/lecture13/web/helloGroovlet.groovy)>
+<code groovy 1|Example 2: hello world (at-m42/Examples/lecture13/web/helloGroovlet.groovy)>
 extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/helloGroovlet.groovy
 </code>
 
@@ -170,7 +170,7 @@ Need to tell the servlet how to handle Groovelets. This is done with web.xml((Th
 ====== Implicit Variables =====
 
 Using ''getServerInfo'' and ''getInitParameter'': (run http://localhost:8080/at-m42-examples/implicitVariables.groovy)
-<code groovy 1|Example 2: implicit variables (at-m42/Examples/lecture13/web/implicitVariables.groovy)>
+<code groovy 1|Example 3: implicit variables (at-m42/Examples/lecture13/web/implicitVariables.groovy)>
 extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/implicitVariables.groovy
 </code>
 
