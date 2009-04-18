@@ -12,6 +12,11 @@
     <display-name>AT-M42: Presentation Tier Examples</display-name>
 
   <servlet>
+  	<servlet-name>HelloServlet</servlet-name>
+  	<servlet-class>uk.ac.swan.atm42.web.HelloServlet</servlet-class>	
+  </servlet>	
+  
+  <servlet>
     <servlet-name>Groovy</servlet-name>
     <servlet-class>groovy.servlet.GroovyServlet</servlet-class>
   </servlet>
