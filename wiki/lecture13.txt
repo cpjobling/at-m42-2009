@@ -1,0 +1,446 @@
+~~SLIDESHOW~~
+====== Presentation Tier Services ======
+
+  * Server services is the largest market sector in Java world((Mobile may well become more important, certainly in terms of installed systems, if not in terms of monetary value, we shall see)).
+  * In this lecture we shall examine two technologies that are part of the web container services that the Java EE platform offers:
+    * Server-hosted Java applications: Servlets which process HTTP requests.
+    * Java Server Pages JSP: a servlet-based document delivery technology similar to Microsoft’s ASP.
+  * Servlet examples use the Jakarta/Tomcat servlet engine in "standalone" mode.
+
+===== Importance of the Server =====
+
+  * Some estimates state that half of worldwide software development involves client/server applications.
+  * Despite best efforts of some, server is not a single source platform (e.g. WinTel): much more heterogeneous than the typical client (Desktop).
+  * The Java platform offers platform-independent server environment with developing support that allow links to “legacy” applications.
+  * Possibly most important server application is ability to link to an SQL database: this is provided in Java by the JDBC package (see [[lecture14|next lecture]]).
+  * Next most important is web services providing (browser based) thin-client applications for e-commerce, in institutions via the intranet and to the general public via the Internet.
+===== Presentation Tier Services =====
+
+Form depends on architecture (see [[lecture12#architecture|previous lecture]])
+  * //Thick-Client Application// may provide user interface in Swing and talk directly to business tier objects using RMI (3 tier) or to a database using JDBC (2 tier).
+  * //Applet// is downloaded from a server as an object in a web page and may communicate with its home server using either standard sockets or HTTP.
+  * //Thin-Client// needs to get all its information in the form of client-side browser technologies HTML/CSS/JavaScript and speaks to a web container in HTTP.
+Most popular application delivery method for Java EE is via a web container. Thin client model is most often used despite being one of the most challenging applications to program!
+
+===== Lecture Contents =====
+
+  * Servlets and Groovlets
+  * Java Server Pages (JSP)
+  * Web Designers Want Templates Not Code!
+  * Groovy Server Pages (GSP)
+  * Architectural issues to be aware of!
+
+===== Servlets =====
+
+  * Client access from the Internet or corporate intranets is a sure way to allow many users to access data and resources easily.
+  * This type of access is based on clients using the World Wide Web standards of Hypertext Markup Language (HTML) and Hypertext Transfer Protocol (HTTP).
+  * The //Servlet API// abstracts a common solution framework for responding to HTTP requests. 
+  * Servlets also provide a simpler API for handling server-side of a general client-server application than sockets.
+
+===== CGI Processing =====
+{{:at-m42:cgi.png?525 |CGI processing: activity diagram.}}
+  * Can be done with any program that can read standard input, standard output and environment variables. E.g. C, C++, Perl, Python (even Java and Groovy).
+  * Note that CGI script, and associated process (if any) has to be loaded for each request.
+
+===== Servlet Processing =====
+{{:at-m42:servlet.png?538|Servlet processing: activity diagam}}
+
+===== Client/Server in Java =====
+
+  * It might be ideal to go to a completely Java-based solution to this problem -- an applet on the client side to validate and send the data, and a servlet on the server side to receive and process the data.
+  * Unfortunately you cannot rely on a particular version of Java being available on a client’s Web browser; in fact, you can’t rely on a Web browser supporting Java at all! 
+  * On an intranet this may not be a problem: you have control of what is on desktop.
+  * On the Web the safest approach is to handle all the processing on the server side and deliver plain HTML to the client.
+  * That way, no client will be denied the use of your site because they do not have the proper software installed.
+
+===== Advantages of Servlets =====
+
+  * Servlets provide an excellent solution for server-side programming support
+  * They are one of the most popular reasons for moving to the Java Platform.
+  * They provide a framework that replaces CGI programming 
+  * All your code has the platform portability gained from using the Java Platform.
+  * You have access to all the Java APIs (except, of course, the ones that produce GUIs, like Swing).
+  * You can program Servlets in Groovy!
+
+===== The basic servlet =====
+
+  * The architecture of the servlet API is that of a classic service provider 
+  * ''service( )'' method through which all client requests will be sent by the servlet container software,
+  * life cycle methods ''init( )'' and ''destroy( )'', which are called only when the servlet is loaded and unloaded (this happens rarely).
+{{:at-m42:servlet-api.png|The servlet API}}
+
+===== … the basic servlet =====
+^ Methods and Classes ^ Descripton ^
+| ''getServletConfig( )'' | returns a ''ServletConfig'' object that contains initialization and start up parameters for this servlet. |
+| ''getServletInfo( )'' | returns a ''String'' containing information about the servlet, such as author, version, and copyright. |
+| ''class GenericServlet'' | A shell implementation of this interface and is typically not used. |
+| ''class HttpServlet'' | An extension of ''GenericServlet'' and is designed specifically to handle the HTTP protocol. |
+
+The most convenient attribute of the servlet API is the auxiliary objects that come along with the ''HttpServlet'' class to support it. For ''HttpServlet'' class these two object are extended for HTTP: ''HttpServletRequest'' and ''HttpServletResponse''. 
+
+===== Writing Servlets in Java =====
+
+  * Subclass ''javax.servlet.http.HttpServlet'' and override ''doGet'' and/or ''doPost''
+  * Both methods have ''HttpServletRequest'' and ''HttpServletResponse'' parameters.
+  * ''HttpServletRequest'' represents the request from the client.
+  * ''HttpServletResponse'' represents the result returned by the server.
+
+===== Hello world in Java =====
+
+  * A Servlet: (run http://localhost:8080/at-m42-examples/helloServlet)
+<code java 1|Example 1: A servlet in Java (at-m42/Examples/lecture13/web/HelloServlet.java)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/HelloServlet.java
+</code>
+
+----
+
+Deploying this servlet: need to include ''servlets-api.jar'' from ''%TOMCAT_HOME%\lib'' in the compiler classpath, then compile the servlet:
+<cli prompt='>'>
+> javac HelloServlet.java -cp %TOMCAT_HOME%\lib\servlet-api.jar -d WEB-INF\classes
+</cli>
+Add the following to ''WEB-INF\web.xml'':
+<code xml>
+<web-app> 
+  
+  ...
+  
+  <servlet>
+  	<servlet-name>HelloServlet</servlet-name>
+  	<servlet-class>uk.ac.swan.atm42.web.HelloServlet</servlet-class>	
+  </servlet>	
+  
+  <servlet-mapping>
+    <servlet-name>HelloServlet</servlet-name>
+     <url-pattern>/helloServlet</url-pattern>
+  </servlet-mapping>
+    
+  ...
+  
+</web-app>
+</code>
+
+An sample is provided in the examples for this lecture. Just take ''at-m42\Examples\lecture13\web'', drop it into your Java web server's web apps folder (e.g. ''%TOMCAT_HOME%\webapps''), rename it to //at-m42-examples// and add ''groovy-all-1.6.0.jar'' from the ''%GROOVY_HOME%\embeddable'' to //at-m42-examples\WEB-INF\lib//. A windows //batch// file ''deploy.bat'' is provided. Edit this to set ''%JAVA_HOME%'', ''%TOMCAT_HOME%'' and ''%GROOVY_HOME%'' to suit your local settings.
+
+
+===== Writing Servlets in Groovy =====
+
+  * Groovy provides the Groovelet framework which simplifies the development of servlets.
+  * You do not need to subclass ''doGet'' or ''doPost'': standard output is simply passed to the client!
+
+===== Hello world =====
+
+  * A Groovlet: (run http://localhost:8080/at-m42-examples/helloGroovlet.groovy)
+<code groovy 1|Example 1: hello world (at-m42/Examples/lecture13/web/helloGroovlet.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/helloGroovlet.groovy
+</code>
+
+===== Deployment =====
+
+Need to tell the servlet how to handle Groovelets. This is done with web.xml((The actual configuration of a web application framework, e.g Tomcat, is outside the scope of this lecture. See http://groovy.codehaus.org/Groovlets for more explanation.)):
+<code xml>
+<web-app> 
+
+  <servlet>
+    <servlet-name>Groovy</servlet-name>
+    <servlet-class>groovy.servlet.GroovyServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>Groovy</servlet-name>
+      <url-pattern>*.groovy</url-pattern>
+  </servlet-mapping>
+
+</web-app>
+</code>
+ 
+
+
+===== Implicit Groovlet Variables =====
+
+^ variable name ^ Bound to ^
+| ''request'' | ''ServletRequest'' |
+| ''response'' | ''ServletResponse'' |
+| ''context'' | ''ServletContext'' |
+| ''application'' | ''ServletContext'' |
+| ''session'' | ''request.getSession(true)'' |
+| ''out'' | ''response.getWriter()'' |
+| ''sout'' | ''response.getOutputStream()'' |
+| ''html'' | ''new MarkupBuilder(out)'' |
+
+====== Implicit Variables =====
+
+Using ''getServerInfo'' and ''getInitParameter'': (run http://localhost:8080/at-m42-examples/implicitVariables.groovy)
+<code groovy 1|Example 2: implicit variables (at-m42/Examples/lecture13/web/implicitVariables.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/implicitVariables.groovy
+</code>
+
+===== Specify Init Parameters =====
+
+<code xml>
+<web-app> 
+
+  ...
+  
+  <context-param>
+  	<param-name>lecturer</param-name>
+  	<param-value>Dr Chris P. Jobling</param-value>
+  </context-param>
+
+  <context-param>
+  	<param-name>module</param-name>
+  	<param-value>AT-M42</param-value>
+  </context-param>
+  
+</web-app>
+</code>
+
+===== HttpServletRequest & HttpServletResponse =====
+
+
+==== Deploying ServletsRule ====
+
+This is more complex than can be covered in this lecture. Steps are:
+  Install jakarta-tomcat (http://jakarta.apache.org)
+  Install apache-ant (http://ant.apache.org)
+  Edit examples\build.properties to set the settings for your tomcat installation
+  Run ant webapp install inside the examples directory to install the Servlets and JSPs from this presentation.
+Go to http://localhost:8080/eg-m42
+Read the tomcat documentation to find out how to write your own Servlets and their configuration file web.xml.
+Enjoy!
+
+
+===== Handling forms data =====
+
+Whenever a form is submitted to a servlet, the HttpServletRequest comes preloaded with all the form data, stored as key-value pairs.
+If you know the names of the fields, you can just use them directly with the getParameter( ) method to look up the values. You can also get an Enumeration (the old form of the Iterator) to the field names.
+The following example also demonstrates how a single servlet can be used to produce the page that contains the form, and to respond to the page. 
+If the Enumeration is empty, there are no fields; this means no form was submitted; the form is produced, and the submit button will re-call the same servlet. 
+If fields do exist they are displayed.
+
+===== Handling Form Data =====
+
+Thread-safe servlets
+The servlet container has a pool of threads that it will dispatch to handle client requests.
+It is quite likely that two clients arriving at the same time could be processing through your service( ) at the same time.
+Therefore the service( ) method must written in a thread-safe manner.
+Any access to common resources (files, databases) will need to be guarded by using the synchronized keyword.
+
+Handling sessions with servlets
+HTTP is a “sessionless” protocol, so you cannot tell from one server hit to another if you’ve got the same person repeatedly querying your site, or if it is a completely different person.
+A great deal of effort has gone into mechanisms that will allow Web developers to track sessions.
+Companies could not do e-commerce without keeping track of a client and the items they have put into their shopping cart, for example.
+There are several methods of session tracking, but the most common method is with persistent “cookies.”
+What’s a cookie?
+ The HTTP Working Group of the Internet Engineering Task Force has written cookies into the official standard in RFC 2109.
+A cookie is nothing more than a small piece of information sent by a Web server to a browser. 
+The browser stores the cookie on the local disk, 
+Whenever another call is made to the URL that the cookie is associated with, the cookie is quietly sent along with the call.
+This provides a way that the server can be told that it’s you calling. 
+Can’t Rely on Cookies
+Clients can, however, turn off the browser’s ability to accept cookies
+If your site must track a client who has turned off cookies, you have a problem since the session tracking capabilities of the servlet API are designed around cookies.
+Other means of session tracking include URL rewriting (popular on search engines) or hidden form fields. These have to coded by hand. No built-in  support from servlet API.
+The Cookie class
+The servlet API (version 2.0 and up) provides the Cookie class. To use a cookie you simply add it to the response object. 
+The constructor takes a cookie name as the first argument and a value as the second.
+Cookies are added to the response object before you send any content.
+	Cookie oreo = new Cookie("TIJava", "2000");res.addCookie(cookie);
+Cookies are recovered by calling the getCookies( ) method of the HttpServletRequest object, which returns an array of cookie objects.
+	Cookie[] cookies = req.getCookies(); 
+Call getValue( ) for each cookie, to produce a String containing the cookie contents. getValue("TIJava") will produce a String containing “2000.”
+
+What’s a Session?
+A session is one or more page requests by a client to a Web site during a defined period of time.
+If you buy groceries online, for example, you want a session to be confined to the period from when you first add an item to “my shopping cart” to the point where you check out.
+Each item you add to the shopping cart will result in a new HTTP connection, which has no knowledge of previous connections or items in the shopping cart.
+To compensate for this lack of information, the mechanics supplied by the cookie specification allow your servlet to perform session tracking. 
+Session Class
+A servlet Session object lives on the server side of the communication channel; it captures useful data about the client as it moves through and interacts with your Web site. 
+This data may be pertinent for the present session, such as items in the shopping cart, or it may be data such as authentication information that was entered when the client first entered your Web site, and which should not have to be re-entered during a particular set of transactions.
+The Session class of the servlet API uses the Cookie class to do its work.
+All the Session object needs is some kind of unique identifier stored on the client and passed to the server.
+The next example implements session tracking with the servlet API
+
+Using Session Objects
+Contents
+Servlets
+Java Server Pages (JSP)
+Web Designers Want Templates Not Code!
+Architectural issues to be aware of!
+
+Java Server Pages (JSPs)
+Java Server Pages (JSP) is a standard Java extension that is defined on top of the servlet Extensions.
+The goal of JSPs is the simplified creation and management of dynamic Web pages.
+The Tomcat reference implementation from jakarta.apache.org automatically supports JSPs.
+JSPs allow you to combine the HTML of a Web page with pieces of Java code in the same document.
+Lifecycle of a JSP (1)
+Java code is surrounded by special tags that tell the JSP container that it should use the code to generate a servlet, or part of one.
+The benefit of JSPs is that you can maintain a single document that represents both the page and the Java code that enables it.
+The downside is that the maintainer of the JSP page must be skilled in both HTML and Java.
+The first time a JSP is loaded by the JSP container the servlet code necessary to fulfil the JSP tags is automatically generated, compiled, and loaded into the servlet container.
+The static portions of the HTML page are produced by sending static String objects to write( ). The dynamic portions are included directly into the servlet.
+
+Lifecycle of a JSP (2)
+As long as the JSP source for the page is not modified, it behaves as if it were a static HTML page with associated servlets.
+If you modify the source code for the JSP, it is automatically recompiled and reloaded the next time that page is requested.
+Dynamism means that you’ll see a slow response for the first-time access to a JSP.
+However, since a JSP is usually used much more than it is changed, you will normally not be affected by this delay.
+The structure of a JSP page
+A cross between a servlet and an HTML page.
+All JSP tags are denoted by:
+	<% JSP code here %>
+The leading percent sign may be followed by other characters that determine the precise type of JSP code in the tag.
+Here’s an extremely simple JSP example (ShowSeconds.jsp):
+	<html><head><title>Time in seconds</title></head><body><h1>The time in seconds is:<%= System.currentTimeMillis()/1000 %></h1></body></html>
+Implicit Objects
+Implicit Objects…cont.
+JSP Directives
+Communicate with servlet container. No output. General form:
+	<%@ directive {attr="value"}* %>
+Examples of “page” directives:
+	<%@ page language="java" %>
+	<%@ page session="java" import="java.util.*" %>
+Other page directive attributes: language, extends, import, session, buffer, autoFlush, isThreadSafe, info and errorPage.
+JSP Scripting Elements
+There are three types: declarations, scriptlets and expressions.
+Declaration:
+	<%! Declaration %>: define a variable
+Scriptlet:
+	<% scriptlet %>: fragment of java code
+Expression:
+	<%= expression %>: evaluate expression and output result
++ two types of comments: <%-- jsp comment --%>, and <!-- html comment --> 
+Hello.jsp
+Extracting fields and values
+JSP page attributes and scope
+Manipulating sessions in JSP
+Creating and Modifying Cookies
+Contents
+Servlets
+Java Server Pages (JSP)
+Web Designers Want Templates Not Code!
+Architectural issues to be aware of!
+
+Templates Not Code!
+You’ll have noticed that the Servlet/JSP programming model is far from ideal
+Servlets: HTML embedded in print statements
+JSP: Java code embedded in HTML
+Suits no-one!
+Web designers work in HTML, not Java!
+Java programmers work in code, not HTML!
+Mixing them up is error prone and does not separate concerns
+Recognising this, common pattern is to put code into helper applications and embed a simpler “templating” language into the HTML.
+Pattern Template View – renders information into HTML by embedding markers in an HTML page.
+Examples of Template View implementations 
+Not for discussion here … to be studied as part of your seminar project.
+Java standard is to use “custom tags” that talk to Java classes.
+Tags look like XML tags (with namespaces) in (X)HTML pages
+JSTL – Java Standard Tag Library provides access to beans and provides simple programming logic tags.
+Can eliminate <% … %> from JSP code!
+Several open source alternatives:
+Best regarded seems to be Velocity (another apache project)
+Very simple template language embedded in HTML
+Parsed and replaced by computational results (by a special Servlet) at access time.
+Transparent to web developers who just see HTML pages.
+Contents
+Servlets
+Java Server Pages (JSP)
+Web Designers Want Templates Not Code!
+Architectural issues to be aware of!
+
+Architectural Issues: Patterns
+Web container gets its requests from a web client in HTTP and returns HTML views of the application’s business objects. 
+Business objects are Java objects in the business tier.
+Web Tier communicates with the Business Tier either using RMI or by directly via Java objects. 
+Many presentation layer patterns are designed to simplify (or at least manage) the difficulties inherent with the impedance mismatch in this model.
+Also allow web designers and Java programmers to do their things without stepping on each others toes.
+Web Tier as “Model View Controller”
+Web Tier is essentially a good example of the classic model-view-controller (MVC) pattern.
+Principles:
+Separation of presentation from model
+Separation of controller from the view
+In “Web Tier” 
+View is HTML or JSP page.
+Controller is a Servlet.
+Model is a Java (business) object.
+MVC Patterns in the Web Tier
+Page Controller – an object that handles a request for a specific page or action on a web site.
+Decode URL and extract any form data
+Create and invoke any model objects to process the data.
+Pass data to model (models don’t need to know about HTTP)
+Determine which view should display the result and forward model info to view (JSP page).
+MVC Patterns in the Web Tier
+Front Controller handles all requests for a web site
+Used when navigation and application logic is more complex than can be reasonably handled by a collection of page controllers
+Component Model
+Pattern is based on “components” and events
+
+Patterns in the Web Tier
+Implementing complex presentation logic in HTML is a complex task
+Most of the Java EE Core Patterns are concerned with the presentation tier.
+See full catalogue (online) at http://java.sun.com/blueprints/coreJava EEpatterns/Patterns/
+Study some for the seminar!
+MVC Frameworks
+Many common problems (as indicated by the large number of patterns for presentation tier) have been solved many times.
+Many frameworks have been developed to simplify and standardise web tier development and implement the patterns. 
+All based around Servlets. Some also use or extend JSP.
+Some examples (study for seminar):
+Front Controller: 
+Apache Struts: http://struts.apache.org/
+Spring MVC: http://www.springframework.org/
+Component model:
+Jakarta Tapestry: http://jakarta.apache.org/tapestry/
+Java EE JavaServer Faces (JSF): http://java.sun.com/Java EE/javaserverfaces/index.jsp
+
+
+Lecture Summary
+Advantage of Java web container is that it is platform independent: will work on any machine that has a network connection and a JVM.
+We have introduced some of the Java APIs that can be used to create web-based presentation services with Java.
+Servlets provide a way to create applications that communicate to a client via a web browser.
+JSP allows the embedding of Java code inside an HTML page.
+In the thin-client world you are not working alone!
+Several core Java EE design patterns record best practice and have been implemented in open source and official Java solutions. 
+
+Lab Exercises
+Download, install and run Tomcat
+Modify ServletsRule.java so that the count i is loaded when the servlet starts (override init()) and is saved to disk by an overriden destroy() method.
+Experiment with JSP pages.
+Read-up on any or all of the Java EE patterns concerned with the presentation tier.
+Look into alternative presentation tier technologies: official Sun offerings: JSF, JSTL. Officially sanctioned MVC framework: Apache Struts. Alternatives to Struts and JSF: e.g. Tapestry, Spring MVC. 
+
+
+The slides and notes in this presentation are adapted from //Groovy Programming// (See [[lecture0#Reading|Recommended Reading]]).
+
+An index to the source code for all the examples in this lecture is [[/~eechris/at-m42/Examples/lecture02|available]].
+
+===== Heading 1 =====
+
+<code groovy 1 | Example 1: Everything is an object (at-m42/Examples/lecture02/example1.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example1.groovy
+</code>
+----
+
+Notes ...
+
+===== Heading 2 =====
+
+  * [[#Sub head 1]]
+  * [[#Sub head 2]]
+
+
+===== Summary of this Lecture ====
+ 
+The ....
+
+
+  * [[#Heading 1]]
+  * [[#Heading 2]]
+  * [[#heading 3]]
+
+===== Lab Exercises =====
+
+  * [[eg-m42:labs:lab1|Lab 1]] exercises 1-7.
+
+----
+
+[[Home]] | [[lecture1|Previous Lecture]] | [[Lectures]] | [[lecture3|Next Lecture]] 

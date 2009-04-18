@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class HelloServlet extends HttpServlet {
-	int i = 0; // Servlet "persistence"
 
 	public void service(HttpServletRequest req, HttpServletResponse res)
 			throws IOException {
@@ -22,6 +21,7 @@ public class HelloServlet extends HttpServlet {
 		out.print("Hello world servlet");
 		out.print("</title></head><body>");
 		out.print("<h1>Hello AT-M42 Class of 2009</h1>");
+		out,print("<p>I am a Java Servlet</p>")
 		out.print("</body></html>");
 		out.close();
 	}
