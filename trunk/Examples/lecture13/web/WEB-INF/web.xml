@@ -16,6 +16,11 @@
   	<servlet-class>uk.ac.swan.atm42.web.HelloServlet</servlet-class>	
   </servlet>	
   
+  <servlet-mapping>
+    <servlet-name>HelloServlet</servlet-name>
+     <url-pattern>/helloServlet</url-pattern>
+  </servlet-mapping>
+    
   <servlet>
     <servlet-name>Groovy</servlet-name>
     <servlet-class>groovy.servlet.GroovyServlet</servlet-class>
