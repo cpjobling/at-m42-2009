@@ -17,6 +17,9 @@ This folder contains all the examples from [Lecture 13](/dokuwiki/at-m42:lecture
 * [echoForm.groovy](web/echoForm.groovy) &ndash; dumps the name-value pairs of an HTML form. Run: http://localhost:8080/at-m42-examples/echoForm.groovy.
 * [sessionPeek.groovy](web/sessionPeek.groovy) &ndash; Using the `HttpSession` class. Run: http://localhost:8080/at-m42-examples/sessionPeek.groovy.
 
+### Java Server Pages (JSP)
+
+* [ShowSeconds.jsp](web/ShowSeconds.jsp) &ndash; a simple JSP example. Run: http://localhost:8080/at-m42-examples/ShowSeconds.jsp.
 
 [TimeHereI.java](TimeHereI.java) &ndash; the `TimeHere` remote interface.
 * [TimeHere.java](TimeHere.java) &ndash; the implementation of the `TimeHere` remote object.
