@@ -9,6 +9,10 @@ This folder contains all the examples from [Lecture 13](/dokuwiki/at-m42:lecture
 * [deploy.bat](deploy.bat) &ndash; batch-file to install web-app into Tomcat. Edit to suit your local settings.
 * [helloServlet.java](helloServlet.java) &ndash; hello world Servlet. Run: http://localhost:8080/at-m42-examples/helloServlet.
 * [helloGroovlet.groovy](helloGroovlet.groovy) &ndash; hello world Groovlet. Run: http://localhost:8080/at-m42-examples/helloGroovlet.groovy.
+* [implicitVariables.groovy](implicitVariables.groovy) &ndash; implicit variables.
+* [implicitVariables2.groovy](implicitVariables2.groovy) &ndash; using a builder to avoid long print statements.
+* [inspect.groovy](inspect.groovy) &ndash; Groovlet that reveals what's in the Groovlet binding.
+* [echoForm.groovy]() &ndash; dumps the name-value pairs of an HTML form. Run: http://localhost:8080/at-m42-examples/echoForm.groovy.
 
 [TimeHereI.java](TimeHereI.java) &ndash; the `TimeHere` remote interface.
 * [TimeHere.java](TimeHere.java) &ndash; the implementation of the `TimeHere` remote object.
