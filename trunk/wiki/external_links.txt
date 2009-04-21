@@ -1,0 +1,31 @@
+===== External Links =====
+
+===== Groovy, Grails and Tomcat =====
+
+  * [[http://groovy.codehaus.org/|Groovy]] "An agile dynamic language for the Java Platform". Home page for the scripting language to be used in this module. You can [[http://groovy.codehaus.org/Download|download]] Groovy from here, [[http://groovy.codehaus.org/Documentation|browse the documentation and tutorials]] and access the [[http://groovy.codehaus.org/gapi/|API documentation]]. I developed and tested the examples with Groovy Version 1.6 which requires at least Java 1.4 to run (1.5 if you want to exploit all the features).
+  * [[http://www.grails.org/|Grails]]. Home page for the Grails Agile Web Application Development Framework. Needs Java and Grails to run but otherwise self-contained.
+  * [[http://tomcat.apache.org/|Apache Tomcat]] is the standard "reference implementation" of the //Java Servlet// APIs. A web-server written in Java, Tomcat was used to test the Servlet, Groovlet, JSP and GSP examples in the lecture course. Grails comes with its own built-in web server, so Tomcat is not needed for the project but might be considered if you were to develop and deploy a real Web Application in Java, Groovy or Grails. I used the latest version 6 (which requires Java 1.5) for the examples.
+
+===== Java: Language and Platform =====
+  * [[http://www.mindviewinc.com/Books/|Bruce Eckel's Free Electronic Books]] Hidden corner of [[http://www.mindviewinc.com|Bruce Eckel's web site]] where you will find electronic versions of 2nd and 3rd editions of //Thinking in Java// plus its source code and solutions manual. There's also two books-in-development called "Thinking in Patterns" and "Thinking in J2EE" which might be useful.
+  * [[http://java.sun.com|Sun's Official Java Site]]. The home of all things Java. The software development kits (SKD) for the Java Platform Standard Edition (SE), Enterprise Edition (EE) and Mobile Edition (ME) can be downloaded from here. For this module you will need only the Java SE SDK. Version 1.6 is installed un the Engineering Labs on Campus.
+  * [[http://java.sun.com/javase/6/docs/api/|Java SE API documentation]]. Useful for when you have to look up the arguments for that obscure ''String'' class!
+  * [[http://developers.sun.com/|Sun Developer Network]] An extensive resource for developers using the Java Plaform inclusing a large documentation collection on Java which includes white papers, application blueprints and even electronic versions of the standard text books.
+  * [[http://java.sun.com/developer/onlineTraining/|Java Tutorials and Short Courses]]. A collection of documents and tutorials on most aspects of the Java Platform. Includes the famous Java Tutorial, Essentials of the Java Programming Language, and tutorials on Java EE.
+
+===== Software and Enterprise Design Patterns =====
+
+  * [[http://martinfowler.com/articles/enterprisePatterns.html|Enterprise Patterns]]. Martin Fowler's site that summarizes his own collection of //Patterns of Enterprise Application Architecture// (see [[Recommended Reading]]) as well as providing links to other on-line pattern collections.
+  * [[http://www.corej2eepatterns.com/|The Core J2EE Patterns]]. On this site, you will find the entire Java 2 Platform, Enterprise Edition (J2EE) Pattern catalog from the book //Core J2EE Patterns: Best Practices and Design Strategies// authored by architects from the Sun Java Center (see [[Recommended Reading]]). All patterns are published in their entire form from the first edition of the book.   
+  * [[http://hillside.net.patterns/|The Patterns Home Page]]. Web site devoted to Software Patterns. Lots of links to other resources. Not too many actual patterns -- I guess you should buy the books!  
+  * [[http://www.cs.wustl.edu/~schmidt/cs242/index.html|Developing Object-Oriented Software with Patterns and Frameworks]]. On-line course notes for Douglas Schmidt's module CS242 at the Washington University of Saint Louis. His lecture notes for "Introduction to Design Patterns" and "Design Pattern Case Studies" should be useful when attempting to identify and document the patterns that are present in your project. Don't be put off by the fact that the patterns are implemented in C++. 
+
+===== Enterprise Computing Resources =====
+
+
+===== Enterprise Computing Frameworks =====
+
+
+
+----
+[[Home]] 

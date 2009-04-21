@@ -1,6 +1,4 @@
 ====== AT-M42 Client Server Programming on the Java Platform ======
-
-
 ===== Module Content =====
 
   * [[Introduction]]
@@ -10,3 +8,4 @@
   * [[casestudies|Case Studies]]
   * [[seminar|The Group Seminar]]
   * [[project|The Mini Project]]
+  * [[Recommended Reading]]

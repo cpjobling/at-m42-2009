@@ -21,6 +21,11 @@ This folder contains all the examples from [Lecture 13](/dokuwiki/at-m42:lecture
 
 * [ShowSeconds.jsp](web/ShowSeconds.jsp) &ndash; a simple JSP example. Run: http://localhost:8080/at-m42-examples/ShowSeconds.jsp.
 * [Hello.jsp](web/Hello.jsp) &ndash. hello world JSP. Run http://localhost:8080/at-m42-examples/Hello.jsp.
+* [DisplayFormData.jsp](web/DisplayFormData.jsp) &ndash; Fetching the data from an HTML form. Run http://localhost:8080/at-m42-examples/DisplayFormData.jsp.
+* [Scope.jsp](web/Scope.jsp) &ndash; JSP attributes and page scope. Run http://localhost:8080/at-m42-examples/Scope.jsp.
+* []() &ndash; Fetching the data from an HTML form. Run http://localhost:8080/at-m42-examples/Hello.jsp.
+* []() &ndash; Fetching the data from an HTML form. Run http://localhost:8080/at-m42-examples/Hello.jsp.
+
 
 [TimeHereI.java](TimeHereI.java) &ndash; the `TimeHere` remote interface.
 * [TimeHere.java](TimeHere.java) &ndash; the implementation of the `TimeHere` remote object.
