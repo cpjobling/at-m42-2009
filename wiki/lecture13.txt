@@ -7,28 +7,37 @@
     * Java Server Pages JSP: a servlet-based document delivery technology similar to Microsoft’s ASP.
   * Servlet examples use the Jakarta/Tomcat servlet engine in "standalone" mode.
 
+-----
+
+The slides and notes in this presentation are adapted from //Groovy Programming//, //Groovy in Action// and //Thinking in Java// (See [[lecture0#Reading|Recommended Reading]]).
+
+An index to the source code for all the examples in this lecture is [[/~eechris/at-m42/Examples/lecture13|available]].
+
 ===== Importance of the Server =====
 
   * Some estimates state that half of worldwide software development involves client/server applications.
   * Despite best efforts of some, server is not a single source platform (e.g. WinTel): much more heterogeneous than the typical client (Desktop).
   * The Java platform offers platform-independent server environment with developing support that allow links to “legacy” applications.
-  * Possibly most important server application is ability to link to an SQL database: this is provided in Java by the JDBC package (see [[lecture14|next lecture]]).
+  * Possibly most important server application is ability to link to an SQL database: this is provided in Java by the JDBC package (see [[lecture15|Integration Tier Services]]).
   * Next most important is web services providing (browser based) thin-client applications for e-commerce, in institutions via the intranet and to the general public via the Internet.
+
 ===== Presentation Tier Services =====
 
 Form depends on architecture (see [[lecture12#architecture|previous lecture]])
   * //Thick-Client Application// may provide user interface in Swing and talk directly to business tier objects using RMI (3 tier) or to a database using JDBC (2 tier).
   * //Applet// is downloaded from a server as an object in a web page and may communicate with its home server using either standard sockets or HTTP.
   * //Thin-Client// needs to get all its information in the form of client-side browser technologies HTML/CSS/JavaScript and speaks to a web container in HTTP.
-Most popular application delivery method for Java EE is via a web container. Thin client model is most often used despite being one of the most challenging applications to program!
+  * Most popular application delivery method for Java EE is via a web container. Thin client model is most often used despite being one of the most challenging applications to program!
+
 
 ===== Lecture Contents =====
 
-  * Servlets and Groovlets
-  * Java Server Pages (JSP)
-  * Web Designers Want Templates Not Code!
-  * Groovy Server Pages (GSP)
-  * Architectural issues to be aware of!
+  * **[[#Servlets and Groovlets]]**
+  * [[#Java Server Pages]]
+  * [[#Web Designers Want Templates Not Code!]]
+  * [[#Groovy Server Pages]]
+  * [[#Architectural issues to be aware of!]]
+
 
 ===== Servlets =====
 
@@ -157,17 +166,23 @@ Need to tell the servlet how to handle Groovelets. This is done with web.xml((Th
 
 ===== Implicit Groovlet Variables =====
 
-^ variable name ^ Bound to ^
-| ''request'' | ''ServletRequest'' |
-| ''response'' | ''ServletResponse'' |
-| ''context'' | ''ServletContext'' |
-| ''application'' | ''ServletContext'' |
-| ''session'' | ''request.getSession(true)'' |
-| ''out'' | ''response.getWriter()'' |
-| ''sout'' | ''response.getOutputStream()'' |
-| ''html'' | ''new MarkupBuilder(out)'' |
+^ variable name ^ Note ^ Example usage ^
+| ''headers'' | Map of HTTP request headers | ''headers.host'' |
+| ''params'' | Map of HTTP request paramters | ''params.myParam'' |
+| ''session'' | ''Servletsession'', can be ''null'' | ''session?.mySavedParam'' |
+| ''request'' | ''HttpServletRequest'' | ''request.remoteHost'' | 
+| ''response'' | ''HttpServletResponse'' | ''%%response.contentType='text/html'%%'' |
+| ''context'' | ''ServletContext'' | ''context.myParam'' |
+| ''application'' | ''ServletContext'' (same as context) | ''application.myParam'' |
+| ''out'' | ''response.writer'' | Lazy initialization, not in binding |
+| ''sout'' | ''response.outputStream'' | Lazy initialization, not in binding  |
+| ''html'' | HTML builder initialized as ''new MarkupBuilder(out)'' | Lazy initialization, not in binding  |
 
-====== Implicit Variables =====
+----
+
+Lazy initialization means that the associated variable is ''null'' unless your application uses it. This allows us to work on the ''response'' object before the output stream is opened. For example this is necessary to set reponse properties such as ''contentType'', set a cookie or initialize a session.
+
+===== Implicit Variables =====
 
 Using ''getServerInfo'' and ''getInitParameter'': (run http://localhost:8080/at-m42-examples/implicitVariables.groovy)
 <code groovy 1|Example 3: implicit variables (at-m42/Examples/lecture13/web/implicitVariables.groovy)>
@@ -194,127 +209,236 @@ extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/impli
 </web-app>
 </code>
 
-===== HttpServletRequest & HttpServletResponse =====
+===== Using a Builder to Groovy-fy HTML Generation =====
 
+  * Using a builder: (run http://localhost:8080/at-m42-examples/implicitVariables2.groovy)
+<code groovy 1|Example 4: using a builder to avoid long print statements (at-m42/Examples/lecture13/web/implicitVariables2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/implicitVariables2.groovy
+</code>
 
-==== Deploying ServletsRule ====
+----
 
-This is more complex than can be covered in this lecture. Steps are:
-  Install jakarta-tomcat (http://jakarta.apache.org)
-  Install apache-ant (http://ant.apache.org)
-  Edit examples\build.properties to set the settings for your tomcat installation
-  Run ant webapp install inside the examples directory to install the Servlets and JSPs from this presentation.
-Go to http://localhost:8080/eg-m42
-Read the tomcat documentation to find out how to write your own Servlets and their configuration file web.xml.
-Enjoy!
+A problem with many server-side processing systems which persists in many server-side systems, from CGI-scripts in Perl through to Java and Groovy servlets, is that HTML ends up being produced in print statements which is far from ideal. For one thing, programmers are not web developers and web developers are not programmers. Mixing code with mark-up in this way fails to affectively separate the concerns of the programmer and the web developer. Groovy provides a coding pattern called a //builder// that can be used to construct many different kinds of hierarchical data structure. One such builder is the XML Markup Builder (''groovy.xml.MarkupBuilder'') which in this slide has been used to create the HTML from the previous example programmatically. Notice how the judicious use of functions, closures and indentation, has been exploited to make the generation of the HTML programmer friendly. We shall see later that GSP does the same thing for web developers. 
 
+You should also note that the builder ''html'' is an implicit variable that automatically is provided by the Groovlet system.
+
+===== The Groovlet Binding =====
+
+  * [[http://localhost:8080/at-m42-examples/inspect.groovy|inspect.groovy]]:
+<code groovy 1|Example 5: Groovlet that reveals what's in the Groovlet binding (at-m42/Examples/lecture13/web/inspect.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/inspect.groovy
+</code>
+
+----
+
+You can examine the variables that are passed to a Groovlet by the ''GroovyServlet'' that handles the request. This can be useful information when you need to debug a Groovlet or forget what a bound variable is called. Example 5 is a simple groovlet that displays this information.
 
 ===== Handling forms data =====
 
-Whenever a form is submitted to a servlet, the HttpServletRequest comes preloaded with all the form data, stored as key-value pairs.
-If you know the names of the fields, you can just use them directly with the getParameter( ) method to look up the values. You can also get an Enumeration (the old form of the Iterator) to the field names.
-The following example also demonstrates how a single servlet can be used to produce the page that contains the form, and to respond to the page. 
-If the Enumeration is empty, there are no fields; this means no form was submitted; the form is produced, and the submit button will re-call the same servlet. 
-If fields do exist they are displayed.
+  * Whenever a form is submitted to a servlet, the ''HttpServletRequest'' (Groovlet implicit variable ''request'') comes preloaded with all the form data, stored as key-value pairs.
+  * If you know the names of the fields, you can just use them directly with the ''getParameter( )'' method to look up the values. You can also get an ''Enumeration'' (old form of Java iterator) of the field names.
+  * The following example also demonstrates how a single Groovlet can be used to produce the page that contains the form, and to respond to the page. 
+  * If the List is empty, there are no fields; this means no form was submitted; the form is produced, and the submit button will re-call the same servlet. 
+  * If fields do exist they are displayed.
 
 ===== Handling Form Data =====
 
-Thread-safe servlets
-The servlet container has a pool of threads that it will dispatch to handle client requests.
-It is quite likely that two clients arriving at the same time could be processing through your service( ) at the same time.
-Therefore the service( ) method must written in a thread-safe manner.
-Any access to common resources (files, databases) will need to be guarded by using the synchronized keyword.
+  * Handling form data : (run http://localhost:8080/at-m42-examples/echoForm.groovy)
+<code groovy 1|Example 6: dumps the name-value pairs of an HTML form (at-m42/Examples/lecture13/web/echoForm.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/echoForm.groovy
+</code>
 
-Handling sessions with servlets
-HTTP is a “sessionless” protocol, so you cannot tell from one server hit to another if you’ve got the same person repeatedly querying your site, or if it is a completely different person.
-A great deal of effort has gone into mechanisms that will allow Web developers to track sessions.
-Companies could not do e-commerce without keeping track of a client and the items they have put into their shopping cart, for example.
-There are several methods of session tracking, but the most common method is with persistent “cookies.”
-What’s a cookie?
- The HTTP Working Group of the Internet Engineering Task Force has written cookies into the official standard in RFC 2109.
-A cookie is nothing more than a small piece of information sent by a Web server to a browser. 
-The browser stores the cookie on the local disk, 
-Whenever another call is made to the URL that the cookie is associated with, the cookie is quietly sent along with the call.
-This provides a way that the server can be told that it’s you calling. 
-Can’t Rely on Cookies
-Clients can, however, turn off the browser’s ability to accept cookies
-If your site must track a client who has turned off cookies, you have a problem since the session tracking capabilities of the servlet API are designed around cookies.
-Other means of session tracking include URL rewriting (popular on search engines) or hidden form fields. These have to coded by hand. No built-in  support from servlet API.
-The Cookie class
-The servlet API (version 2.0 and up) provides the Cookie class. To use a cookie you simply add it to the response object. 
-The constructor takes a cookie name as the first argument and a value as the second.
-Cookies are added to the response object before you send any content.
-	Cookie oreo = new Cookie("TIJava", "2000");res.addCookie(cookie);
-Cookies are recovered by calling the getCookies( ) method of the HttpServletRequest object, which returns an array of cookie objects.
-	Cookie[] cookies = req.getCookies(); 
-Call getValue( ) for each cookie, to produce a String containing the cookie contents. getValue("TIJava") will produce a String containing “2000.”
+===== Thread-safe servlets =====
+  * The servlet container has a pool of threads that it will dispatch to handle client requests.
+  * It is quite likely that two clients arriving at the same time could be processing through your ''service( )'' at the same time.
+  * Therefore the ''service()'' method must be written in a thread-safe manner.
+  * Any access to common resources (files, databases) will need to be guarded by using the ''synchronized'' keyword.
 
-What’s a Session?
-A session is one or more page requests by a client to a Web site during a defined period of time.
-If you buy groceries online, for example, you want a session to be confined to the period from when you first add an item to “my shopping cart” to the point where you check out.
-Each item you add to the shopping cart will result in a new HTTP connection, which has no knowledge of previous connections or items in the shopping cart.
-To compensate for this lack of information, the mechanics supplied by the cookie specification allow your servlet to perform session tracking. 
-Session Class
-A servlet Session object lives on the server side of the communication channel; it captures useful data about the client as it moves through and interacts with your Web site. 
-This data may be pertinent for the present session, such as items in the shopping cart, or it may be data such as authentication information that was entered when the client first entered your Web site, and which should not have to be re-entered during a particular set of transactions.
-The Session class of the servlet API uses the Cookie class to do its work.
-All the Session object needs is some kind of unique identifier stored on the client and passed to the server.
-The next example implements session tracking with the servlet API
+===== Handling sessions with servlets =====
 
-Using Session Objects
-Contents
-Servlets
-Java Server Pages (JSP)
-Web Designers Want Templates Not Code!
-Architectural issues to be aware of!
+  * HTTP is a "sessionless" protocol, so you cannot tell from one server hit to another if you've got the same person repeatedly querying your site, or if it is a completely different person.
+  * A great deal of effort has gone into mechanisms that will allow Web developers to track sessions.
+  * Companies could not do e-commerce without keeping track of a client and the items they have put into their shopping cart, for example.
+  * There are several methods of session tracking, but the most common method is with persistent "cookies."
+===== What's a cookie? =====
 
-Java Server Pages (JSPs)
-Java Server Pages (JSP) is a standard Java extension that is defined on top of the servlet Extensions.
-The goal of JSPs is the simplified creation and management of dynamic Web pages.
-The Tomcat reference implementation from jakarta.apache.org automatically supports JSPs.
-JSPs allow you to combine the HTML of a Web page with pieces of Java code in the same document.
-Lifecycle of a JSP (1)
-Java code is surrounded by special tags that tell the JSP container that it should use the code to generate a servlet, or part of one.
-The benefit of JSPs is that you can maintain a single document that represents both the page and the Java code that enables it.
-The downside is that the maintainer of the JSP page must be skilled in both HTML and Java.
-The first time a JSP is loaded by the JSP container the servlet code necessary to fulfil the JSP tags is automatically generated, compiled, and loaded into the servlet container.
-The static portions of the HTML page are produced by sending static String objects to write( ). The dynamic portions are included directly into the servlet.
+  * The HTTP Working Group of the Internet Engineering Task Force has written cookies into the official standard in [[http://www.isi.edu/in-notes/rfc2109.txt|RFC 2109]].
+  * A cookie is nothing more than a small piece of information sent by a Web server to a browser. 
+  * The browser stores the cookie on the local disk, 
+  * Whenever another call is made to the URL that the cookie is associated with, the cookie is quietly sent along with the call.
+  * This provides a way that the server can be told that it's you calling. 
+===== Can't Rely on Cookies =====
 
-Lifecycle of a JSP (2)
-As long as the JSP source for the page is not modified, it behaves as if it were a static HTML page with associated servlets.
-If you modify the source code for the JSP, it is automatically recompiled and reloaded the next time that page is requested.
-Dynamism means that you’ll see a slow response for the first-time access to a JSP.
-However, since a JSP is usually used much more than it is changed, you will normally not be affected by this delay.
-The structure of a JSP page
-A cross between a servlet and an HTML page.
-All JSP tags are denoted by:
-	<% JSP code here %>
+  * Clients can, however, turn off the browser’s ability to accept cookies
+  * If your site must track a client who has turned off cookies, you have a problem since the session tracking capabilities of the servlet API are designed around cookies.
+  * Other means of session tracking include URL rewriting (popular on search engines) or hidden form fields. These have to coded by hand. No built-in  support from servlet API.
+===== The Cookie class =====
+
+  * The servlet API (version 2.0 and up) provides the ''Cookie'' class. To use a cookie you simply add it to the response object. 
+  * The constructor takes a cookie name as the first argument and a value as the second.
+  * Cookies are added to the response object before you send any content.
+	
+<code groovy>
+def oreo = new Cookie("AT-M42", "2009");
+response.addCookie(cookie);
+</code>
+  * Cookies are recovered by calling the ''getCookies( )'' method of the ''HttpServletRequest'' object, which returns an list of cookie objects.
+<code java>
+def cookies = request.getCookies(); 
+</code>
+  * Call ''getValue()'' for each cookie, to produce a ''String'' containing the cookie contents. ''getValue("AT-M42")'' will produce a ''String'' containing "2009."
+
+===== What’s a Session? =====
+
+  * A session is one or more page requests by a client to a Web site during a defined period of time.
+  * If you buy groceries on-line, for example, you want a session to be confined to the period from when you first add an item to "my shopping cart" to the point where you check out((This might be a long time!)).
+  * Each item you add to the shopping cart will result in a new HTTP connection, which has no knowledge of previous connections or items in the shopping cart.
+  * To compensate for this lack of information, the mechanics supplied by the cookie specification allow your servlet to perform session tracking.
+
+===== Session Class =====
+
+  * A servlet ''Session'' object lives on the server side of the communication channel; it captures useful data about the client as it moves through and interacts with your Web site. 
+  * This data may be pertinent for the present session, such as items in the shopping cart, or it may be data such as authentication information that was entered when the client first entered your Web site, and which should not have to be re-entered during a particular set of transactions.
+  * The ''Session'' class of the servlet API uses the ''Cookie'' class to do its work.
+  * All the Session object needs is some kind of unique identifier stored on the client and passed to the server.
+  * [[http://localhost:8080/at-m42-examples/sessionPeek.groovy|Example 7]] (see notes) implements session tracking with the servlet API.
+  
+----
+
+  * [[http://localhost:8080/at-m42-examples/inspect.groovy|sessionPeek.groovy]]:
+<code groovy 1|Example 7: Using the HttpSession class (at-m42/Examples/lecture13/web/sessionPeek.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/sessionPeek.groovy
+</code>
+
+
+===== Lecture Contents =====
+
+  * [[#Servlets and Groovlets]]
+  * **[[#Java Server Pages]]**
+  * [[#Web Designers Want Templates Not Code!]]
+  * [[#Groovy Server Pages]]
+  * [[#Architectural issues to be aware of!]]
+
+===== Java Server Pages =====
+  * Java Server Pages (JSP) is a standard Java extension that is defined on top of the servlet API.
+  * The goal of JSPs is the simplified creation and management of dynamic Web pages.
+  * The Tomcat reference implementation from tomcat.apache.org automatically supports JSPs.
+  * JSPs allow you to combine the HTML of a Web page with pieces of Java code in the same document.
+
+===== Lifecycle of a JSP (1) =====
+
+  * Java code is surrounded by special tags that tell the JSP container that it should use the code to generate a servlet, or part of one.
+  * The benefit of JSPs is that you can maintain a single document that represents both the page and the Java code that enables it.
+  * The downside is that the maintainer of the JSP page must be skilled in both HTML and Java.
+  * The first time a JSP is loaded by the JSP container the servlet code necessary to fulfil the JSP tags is automatically generated, compiled, and loaded into the servlet container.
+  * The static portions of the HTML page are produced by sending ''static String'' objects to ''write()''. The dynamic portions are included directly into the servlet.
+
+===== Lifecycle of a JSP (2) =====
+
+  * As long as the JSP source for the page is not modified, it behaves as if it were a static HTML page with associated servlets.
+  * If you modify the source code for the JSP, it is automatically recompiled and reloaded the next time that page is requested.
+  * Dynamism means that you’ll see a slow response for the first-time access to a JSP.
+  * However, since a JSP is usually used much more than it is changed, you will normally not be affected by this delay.
+
+===== The structure of a JSP page =====
+
+  * A cross between a servlet and an HTML page.
+  * All JSP tags are denoted by:
+	''<%'' JSP code here ''%>''
 The leading percent sign may be followed by other characters that determine the precise type of JSP code in the tag.
-Here’s an extremely simple JSP example (ShowSeconds.jsp):
-	<html><head><title>Time in seconds</title></head><body><h1>The time in seconds is:<%= System.currentTimeMillis()/1000 %></h1></body></html>
-Implicit Objects
-Implicit Objects…cont.
-JSP Directives
-Communicate with servlet container. No output. General form:
+
+===== Simple JSP =====
+
+  * Here’s an extremely simple JSP example ([[http://localhost:8080/at-m42-examples/ShowSeconds.jsp|ShowSeconds.jsp]]):
+<code html 1|Example 8: a simple JSP page (at-m42/Examples/lecture13/web/ShowSeconds.jsp)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/ShowSeconds.jsp
+</code>
+
+===== Implicit Objects =====
+
+^Implicit variable^Of Type (''javax.servlet'')^Description^Scope^
+|''request''|protocol dependent subtype of ''HttpServletRequest''|The request that triggers the service invocation.|request|
+|''response''|protocol dependent subtype of ''HttpServletResponse''|The response to the request.|page|
+|''pageContext''|''jsp.PageContext''|The page context encapsulates implementation-dependent features and provides convenience methods and namespace access for this JSP.|page|
+|''session''|protocol dependent subtype of ''http.HttpSession''|The session object created for the requesting client. See servlet Session object.|session|
+|''application''|''ServletContext''|The servlet context obtained from the servlet configuration object (e.g., ''getServletConfig()'', ''getContext()''.|application|
+
+===== Implicit Objects … cont. =====
+
+^Implicit variable^Of Type (''javax.servlet'')^Description^Scope^
+|''out''|''jsp.JspWriter''|The object that writes into the output stream.|page|
+|''config''|''ServletConfig''|The ''ServletConfig'' for this JSP.|page|
+|''page''|''java.lang.Object''|The instance of this page's implementation class processing the current request.|page|
+
+----
+
+Meaning of "scope":
+  * ''page'' object has a scope that is restricted to the JSP.
+  * ''session'' object has a scope that exceeds that of a page: may span several client requests and pages.
+  * ''application'' object can provide services to a group of JSP pages that together represent a Web application.
+
+===== JSP Directives =====
+
+  * Communicate with servlet container. No output. General form:
+
 	<%@ directive {attr="value"}* %>
-Examples of “page” directives:
+
+  * Examples of "page" directives:
+
 	<%@ page language="java" %>
 	<%@ page session="java" import="java.util.*" %>
-Other page directive attributes: language, extends, import, session, buffer, autoFlush, isThreadSafe, info and errorPage.
-JSP Scripting Elements
+
+  * Other page directive attributes: ''language'', ''extends'', ''import'', ''session'', ''buffer'', ''autoFlush'', ''isThreadSafe'', ''info'' and ''errorPage''.
+
+===== JSP Scripting Elements =====
+
 There are three types: declarations, scriptlets and expressions.
-Declaration:
-	<%! Declaration %>: define a variable
-Scriptlet:
-	<% scriptlet %>: fragment of java code
-Expression:
-	<%= expression %>: evaluate expression and output result
-+ two types of comments: <%-- jsp comment --%>, and <!-- html comment --> 
-Hello.jsp
-Extracting fields and values
-JSP page attributes and scope
-Manipulating sessions in JSP
-Creating and Modifying Cookies
+  * Declaration: ''<%! //Declaration// %>'': define a variable
+  * Scriptlet: ''<% //scriptlet// %>'': fragment of java code
+  * Expression: ''<%= //expression// %>'': evaluate expression and output result
++ two types of comments: ''<%-- //jsp comment// --%>'', and ''<!-- //html// comment --> ''
+
+===== JSP Examples =====
+
+  * Example 9: Hello world JSP [[http://localhost:8080/at-m42-examples/Hello.jsp|Hello.jsp]] ([[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/Hello.jsp|source]] listing in notes)
+  * Example 10: Extracting fields and values [[http://localhost:8080/at-m42-examples/DisplayFormData.jsp|DisplayFormData.jsp]] ([[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/DisplayFormData.jsp|source]] listing in notes)
+  * Example 11: JSP page attributes and scope [[http://localhost:8080/at-m42-examples/Scope.jsp|Scope.jsp]] ([[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/Scope.jsp|source]] listing in notes)
+  * Example 12: Manipulating sessions in JSP [[http://localhost:8080/at-m42-examples/SessionObject.jsp|SessionObject.jsp]] ([[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/SessionObject.jsp|source]] listing in notes)
+  * Example 13: Creating and Modifying Cookies [[http://localhost:8080/at-m42-examples/Cookies.jsp|Cookies.jsp]] ([[http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/Cookies.jsp|source]] listing in notes)
+
+----
+
+**Example 9**: Hello world JSP
+
+<code html 1| Example 9 hello world JSP (at-m42/Examples/lecture13/web/Hello.jsp)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/Hello.jsp
+</code>
+
+**Example 10**: Extracting fields and values
+
+This JSP also generates the form:
+<code html 1| Example 10: Extracting fields and values (at-m42/Examples/lecture13/web/DisplayFormData.jsp)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/DisplayFormData.jsp
+</code>
+
+**Example 11**: JSP page attributes and scope
+
+<code html 1| Example 11: JSP page attributes and scope (at-m42/Examples/lecture13/web/Scope.jsp)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/Scope.jsp
+</code>
+
+**Example 12**: Manipulating sessions in JSP
+
+<code html 1| Example 12: JSP page attributes and scope (at-m42/Examples/lecture13/web/SessionObject.jsp)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/SessionObject.jsp
+</code>
+
+**Example 13**: Creating and Modifying Cookies
+
+<code html 1| Example 13: Creating and Modifying Cookies (at-m42/Examples/lecture13/web/Cookies.jsp)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/Cookies.jsp
+</code>
+
 Contents
 Servlets
 Java Server Pages (JSP)
@@ -409,38 +533,10 @@ Read-up on any or all of the Java EE patterns concerned with the presentation ti
 Look into alternative presentation tier technologies: official Sun offerings: JSF, JSTL. Officially sanctioned MVC framework: Apache Struts. Alternatives to Struts and JSF: e.g. Tapestry, Spring MVC. 
 
 
-The slides and notes in this presentation are adapted from //Groovy Programming// (See [[lecture0#Reading|Recommended Reading]]).
-
-An index to the source code for all the examples in this lecture is [[/~eechris/at-m42/Examples/lecture02|available]].
-
-===== Heading 1 =====
-
-<code groovy 1 | Example 1: Everything is an object (at-m42/Examples/lecture02/example1.groovy)>
-extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture02/example1.groovy
-</code>
-----
-
-Notes ...
-
-===== Heading 2 =====
-
-  * [[#Sub head 1]]
-  * [[#Sub head 2]]
 
 
-===== Summary of this Lecture ====
- 
-The ....
 
-
-  * [[#Heading 1]]
-  * [[#Heading 2]]
-  * [[#heading 3]]
-
-===== Lab Exercises =====
-
-  * [[eg-m42:labs:lab1|Lab 1]] exercises 1-7.
 
 ----
 
-[[Home]] | [[lecture1|Previous Lecture]] | [[Lectures]] | [[lecture3|Next Lecture]] 
+[[Home]] | [[lecture12|Previous Lecture]] | [[Lectures]] | [[lecture14|Next Lecture]] 

@@ -35,7 +35,7 @@
     </ul>
     <hr />
     <address>
-      <a href="mailto:C.P.Joblibg@Swansea.ac.uk"></a>
+      <a href="mailto:C.P.Jobling@Swansea.ac.uk"></a>
     </address>
     <!-- Created: Tue Nov 30 17:22:09 GMT Standard Time 2004 -->
     <!-- hhmts start -->

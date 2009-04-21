@@ -55,10 +55,11 @@ Modern approaches to enterprise application development.
     * Completed lab exercises
   * //Part 2//: 40% Assesses Learning Outcome 2 and 3. 
     * Seminar to discuss Modern approaches to enterprise application development. Group size 4-5 people.
-  * //Part 2//: 40%: Assesses Learning Outcome 4. 
+  * //Part 3//: 40%: Assesses Learning Outcome 4. 
     * An extended group design project to analyse, design and prototype a multi-tier multi-user adventure game. Assessment (a group mark) based on a presentation of the prototypes and documentation. Group size 4-5 people.
 
 All work will be completed within the two weeks of the module and submitted by 5.00 pm Friday, 8th May.
+
 ===== Reading =====
 
   * //Recommended Reading//:

@@ -1,0 +1,45 @@
+~~SLIDESHOW~~
+====== Recommended Reading ======
+
+There is no single text book that covers all the material presented in this course. Also, as I have not taught this material since 2006, my knowledge of the latest literature is somewhat limited. However, the following lists the books and other materials that in some form have contributed to the notes. I have arranged the suggested reading materials by topic rather than by the conventional //Required//, //Recommended// and //Additional Reading// subheadings. 
+
+===== Groovy and Grails =====
+
+  * K. Barclay and J. Savage, //Groovy Programming: An Introduction for Java Developers//, Morgan Kaufmann, 2007. A very well written introduction that is pitched at just the right level for beginners to programming and as well as those with knowledge of another language. I have to confess that, in order to meet the deadline for this module, I freely //stole// examples and text from this text !
+  * D. Koenig (wth contributions from A. Glover, P. King, G. Laforge and J. Skeet, //Groovy in Action//, Manning, 2007. Considered by many to be the essential tutorial and reference for the Groovy language. An essential text for those wishing to move on from //learning// to //applying// Groovy.  
+  * G. Rocher and J. Brown, //The Definitive Guide to Grails//, 2nd. Ed., Apress 2009. Written by the principle developer of Grails so definately //the// definitive text!  
+
+===== The Java Programming Language =====
+
+  * K. Sierra, B. Bates, //Headfirst Java// (2nd. Ed.), O'Reilly, 2005. ISBN: 0596009208. I am very conscious that many of you will be coming to this course with a limited knowledge of Java. In my opinion, this is the best "self learning" book that is available on Java and will get you up to speed quickly. It complements the more comprehensive coverage provided by Eckel.
+  * B.Eckel,  Thinking in Java,  2nd Ed., Prentice Hall, 2000. Out of print but downloadable from http://www.eckelobjects.com. The latest (4th Edition) covers Java 5.0 features but ommits some Java Enterprise Edition features such as RMI, JDBC, Servlets, Enterprise Java Beans, and JSP pages. 
+  * H. Dietel and P. Dietel, //Java: How to Program//, An Introduction to Programming and Object-Oriented Design Using Java 2nd Edition - Java 5.0 version (Paperback), Prentice Hall 2007.
+
+===== Java Enterprise Edition =====
+
+  * S.Haugland, M. Cade and A Orapallo, //J2EE 1.4 The Big Picture//, Prentice Hall, 2004. This is the first book on enterprise Java to explain the big picture. Aimed at managers more than systems architects or programmers, it explains the issues in plain English.
+  * R. Johnson, //J2EE Development Without EJB//, Expert One-on-One , Hungry Minds, 2004. ISBN: 0764558315.
+  * B.A. Tate and J. Gehtland, Spring: a developer’s notebook. O’Reilly, 2005. ISBN: 0596009100. 
+  * [[http://www.onlinecomputerbooks.com|Free J2EE Books]] (Out of print and probably out of date!) but free books.
+
+===== Software Design Patterns =====
+
+  * M. Fowler, //Patterns of Enterprise Application Architecture//, Addison Wesley, 2003. ISBN: 0321127420.
+  * D. Alur, D. Malks, and J. Crupi, //Core J2EE Patterns: Best Practices and Design Strategies// (2nd Ed.), Sun Microsystems Press/Prentice Hall, 2003.
+  * E. Evans, Domain Driven Design, Addison Wesley, 2004.
+  * E. Gamma, R. Helm, R. Johnson, J. Vlissides, //Design patterns : elements of reusable object-oriented software//, Addison Wesley, 1993. The seminal text on software design patterns.
+
+
+===== Java Enterprise Edition Components =====
+
+I have referred to these books, papers and web sites in the development of my lecture notes. You may find them useful but they are more than likely out of date now!
+  * G. Reese, //Database Programming with JDBC and JAVA// (2nd Ed.), O'Reilly, 2000.
+  * J. Hunter and W. Crawford, //Java Servlet Programming// (2nd Ed), O'Reilly, 2001.
+
+===== On the Web =====
+
+As with many other topics in the area of advanced telecommunications and software development, the world-wide web, rather than published literature, is one of the best sources for the very latest materials on the topics covered in this course. However, as you should know by now, the quality of such materials varies enormously and you will need to exercise some discretion! See the [[External Links]] page for some suggestions of links which I judge to have sufficient authority and usefulness. 
+
+----
+
+[[Home]]
