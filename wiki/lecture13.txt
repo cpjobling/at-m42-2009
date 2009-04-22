@@ -36,7 +36,7 @@ Form depends on architecture (see [[lecture12#architecture|previous lecture]])
   * [[#Java Server Pages]]
   * [[#Web Designers Want Templates Not Code!]]
   * [[#Groovy Server Pages]]
-  * [[#Architectural issues to be aware of!]]
+  * [[#Architectural Issues: Patterns|Architectural issues to be aware of!]]
 
 
 ===== Servlets =====
@@ -317,7 +317,7 @@ extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/sessi
   * **[[#Java Server Pages]]**
   * [[#Web Designers Want Templates Not Code!]]
   * [[#Groovy Server Pages]]
-  * [[#Architectural issues to be aware of!]]
+  * [[#Architectural Issues: Patterns|Architectural issues to be aware of!]]
 
 ===== Java Server Pages =====
   * Java Server Pages (JSP) is a standard Java extension that is defined on top of the servlet API.
@@ -439,103 +439,213 @@ extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/Sessi
 extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/Cookies.jsp
 </code>
 
-Contents
-Servlets
-Java Server Pages (JSP)
-Web Designers Want Templates Not Code!
-Architectural issues to be aware of!
+===== Lecture Contents =====
 
-Templates Not Code!
-You’ll have noticed that the Servlet/JSP programming model is far from ideal
-Servlets: HTML embedded in print statements
-JSP: Java code embedded in HTML
-Suits no-one!
-Web designers work in HTML, not Java!
-Java programmers work in code, not HTML!
-Mixing them up is error prone and does not separate concerns
-Recognising this, common pattern is to put code into helper applications and embed a simpler “templating” language into the HTML.
-Pattern Template View – renders information into HTML by embedding markers in an HTML page.
-Examples of Template View implementations 
-Not for discussion here … to be studied as part of your seminar project.
-Java standard is to use “custom tags” that talk to Java classes.
-Tags look like XML tags (with namespaces) in (X)HTML pages
-JSTL – Java Standard Tag Library provides access to beans and provides simple programming logic tags.
-Can eliminate <% … %> from JSP code!
-Several open source alternatives:
-Best regarded seems to be Velocity (another apache project)
-Very simple template language embedded in HTML
-Parsed and replaced by computational results (by a special Servlet) at access time.
-Transparent to web developers who just see HTML pages.
-Contents
-Servlets
-Java Server Pages (JSP)
-Web Designers Want Templates Not Code!
-Architectural issues to be aware of!
+  * [[#Servlets and Groovlets]]
+  * [[#Java Server Pages]]
+  * **[[#Web Designers Want Templates Not Code!]]**
+  * [[#Groovy Server Pages]]
+  * [[#Architectural Issues: Patterns|Architectural issues to be aware of!]]
 
-Architectural Issues: Patterns
-Web container gets its requests from a web client in HTTP and returns HTML views of the application’s business objects. 
-Business objects are Java objects in the business tier.
-Web Tier communicates with the Business Tier either using RMI or by directly via Java objects. 
-Many presentation layer patterns are designed to simplify (or at least manage) the difficulties inherent with the impedance mismatch in this model.
-Also allow web designers and Java programmers to do their things without stepping on each others toes.
-Web Tier as “Model View Controller”
-Web Tier is essentially a good example of the classic model-view-controller (MVC) pattern.
-Principles:
-Separation of presentation from model
-Separation of controller from the view
-In “Web Tier” 
-View is HTML or JSP page.
-Controller is a Servlet.
-Model is a Java (business) object.
-MVC Patterns in the Web Tier
-Page Controller – an object that handles a request for a specific page or action on a web site.
-Decode URL and extract any form data
-Create and invoke any model objects to process the data.
-Pass data to model (models don’t need to know about HTTP)
-Determine which view should display the result and forward model info to view (JSP page).
-MVC Patterns in the Web Tier
-Front Controller handles all requests for a web site
-Used when navigation and application logic is more complex than can be reasonably handled by a collection of page controllers
-Component Model
-Pattern is based on “components” and events
+===== Templates Not Code! =====
+  * You’ll have noticed that the Servlet/JSP programming model is far from ideal
+  * Suits no-one!
+    * Web designers work in HTML, not Java!
+    * Programmers work in code, not HTML!
+  * Mixing code and markup up is error prone and does not separate concerns.
+  * Recognising this, common pattern is to put code into helper applications and embed a simpler "templating" language into the HTML.
+  * Pattern //Template View//((See Fowler Patterns of Enterprise Application Architecture [[http://www.martinfowler.com/eaaCatalog/templateView.html|Template View]])) -- renders information into HTML by embedding markers in an HTML page.
 
-Patterns in the Web Tier
-Implementing complex presentation logic in HTML is a complex task
-Most of the Java EE Core Patterns are concerned with the presentation tier.
-See full catalogue (online) at http://java.sun.com/blueprints/coreJava EEpatterns/Patterns/
-Study some for the seminar!
-MVC Frameworks
-Many common problems (as indicated by the large number of patterns for presentation tier) have been solved many times.
-Many frameworks have been developed to simplify and standardise web tier development and implement the patterns. 
-All based around Servlets. Some also use or extend JSP.
-Some examples (study for seminar):
-Front Controller: 
-Apache Struts: http://struts.apache.org/
-Spring MVC: http://www.springframework.org/
-Component model:
-Jakarta Tapestry: http://jakarta.apache.org/tapestry/
-Java EE JavaServer Faces (JSF): http://java.sun.com/Java EE/javaserverfaces/index.jsp
+----
+
+**Notes**
+
+Far from ideal models:
+  * Servlets: //HTML markup// embedded in print statements
+  * Groovlets: HTML markup //produced// by //arcane code constructs// ... better for programmer, s/he still needs to know HTML!
+  * JSP: //Java code// embedded in HTML bad for web developers and dangerous -- bad Java code leads to difficult to debug errors that only manifest themselves at run-time and can only be debugged from server log files.
+
+===== Groovy Server Pages =====
+
+  * A possible implementation of the //Template View// pattern:
+    * Groovy has simpler syntax than Java so less of a problem
+    * Syntactically more forgiving
+  * Separation of concerns:
+    * can use Groovlet as a //controller// and static Groovy Server Page (GSP) as a //view//. 
+    * web designer can work with view code (mostly HTML with simplified //view logic//)
+    * application developer can work with application logic in the controller.  
+  * Good compromise between code-only servlet and Java-rich JSP.
+  
+===== Another example =====
+  * Example from //Groovy in Action//: [[http://localhost:8080/at-m42-examples/HighLow.groovy|HighLow.groovy]].
+  * This is the //controller//:
+
+<code groovy 1|Example 14: Controller of HighLow game (at-m42/Examples/lecture13/web/HighLow.groovy)>
+def session = request.session
+def guess = params.guess
+
+guess = guess ? guess.toInteger() : null
+if (params.restart) guess = null
+
+if (! session.goal || params.restart) {
+	session.goal = (Math.random() * 100).toInteger()
+}
+def goal = session.goal
+
+// ...
+</code>
+
+===== Example (continued) =====
+
+<code groovy 1|Example 14: view for HighLow game (at-m42/Examples/lecture13/web/HighLow.groovy)>
+// ...
+
+html.html { head { title 'Think of a Number' }
+    body {
+        h1 'Think of a Number'
+        if (goal && guess) {
+            div "Your guess is $guess "
+            if (guess == goal) {
+                div 'correct!'
+            } else if (guess < goal) {
+            	div 'too low' 
+            } else {
+                div 'too high'
+            }
+        }
+        p "What's your guess (0..100)?"
+        form(action : 'HighLow.groovy') {
+            input (type : 'text', name : 'guess', '')
+            button (type : 'submit', 'Guess')
+            button (type : 'submit', name : 'restart', value : 'true', 'New Game')
+        }
+    }
+}
+</code>
+
+===== Adding GSP capabilities to Servlet container =====
+
+<code xml 1>
+<servlet>
+    <servlet-name>Groovy Server Pages</servlet>
+    <servlet-class>groovy.template.TemplateServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>Groovy Server Pages</servlet-name>
+    <url-pattern>*.gsp</url-pattern>
+</servlet-mapping>
+</code>
+
+===== A GSP View Page =====
+
+<code html l|Example 15(a): View for High-Low Game (at-m42/Examples/lecture13/web/HighLow.gsp)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/HighLow.gsp
+</code>
+
+===== The Controller: Dispatches to View =====
+
+  * Revised controller Groovlet: [[http://localhost:8080/at-m42-examples/HighLow.groovy|HighLow2.groovy]].
+<code groovy l|Example 15(b): Controller which dispatches to view (at-m42/Examples/lecture13/web/HighLow2.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture13/web/HighLow2.groovy
+</code>
 
 
-Lecture Summary
-Advantage of Java web container is that it is platform independent: will work on any machine that has a network connection and a JVM.
-We have introduced some of the Java APIs that can be used to create web-based presentation services with Java.
-Servlets provide a way to create applications that communicate to a client via a web browser.
-JSP allows the embedding of Java code inside an HTML page.
-In the thin-client world you are not working alone!
-Several core Java EE design patterns record best practice and have been implemented in open source and official Java solutions. 
+===== Other Examples of Template View implementations ===== 
+  * Not for discussion here.
+    * Java standard is to use "custom tags" that talk to Java classes.
+    * Tags look like XML tags (with namespaces) in (X)HTML pages.
+    * JSTL -- Java Standard Tag Library provides access to beans and provides simple programming logic tags.
+    * Can eliminate ''<% … %>'' from JSP code!
+  * Several open source alternatives:
+     * Best regarded seems to be //[[http://velocity.apache.org/|Velocity]]// (another Apache project)
+     * Very simple template language embedded in HTML -- similar to GSP
+     * Parsed and replaced by computational results (by a special Servlet) at access time.
+     * Transparent to web developers who just see HTML pages.
 
-Lab Exercises
-Download, install and run Tomcat
-Modify ServletsRule.java so that the count i is loaded when the servlet starts (override init()) and is saved to disk by an overriden destroy() method.
-Experiment with JSP pages.
-Read-up on any or all of the Java EE patterns concerned with the presentation tier.
-Look into alternative presentation tier technologies: official Sun offerings: JSF, JSTL. Officially sanctioned MVC framework: Apache Struts. Alternatives to Struts and JSF: e.g. Tapestry, Spring MVC. 
+===== Lecture Contents =====
 
+  * [[#Servlets and Groovlets]]
+  * [[#Java Server Pages]]
+  * [[#Web Designers Want Templates Not Code!]]
+  * [[#Groovy Server Pages]]
+  * **[[#Architectural Issues: Patterns|Architectural issues to be aware of!]]**
 
+===== Architectural Issues: Patterns =====
 
+  * Web container gets its requests from a web client in HTTP and returns HTML views of the application's business objects. 
+  * Business objects are Java objects in the //business tier//.
+  * //Web Tier// communicates with the //Business Tier// either using some form of distributed computing technique or directly via Java/Groovy objects. 
+  * Many presentation layer patterns are designed to simplify (or at least manage) the difficulties inherent with the "//impedance mismatch//" in this model.
+  * Also allow web designers and programmers to do their things without stepping on each others toes.
 
+===== Web Tier as “Model View Controller” ====== 
 
+{{  :at-m42:classic-mvc.png|Model-View-Controller pattern}}
+
+  * Web Tier is essentially a good example of the classic [[wp>Model-view-controller|model-view-controller]] (MVC) pattern.
+  * Principles:
+    * Separation of presentation from model
+    * Separation of controller from the view
+  * In "Web Tier" 
+    * View is HTML or [G/J]SP page.
+    * Controller is a Servlet.
+    * Model is a (business) object.
+
+===== MVC Patterns in the Web Tier (1) =====
+
+[[http://www.martinfowler.com/eaaCatalog/pageController.html|Page Controller]] -- //an object that handles a request for a specific page or action on a web site//.
+
+{{:at-m42:page-controller.png  |Page controller}}  
+
+  * Decode URL and extract any form data
+  * Create and invoke any model objects to process the data.
+  * Pass data to model (models don’t need to know about HTTP)
+  * Determine which view should display the result and forward model info to view (template page).
+
+===== MVC Patterns in the Web Tier (2) =====
+
+[[http://www.martinfowler.com/eaaCatalog/frontController.html|Front Controller]] -- //handles all requests for a web site//.
+  * Used when navigation and application logic is more complex than can be reasonably handled by a collection of page controllers.
+{{:at-m42:front-controller1.png  |Front controller (class diagram)}}
+{{  :at-m42:front-controller2.png|Front controller (activity diagram)}}
+
+===== Component Model =====
+
+Pattern is based on "components" and events
+{{:at-m42:component.png?654|Component model}}
+
+===== Patterns in the Web Tier =====
+  * Implementing complex presentation logic in HTML is a complex task
+  * Most of the Java EE Core Patterns are concerned with the presentation tier.
+  * See full catalogue ([[http://java.sun.com/blueprints/corej2eepatterns/Patterns/|online]]). 
+===== MVC Frameworks =====
+
+  * Many common problems (as indicated by the large number of patterns for presentation tier) have been solved many times.
+  * Many frameworks have been developed to simplify and standardise web tier development and implement the patterns. 
+  * All based around Servlets. Some also use or extend JSP.
+
+===== Some Example Frameworks =====
+
+//Front Controller//: 
+  * Apache Struts: http://struts.apache.org/
+  * Spring MVC: http://www.springframework.org/
+//Component model//:
+  * Apache Tapestry: http://tapestry.apache.org/
+  * Java EE JavaServer Faces (JSF): http://java.sun.com/javaee/javaserverfaces/
+  * Google Web Toolkit (GWT): http://code.google.com/webtoolkit/
+
+Many more [[http://java-source.net/open-source/web-frameworks|listed here]].
+
+===== Lecture Summary =====
+
+  * Advantage of Java web container is that it is platform independent: will work on any machine that has a network connection and a JVM.
+  * We have introduced some of the Java APIs that can be used to create web-based presentation services with Java.
+  * Servlets provide a way to create applications that communicate to a client via a web browser.
+  * JSP allows the embedding of Java code inside an HTML page.
+  * Groovy makes both Servlets (Groovlets) and Templates (GSP) easier.
+  * In the thin-client world you are not working alone:
+    * Several core Java EE design patterns record best practice and have been implemented in open source and official Java solutions. 
 
 ----
 
