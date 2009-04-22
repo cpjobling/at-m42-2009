@@ -23,14 +23,15 @@ This folder contains all the examples from [Lecture 13](/dokuwiki/at-m42:lecture
 * [Hello.jsp](web/Hello.jsp) &ndash. hello world JSP. Run http://localhost:8080/at-m42-examples/Hello.jsp.
 * [DisplayFormData.jsp](web/DisplayFormData.jsp) &ndash; Fetching the data from an HTML form. Run http://localhost:8080/at-m42-examples/DisplayFormData.jsp.
 * [Scope.jsp](web/Scope.jsp) &ndash; JSP attributes and page scope. Run http://localhost:8080/at-m42-examples/Scope.jsp.
-* []() &ndash; Fetching the data from an HTML form. Run http://localhost:8080/at-m42-examples/Hello.jsp.
-* []() &ndash; Fetching the data from an HTML form. Run http://localhost:8080/at-m42-examples/Hello.jsp.
+* [SessionObject.jsp](web/SessionObject.jsp) &ndash; Manipulating sessions in JSP. Run http://localhost:8080/at-m42-examples/SessionObject.jsp.
+* [Cookies.jsp](web/Cookies.jsp) &ndash; Creating and Modifying Cookies. Run http://localhost:8080/at-m42-examples/Cookies.jsp.
 
 
-[TimeHereI.java](TimeHereI.java) &ndash; the `TimeHere` remote interface.
-* [TimeHere.java](TimeHere.java) &ndash; the implementation of the `TimeHere` remote object.
-* [displayTimeHere.groovy](displayTimeHere.groovy) &ndash; uses remote object `TimeHere`.
-* [startTimeHere.groovy](startTimeHere.groovy) &ndash; register remote object `TimeHere`.
+### Groovy Server Pages (GSP)
+
+* [HighLow.groovy](web/HighLow.groovy) &ndash; HighLow game. Run http://localhost:8080/at-m42-examples/HighLow.groovy.
+* [HighLow2.groovy](web/HighLow2.groovy) &ndash; HighLow game: controller dispatches to view template. Run http://localhost:8080/at-m42-examples/HighLow2.groovy.
+* [HighLow.gsp](web/[HighLow.gsp]) &ndash; HighLow game: view template (GSP). 
 
 ----
 
