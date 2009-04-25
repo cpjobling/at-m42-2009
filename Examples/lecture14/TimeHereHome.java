@@ -1,5 +1,7 @@
 // Home Interface of TimeHereBean.
 
+package uk.ac.swan.atm42.ejb;
+
 import java.rmi.*;
 import javax.ejb.*;
 
