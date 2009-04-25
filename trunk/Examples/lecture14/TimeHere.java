@@ -4,6 +4,8 @@
 //# this file. See details at java.sun.com.
 // Remote Interface of TimeHereBean
 
+package uk.ac.swan.atm42.ejb;
+
 import javax.ejb.Remote;
 
 @Remote
