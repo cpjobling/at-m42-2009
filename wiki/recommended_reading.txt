@@ -17,6 +17,7 @@ There is no single text book that covers all the material presented in this cour
 
 ===== Java Enterprise Edition =====
 
+  *  D. Panda, R. Rahman and D. Lane, //EJB 3 in Action//, Manning, 2007.
   * S.Haugland, M. Cade and A Orapallo, //J2EE 1.4 The Big Picture//, Prentice Hall, 2004. This is the first book on enterprise Java to explain the big picture. Aimed at managers more than systems architects or programmers, it explains the issues in plain English.
   * R. Johnson, //J2EE Development Without EJB//, Expert One-on-One , Hungry Minds, 2004. ISBN: 0764558315.
   * B.A. Tate and J. Gehtland, Spring: a developer’s notebook. O’Reilly, 2005. ISBN: 0596009100. 

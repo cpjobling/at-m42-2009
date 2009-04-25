@@ -1,5 +1,5 @@
 ~~SLIDESHOW~~
-====== Presentation Tier Services ======
+====== Presentation-tier Services ======
 
   * Server services is the largest market sector in Java world((Mobile may well become more important, certainly in terms of installed systems, if not in terms of monetary value, we shall see)).
   * In this lecture we shall examine two technologies that are part of the web container services that the Java EE platform offers:
@@ -18,7 +18,7 @@ An index to the source code for all the examples in this lecture is [[/~eechris/
   * Some estimates state that half of worldwide software development involves client/server applications.
   * Despite best efforts of some, server is not a single source platform (e.g. WinTel): much more heterogeneous than the typical client (Desktop).
   * The Java platform offers platform-independent server environment with developing support that allow links to “legacy” applications.
-  * Possibly most important server application is ability to link to an SQL database: this is provided in Java by the JDBC package (see [[lecture15|Integration Tier Services]]).
+  * Possibly most important server application is ability to link to an SQL database: this is provided in Java by the JDBC package (see [[lecture14|Integration Tier Services]]).
   * Next most important is web services providing (browser based) thin-client applications for e-commerce, in institutions via the intranet and to the general public via the Internet.
 
 ===== Presentation Tier Services =====

@@ -1,63 +1,211 @@
 ~~SLIDESHOW~~
 ====== Introducing the Java Platform and the Module ======
 
-  * A Taste of things to Come 
-  * Introduction to the Java Platform Java
-  * Software Design Patterns
-  * Client-Server Architectures
-  * Module Plan
-  * Assumed Co/Pre-Requisites
+  * **[[#Introducing the Java Platform]]**
+  * [[#What is Groovy?]]
+  * [[#Software Design Patterns]]
+  * [[#Client-Server Architectures]]
+  * [[#Module Plan]]
+  * [[#Co & Pre-Requisites and Other Notes|Assumed Co/Pre-Requisites]]
+
 ===== Introducing the Java Platform =====
 
-Will cover Java Platform Standard Edition (Java SE 5) 
-also known as Java Development Kit (JDK) 1.5
-and Java 2 Platform Enterprise Edition (J2EE).
-Only J2SE required for projects and exercises.
-Design Goals for Java
-What Java Isn’t
-What About GUIs?
-Software Design Patterns
-Popularised by the book: Design Patterns by Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides (Addison Wesley).
-The are recurring forms of software development that you can capture at a low level and reuse across dissimilar applications.
-We shall see examples of several of these in the module and you are required to recognise and document those that occur in your project.
-Client-Server Architectures
-Examples of Architectures
-Single tier systems
-Two tier systems
-Three tier systems
-Multi-tier systems
-Peer-to-Peer (P2P) applications
+  * We will be working with the Java Platform Standard Edition (Java SE) also known as Java Development Kit (JDK) and discussing the Java Platform Enterprise Edition (Java EE).
+  * Only Java SE required for projects and exercises (1.6 is latest version and is the version installed in the PC Lab).
 
-Single Tier System
-Two-Tier System
-Three-Tier System
-Three-Tier System: With Web Tier
-Examples:
-CGI application
-Lightweight framework
-Multi-Tier System
-Multi-Tier J2EE
-Peer-to-Peer System
-Module Plan
-Part 1: The Essence of Java
-Nine lectures
-Part 2: Client Server Programming
-Four lectures
-Part 3: Enterprise Computing in Java 
-Five lectures
-Part 4: Assessment Week
-Seminars
-Project work
-End-of-module test
+===== Design Goals for Java =====
+  * Fresh start (no backwards compatibility)
+  * Pure object-oriented: C++ Syntax and Smalltalk style
+  * Improvements over C++: near guarantee that you cannot run a bad program
+  * Internet programming language: probably can’t write viruses, programmability at the browser end, easier client server programming.
+  * Larger, more complex programs with smaller teams
+
+===== What Java Isn’t =====
+  * Anything more than a programming language
+  * Exceptionally well designed: It has strengths and weaknesses.
+
+> Simply “//Saying Java is simpler than C++ is like saying K2 is shorter than Everest//” Larry O’Brien.
+
+===== The Java Platform =====
+
+[[http://java.sun.com/javase/6/docs/index.html|{{:at-m42:java-platform.png|The Java SE 6 Platform at a Glance}}]]
+
+----
+Image Source: http://java.sun.com/javase/6/docs/index.html.
+
+===== The Java Virtual Machine =====
+{{:at-m42:jvm.png?1085|The JVM}}
+----
+The Java Platform consists of the Java Virtual Machine which is a run-time system that has been ported to a number of platforms. The JVM interfaces with the platform operating systems services providing access to native file system, the network and the screen for graphical user interfaces. It executes byte-codes which are compiled class files. 
+
+===== The Java APIs =====
+{{:at-m42:java-apis.png?1085|Java APIs}}
+
+Built on top of the JVM is a very large and comprehensive set of library files (the Java Runtime Environment) that are available on all platforms that Java runs on. These provide the Java APIs. 
+
+Included in the platform are deployment facilities which enable Java applications to be delivered as applets, applications or on-demand via Java Web Start and above these are the development tools which make up the Java Development Kit (compilers, RMI compilers, etc) and on top, sits the Java programming language; which is actually a very small part of the platform.
+
+===== Java the Platform =====
+{{:at-m42:other-languages.png?1085|Other languages}}
+
+----
+
+In the last few years, Java the language has been joined by many other possibilities. Some of these are other languages such as Python and Ruby that have been ported to the Java platform (as [[http://www.jython.org/Project/|Jython]] and [[http://jruby.codehaus.org/|JRuby]]). Others are new languages such as [[http://clojure.org/|Clojure]] a language for programming multi-threaded applications; [[Scala]] a multi-paradigm programming language for the JVM; [[http://www.mozilla.org/rhino/|Rhino]] a JavaScript implementation targeted particular at server-side applications, and JavaFX, a new language for client-side applications. 
+
+Many of these languages are //so-called// dynamic languages. Others are compiled like Java is. However, all execute as JVM bytecode and all have full access to the Java Platform APIs, which also means that they are portable and support the //write-once run-anywhere// feature that is Java's principle value proposition.
+
+===== Lecture Content =====
+  * [[#Introducing the Java Platform]]
+  * **[[#What is Groovy?]]**
+  * [[#Software Design Patterns]]
+  * [[#Client-Server Architectures]]
+  * [[#Module Plan]]
+  * [[#Co & Pre-Requisites and Other Notes|Assumed Co/Pre-Requisites]]
+  [[Internal Link]]
+
+===== What is Groovy? =====
+
+{{:at-m42:groovy.png?1085|The Groovy language}}
+
+----
+Of particular interest to us is the dynamic language Groovy, which is compatible with Java (with a couple of exceptions, a Java Program is a Groovy Program) It differs in that it has a more relaxed syntax, it is dynamically typed, it has key APIs (lists, maps, ranges and regular expressions) as literal values and it supports closures. 
+
+These make Groovy a higher-level language but also a more productive language. And important for us, an easier language to learn than Java.
+
+The GDK, exploits many of its higher-level features to enhance many key Java APIs, such as Strings, collections, threads, IO and exceptions, and make them even easier to use. It also introduces new features such as builders that make the manipulation of tree-like structures such as XML files, SQL queries and Swing user interfaces easier to construct and manipulate.
+
+===== Why Groovy? =====
+
+   * A dynamic language for Java developers to use:
+      * reuses both Java's semantics and the whole set of Java SE APIs 
+      * not a a port of a different language with different semantics and APIs to learn and implement/maintain.
+      * tightly integrated into the Java Platform
+      * more concise and higher-level than Java so more productive in use.
+   * Java and groovy classes are interchangeable inside the JVM
+
+Groovy is a very easy language to pick up if you are already a Java programmer ... but it's also easier to learn if you're an unexperienced programmer.
+
+-----
+
+Source: [[http://groovy.codehaus.org/faq.html|Groovy frequently asked questions]].
 
 
-Co & Pre-Requisites and Other Notes
-Knowledge of C Programming Syntax is an advantage. 
-The Unified Modelling Language (UML) is used in this course. 
-Access to Eckel (available on-line) will be a definite plus.
-For seminars and project, most of the currently available information is on the web. Unfortunately this means that quality varies!
-I hope to be able to distribute a CD-ROM with all copies of Eckel, Java tutorials, my slides, all the examples and the software tools later this week.
-The final test will be “open book”.
+===== The Java Ecosystem =====
+{{:at-m42:java-ecosystem.png?533|The Java Ecosystem}}
+
+----
+
+Java is a very large ecosystem. As well as the Java Platform Standard Edition there is a reduced capability version called Java Mobile Edition (Java ME) which is used in appliances (Personal Video Recorders, BlueRay players, PDAs, mobile phones); the Enterprise Edition which adds many features required for enterprise computing and a rich ecosystem of third party (often open source) APIs. All these APIs are programmable in Java and any of the other languages that can produce Java byte codes for the JVM. This makes Java a very capable and productive platform, which is usable within the very smallest embedded device right up to large enterprise computing applications.
+
+
+  
+===== Lecture Content =====
+  * [[#Introducing the Java Platform]]
+  * [[#What is Groovy?]]
+  * **[[#Software Design Patterns]]**
+  * [[#Client-Server Architectures]]
+  * [[#Module Plan]]
+  * [[#Co & Pre-Requisites and Other Notes|Assumed Co/Pre-Requisites]]
+
+
+===== Software Design Patterns =====
+  * Popularised by the book: //Design Patterns// by Erich Gamma, Richard Helm, Ralph Johnson, and John Vlissides (Addison Wesley).
+  * They are recurring forms of software development that you can capture at a low level and reuse across dissimilar applications.
+  * We shall see examples of several of these in the module.
+  
+===== Lecture Content =====
+  * [[#Introducing the Java Platform]]
+  * [[#What is Groovy?]]
+  * [[#Software Design Patterns]]
+  * **[[#Client-Server Architectures]]**
+  * [[#Module Plan]]
+  * [[#Co & Pre-Requisites and Other Notes|Assumed Co/Pre-Requisites]]
+
+===== Client-Server Architectures =====
+
+  * Traditional architecture uses central processing unit accessed via dumb terminals
+  * Trend in computing to use of smart devices (i.e. PCs) has moved processing to distributed systems
+  * Access to centralised information now made via network
+  * Idea of clients accessing central services provided by servers
+     * expanded in recent times with emergence of smart phones and cloud computing
+  * An alternative architecture uses peer-to-peer networking.
+
+===== Examples of Architectures =====
+
+  * [[#Single tier systems]]
+  * [[#Two tier systems]]
+  * [[#Three tier systems]]
+  * [[#Multi-tier systems]]
+  * [[#Peer-to-Peer (P2P) applications]]
+
+===== Single-tier systems =====
+{{:at-m42:single-tier.png?196 |A single-tier system}}
+  * Examples: 
+    * any single user application on a PC
+    * any dumb-terminal access to a corporate database
+
+===== Two-tier systems =====
+{{:at-m42:two-tier.png?591|A two-tier architecture}}
+
+  * Examples:
+    * web-server and web browser
+    * bank ATM system (from customer viewpoint)
+
+===== Three-tier systems =====
+{{:at-m42:three-tier.png?697|A three-tier architecture}}
+
+  * Examples:
+    * Enterprise database access
+
+===== Three-Tier System: With Web Tier =====
+{{:at-m42:three-tier_with_web.png?804 |Web tier}}
+  * Examples:
+    * CGI application
+    * Lightweight framework
+
+===== Multi-Tier System =====
+
+{{:at-m42:multi-tier.png?697|Multi-tier architecture}}
+
+===== Multi-Tier Java EE =====
+{{:at-m42:multi-tier-j2ee.png?747|Multi-tier Java EE}}
+
+===== Peer-to-Peer System =====
+{{:at-m42:p2p.png?591 |P2P system}}
+
+  * No central server. Each partner can be server or client.
+    * Bitorrent MP3 exchange.
+    * Windows work groups
+    * Bluetooth network peers
+    * JINI services
+
+===== Lecture Content =====
+  * [[#Introducing the Java Platform]]
+  * [[#What is Groovy?]]
+  * [[#Software Design Patterns]]
+  * [[#Client-Server Architectures]]
+  * **[[#Module Plan]]**
+  * [[#Co & Pre-Requisites and Other Notes|Assumed Co/Pre-Requisites]]
+
+===== Module Plan =====
+
+  * **//Part 1//: Programming the Java Platform** (seven lectures).
+  * **//Part 2//: Concurrency and Client Server Programming** (three lectures).
+  * **//Part 3//: Enterprise Applications** (six lectures)
+  * **//Part 4//: Assessment Week**:
+    * Assessment of Lab Work
+    * Seminars
+    * Project work
+Calendar on the Blackboard site.
+
+
+
+===== Co & Pre-Requisites and Other Notes =====
+
+  * Knowledge of C Programming Syntax is an advantage. 
+  * The Unified Modelling Language (UML) is used in this course. 
+  * For seminars and project, you will be provided with e-copy of //Grails: The Definitive Guide//. 
+  * Other currently available information is on the web. Unfortunately this means that quality varies!
 
 ----
 

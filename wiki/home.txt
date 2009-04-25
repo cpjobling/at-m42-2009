@@ -2,10 +2,8 @@
 ===== Module Content =====
 
   * [[Introduction]]
-  * [[lectures|The Lecture Course]]
+  * [[lectures|The Lecture Notes]]
   * [[/~eechris/at-m42/Examples/|The Examples]]
   * [[labs|Lab Work]]
   * [[casestudies|Case Studies]]
-  * [[seminar|The Group Seminar]]
-  * [[project|The Mini Project]]
   * [[Recommended Reading]]
