@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="Cp1252"?>
+<!DOCTYPE ejb-jar PUBLIC '-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 1.1//EN' 
+   'http://java.sun.com/j2ee/dtds/ejb-jar_1_1.dtd'>
+<ejb-jar>
+  <description>Example for Lecture 14</description>
+  <display-name>Time Here Service</display-name>
+  <small-icon></small-icon>
+  <large-icon></large-icon>
+  <enterprise-beans>
+    <session>
+      <ejb-name>TimeHere</ejb-name>
+      <home>TimeHereHome</home>
+	  <remote>TimeHere</remote>
+	  <ejb-class>TimeHereBean</ejb-class>
+	  <session-type>Stateless</session-type>
+      <transaction-type>Container</transaction-type>
+    </session>
+  </enterprise-beans>
+  <ejb-client-jar></ejb-client-jar>
+</ejb-jar>
