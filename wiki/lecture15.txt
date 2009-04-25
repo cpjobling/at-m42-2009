@@ -1,5 +1,5 @@
 ~~SLIDESHOW~~
-====== Business-tier Services ======
+====== Enterprise Integration Tier Services ======
  
 In principle, the business logic of an enterprise application could be performed by //domain objects// which implement a model of the business concept as Plain-Old Java Objects (POJOs).
 
@@ -14,7 +14,7 @@ make the implementation of objects in the business tier much more of a challenge
   * **[[#An example]]**
   * [[#The key business tier services]]
   * [[#The Java solution: Enterprise Java Beans]]
-  * [[#Reimplementing PerfectTime as a session bean]]
+  * [[#Reimplementing TimeHere as a session bean]]
   * [[#Is the Java solution a good solution?]]
 
 ===== An Example =====
@@ -106,7 +106,7 @@ Now suppose I want to transfer £100 to my daughter’s account. Here’s the co
   * [[#An example]]
   * **[[#The key business tier services]]**
   * [[#The Java solution: Enterprise Java Beans]]
-  * [[#Reimplementing PerfectTime as a session bean]]
+  * [[#Reimplementing TimeHere as a session bean]]
   * [[#Is the Java solution a good solution?]]
 
 
@@ -135,7 +135,7 @@ The atomic ''withdraw'' and ''deposit'' methods and the entities representing th
     * To rollback to a known state after a failed transaction.
     * Or simply to be stored in non-volatile memory.
   * Your business objects want this to //just happen//!
-    * **Transparent persistence**, as discussed in the [[lecture14|last lecture]], is obviously important,
+    * **Transparent persistence**, as discussed in the [[lecture15|last lecture]], is obviously important,
     * but persistence should also be a key part of transaction management and is a cornerstone of data integrity.
 
 ===== Security ======
@@ -171,7 +171,7 @@ The atomic ''withdraw'' and ''deposit'' methods and the entities representing th
   * [[#An example]]
   * [[#The key business tier services]]
   * **[[#The Java solution: Enterprise Java Beans]]**
-  * [[#Reimplementing PerfectTime as a session bean]]
+  * [[#Reimplementing TimeHere as a session bean]]
   * [[#Is the Java solution a good solution?]]
 
 
@@ -272,7 +272,7 @@ Originally EJB relied heavily on interfaces and XML deployment descriptors. With
   * [[#An example]]
   * [[#The key business tier services]]
   * [[#The Java solution: Enterprise Java Beans]]
-  * **[[#Reimplementing PerfectTime as a session bean]]**
+  * **[[#Reimplementing TimeHere as a session bean]]**
   * [[#Is the Java solution a good solution?]]
 
 ===== Developing an EJB =====
@@ -290,8 +290,8 @@ import javax.ejb.*;
 
 package uk.ac.swan.atm42.ejb;
 
-public interface PerfectTime extends EJBObject {
-  public String getPerfectTime() throws RemoteException;
+public interface TimeHere extends EJBObject {
+  public String getTimeHere() throws RemoteException;
 }
 </code>
 
@@ -299,8 +299,8 @@ public interface PerfectTime extends EJBObject {
 
 In EJB 3, the details can be left to the container: interface is a plain-old-Java interface //annotated//  with ''javax.ejb.Remote''.
   
-<code java 1|Example 2: Remote interface for the DateHereBean (at-m42/Examples/lecture14/TimeHere.java)>
-extern> http://cpjobling.org.uk/~eechris/at-m42/Examples/lecture14/TimeHere.java
+<code java 1|Example 2: Remote interface for the DateHereBean (at-m42/Examples/lecture15/TimeHere.java)>
+extern> http://cpjobling.org.uk/~eechris/at-m42/Examples/lecture15/TimeHere.java
 </code>
 
 
@@ -321,8 +321,8 @@ extern> http://cpjobling.org.uk/~eechris/at-m42/Examples/lecture14/TimeHere.java
   - In EJB 3 the Home interface is provided automatically by the container and you don't need to provide code.
 
 ===== Home interface for the TimeHere (EJB 2) =====
-<code java 1|Example 3: Remote interface for the DateHereBean (at-m42/Examples/lecture14/TimeHereHome.java)>
-extern> http://cpjobling.org.uk/~eechris/at-m42/Examples/lecture14/TimeHereHome.java
+<code java 1|Example 3: Remote interface for the DateHereBean (at-m42/Examples/lecture15/TimeHereHome.java)>
+extern> http://cpjobling.org.uk/~eechris/at-m42/Examples/lecture15/TimeHereHome.java
 </code>
 
 ===== Business Logic =====
@@ -333,7 +333,7 @@ You can now implement the business logic. When you create your EJB implementatio
   - The class should define methods that map directly to the methods in the Remote interface. Note that the class does not implement the Remote interface; it mirrors the methods in the Remote interface but does not throw ''java.rmi.RemoteException''.   - Define one or more ''ejbCreate()'' methods to initialize your EJB. 
   - The return value and arguments of all methods must be valid RMI-IIOP data types.
 
-===== PerfectTimeBean (Session Bean) EJB 2 Version =====
+===== TimeHereBean (Session Bean) EJB 2 Version =====
 
 <code java 1| Example 4: SessionBean implemented using EJB 2 conventions>
 // Simple Stateless Session Bean
@@ -367,16 +367,16 @@ public class TimeHereBean implements SessionBean {
   * EJB uses Java 5 annotations to enable the container to provide its own hooks.
   * EJB is now a "Plain Old Java Object" (POJO)) annotated with ''javax.ejb.Stateless''
 
-===== PerfectTimeBean (Session Bean) EJB 3 Version =====
-<code java 1| Example 5: SessionBean implemented using EJB 3 conventions (at-m42/Examples/lecture14/TimeHereBean.java)>
-extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture14/TimeHereBean.java
+===== TimeHereBean (Session Bean) EJB 3 Version =====
+<code java 1| Example 5: SessionBean implemented using EJB 3 conventions (at-m42/Examples/lecture15/TimeHereBean.java)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture15/TimeHereBean.java
 </code>
 
 ===== Deployment Descriptor (EJB 2) =====
 
 An XML file that describes the EJB component. Should be stored in a file called ''ejb-jar.xml''.
-<code xml 1|Example 6: Deployment Descriptor for the TimeHereBean (not required in EJB 3 containers) (at-m42/Examples/lecture14/ejb-jar.xml)>
-extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture14/ejb-jar.xml
+<code xml 1|Example 6: Deployment Descriptor for the TimeHereBean (not required in EJB 3 containers) (at-m42/Examples/lecture15/ejb-jar.xml)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture15/ejb-jar.xml
 </code>
 ===== Deploying the EJB =====
 
@@ -390,11 +390,11 @@ extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture14/ejb-jar.x
 
   * Here a simple Java program but could just as easily be a servlet, a JSP or even a CORBA or RMI distributed object.
 
-<code java 1|Example 7: Client program for PerfectTimeBean (at-m42/Examples/lecture14/TimeHereClient.java)>
-extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture14/TimeHereClient.java
+<code java 1|Example 7: Client program for TimeHereBean (at-m42/Examples/lecture15/TimeHereClient.java)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture15/TimeHereClient.java
 </code>
-<code java 1| Example 7: Client program for PerfectTimeBean (at-m42/Examples/lecture14/TimeHereClient.java)> 
-extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture14/TimeHereClient.java
+<code java 1| Example 7: Client program for TimeHereBean (at-m42/Examples/lecture15/TimeHereClient.java)> 
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture15/TimeHereClient.java
 </code>
 
 =====  Lecture Content =====
@@ -402,7 +402,7 @@ extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture14/TimeHereC
   * [[#An example]]
   * [[#The key business tier services]]
   * [[#The Java solution: Enterprise Java Beans]]
-  * [[#Reimplementing PerfectTime as a session bean]]
+  * [[#Reimplementing TimeHere as a session bean]]
   * **[[#Is the Java solution a good solution?]]**
 
 ===== Is the Java Solution a Good Solution? =====
@@ -417,12 +417,12 @@ extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture14/TimeHereC
   * [[#An example]]
   * [[#The key business tier services]]
   * [[#The Java solution: Enterprise Java Beans]]
-  * [[#Reimplementing PerfectTime as a session bean]]
+  * [[#Reimplementing TimeHere as a session bean]]
   * [[#Is the Java solution a good solution?]]
 
 
 
 ----
 
-[[Home]] | [[lecture14|Previous Lecture]] | [[Lectures]] | [[lecture16|Next Lecture]] 
+[[Home]] | [[lecture15|Previous Lecture]] | [[Lectures]] | [[lecture16|Next Lecture]] 
 
