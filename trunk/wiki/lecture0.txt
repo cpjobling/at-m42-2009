@@ -93,6 +93,7 @@ See also [[at-m42:recommended_reading|reading list]].
 ===== More Software =====
 
   * [[http://tomcat.apache.org/|Apache Tomcat Web Server]] (for servlet examples)
+  * [[http://db.apache.org/derby/|Apache Derby database]] (for database examples)
 
 ----
 

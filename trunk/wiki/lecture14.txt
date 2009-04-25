@@ -1,318 +1,637 @@
-====== Business-tier Services ======
+~~SLIDESHOW~~
+
+====== Enterprise Integration-Tier Services ======
+
+  * The Enterprise Integration Tier is where the Enterprise Knowledge exists.
+  * There is a prime role of relational databases here. 
+    * Most databases use the Relational Database Model. 
+    * Defined and queried in a dialect of SQL
+    * Need to map relational tables to objects and back.
+  * We will introduce SQL and the Java Database Connectivity (JDBC) API and go on to discuss persistence.
+  * Enterprise Integration is not just about databases so we will conclude with some other examples.
+
+===== Lecture Contents =====
+
+  * **[[#What is a Database?|An introduction to relational databases and SQL]]**
+  * [[#The Trouble with Databases|JDBC -- Java database connectivity API]]
+  * [[#Immortal Objects]]
+  * [[#Persistence Patterns]]
+  * [[#Other forms of Enterprise Integration]]
+
+===== What is a Database? =====
+  * Programming is data processing
+  * Data is central to everything that you do with a computer
+  * A database is a specialized tool for data storage
+===== What is a Relational Database?  =====
  
-In principle, the business logic of an enterprise application could be performed by //domain objects// which implement a model of the business concept as Plain-Old Java Objects (POJOs).
+Relational databases are most common form of database:
+  * Consists of a set of tables.
+  * Each table consists of a set of records (rows of the table).
+  * Each record consists of a set of attributes (columns of the table).
+  * Rows of one table can be related to rows of another.
 
-In practice, the requirements of enterprise applications, namely
-    * //Resource management//
-    * //Security//
-    * //Data integrity//
-make the implementation of objects in the business tier much more of a challenge.
+===== An example: CDs from a Music Collection =====
 
-=====  Lecture Content =====
+^ Artist ^ Title ^ Category ^ Year ^
+|The Cure|Pornography|Alternative|1983|
+|Garbage|Garbage|Alternative|1996|
+|Hole|Live Through This|Alternative|1994|
+|Nine Inch Nails|The Downward Spiral|Industrial|1994|
+|Public Image Limited|Compact Disk|Alternative|1985|
+|The Sex Pistols|Never Mind the Bollocks: Here's the Sex Pistols|Punk|1977|
+|Skinny Puppy|Last Rights|Industrial|1992|
+|Wire|A Bell is a Cup Until it is Struck|Alternative|1989|
 
-  * **[[#An example]]**
-  * [[#The key business tier services]]
-  * [[#The Java solution: Enterprise Java Beans]]
-  * [[#Reimplementing PerfectTime as a session bean]]
-  * [[#Is the Java solution a good solution?]]
 
-===== An Example =====
+===== Johnny Rotten Night for a Party =====
 
-  * Take a simple bank account implemented in Groovy: 
-<code groovy>
-class BankAccount {
+  * Easy to select CDs for an //Alternative// or a //Punk// night.
+  * What if we want a Johnny Rotten night?
+  * No data for that in the table.
+  * Need another table of musicians.
 
-    def deposit(amount) {
-        balance += amount
-    }
+^Last name^First name^Nickname^
+|Jourgenson|Al| |	
+|Lydon|John|Johnny Rotten|
+|Smith|Robert| |
 
-    def withdraw(amount) {
-        balance -= amount
-    }
+=====  Keys (1) =====
 
-// ----- properties -----------------
-    def number
-    def balance
-}
+In order to relate musicians to bands and bands to CDs we need a unique key to the data.
+
+^album_id^ Artist ^ Title ^ Category ^ Year ^
+|1|The Cure|Pornography|Alternative|1983|
+|2|Garbage|Garbage|Alternative|1996|
+|3|Hole|Live Through This|Alternative|1994|
+|4|Nine Inch Nails|The Downward Spiral|Industrial|1994|
+|5|Public Image Limited|Compact Disk|Alternative|1985|
+|6|The Sex Pistols|Never Mind the Bollocks: Here's the Sex Pistols|Punk|1977|
+|7|Skinny Puppy|Last Rights|Industrial|1992|
+|8|Wire|A Bell is a Cup Until it is Struck|Alternative|1989|
+
+=====  Keys (2) =====
+
+In order to relate musicians to bands and bands to CDs we need a unique key to the data.
+
+^artist_id^Last name^First name^Nickname^
+|1|Jourgenson|Al| |	
+|2|Lydon|John|Johnny Rotten|
+|3|Smith|Robert| |
+
+===== Logical Data Model for Sample Database =====
+
+{{:at-m42:logical-data-model.png?545|Logical data model}}
+
+----
+
+Interpretation of the //logical data model//:
+  * each band has one or more albums;
+  * each album belongs to exactly one band;
+  * each band contains one or more musicians;
+  * each musician is a member of one or more bands.
+
+===== Physical Data Model =====
+
+{{:at-m42:physical_data_model.png?713|physical data model}}
+===== UML to Physical Data =====
+
+{{:at-m42:uml-to-physical.png?450|UML to physical data}}
+
+----
+
+Classes, objects, properties and methods:
+  - Class maps to table
+  - Each object will be a row in the table
+  - Each property will be a column in the table
+  - Only properties are stored, no place in the database for methods.
+
+Associations:
+  - //One to many associations//: index to //one// side is stored in a column in the //many// table as a //foreign key//.
+  - //Many to many associations//: need a cross reference table containing indices to both linked tables as //foreign keys//.
+
+Object model: unique id implied.
+
+Relational model: unique id must be explicit.
+
+===== An Introduction to SQL =====
+
+  * All major databases support the Structured Query Language (SQL).
+  * SQL is not a programming language as such.
+  * An example of SQL is
+<code sql>
+SELECT title FROM albums
+</code>
+
+[[#The Trouble with Databases|Skip to JDBC ->]]
+
+===== SQL commands =====
+
+There are essentially only five SQL commands:
+  * ''CREATE'' -- //defines a new table//
+  * ''INSERT'' -- //inserts a record into a table//
+  * ''UPDATE'' -- //updates an existing record//
+  * ''DELETE'' -- //deletes a record from a table//
+  * ''SELECT'' -- //finds records in database//  * All major databases support the Structured Query Language (SQL).
+
+=====  CREATE =====
+  * Before you can put data into a database you need to create the tables:
+<code sql>
+CREATE TABLE table_name (
+	column_name column_type column_modifiers,
+	...,
+	column_name column_type column_modifiers)
+</code>
+===== CREATE Musicians =====
+
+  * Unfortunately, this is database specific. In MS Access (where it is called a data definition query) this works:
+<code sql>
+CREATE TABLE musicians (
+	musician_id INT PRIMARY KEY,
+	last_name CHAR(40),
+	first_name CHAR(40),
+	nickname CHAR(40))
+</code>
+
+=====  CREATE (2)	 =====
+  * The database-dependent part of the ''CREATE'' statement lies in the column modifiers.
+  * These might be modifiers such as ''NOT NULL'', ''PRIMARY KEY'', or other modifiers that say something about the column and the kind of data it can take.
+  * You have to //read the manual//.
+
+=====  INSERT =====
+  * Used to add data to tables. Called an //append query// in Access.
+<code sql>
+INSERT INTO table_name (column_name, ..., column_name) VALUES (value, ..., value)
+</code>
+  * First value matches to first named column, 2nd to 2nd etc (types have to match column types in the table)
+<code sql>
+INSERT INTO musicians (musician_id, last_name, first_name, nickname)VALUES (2, 'Lydon', 'John', 'Johnny Rotten')
+</code>
+  * Has to be repeated for every data record!
+
+=====  UPDATE =====
+  * Used to add modify the data in a table. Called an //update query// in Access.
+<code sql>
+UPDATE table_name 
+SET column_name = value,
+    ...,
+    column_name = value
+WHERE column_name = value
+</code>
+===== UPDATE Examples =====
+
+  * E.g. to change date in //The Downward Spiral//
+<code sql>
+UPDATE albums 
+SET year = 1994 
+WHERE album_id = 4
+</code> 
+* Can be used to update several records at once:
+<code sql>
+UPDATE albums 
+SET category = 'old music' 
+WHERE year < 1980
+</code>
+
+===== DELETE =====
+
+  * A lot like the update query. Used to delete rows that match a where clause. Called a //delete query// in Access.
+<code sql>
+DELETE FROM table_name 
+WHERE column_name = value
+</code>
+  * E.g. to delete //The Downward Spiral// from your collection
+<code sql>
+DELETE FROM albums 
+WHERE album_id = 4
+</code>
+
+===== SELECT =====
+
+  * Most common type of query.
+<code sql>
+SELECT column_name, ..., column_name FROM table_name 
+WHERE column_name = value
+</code>
+  * E.g to select all of the industrial albums.
+<code sql>
+SELECT title FROM albums 
+WHERE category='industrial'
+</code>
+
+===== Query By Example =====
+
+  * In user friendly tools like //Access// it is possible to create queries and relationships without having to actually write any SQL.
+  * Called "query by example".
+  * A good way to create your queries for use in Groovy or Java!
+
+===== Joins and … =====
+
+  * When you want to follow relationships such as "//find all albums on which Johnny Rotten played//" you need to follow the relationships between tables using //joins//.
+  * A join creates a virtual table on the fly that contains data from two or more tables. E.g. 
+<code sql>
+SELECT bands.band_name FROM bands.albums 
+WHERE albums.category='alternative' 
+AND bands.band_id = albums.artist
+</code>
+  * But we still need to relate //album// to //artist// for which there is no direct link. For this we need a //sub query//.
+
+=====  … Sub-queries =====
+  * To relate //album// to //artist// for which there is no direct link we need a sub query.
+  * In this case we need to select all the bands for which Johnny Rotten was a musician...
+  * ... and then get the album titles for those bands.
+<code sql>
+SELECT title
+FROM albums
+WHERE artist IN	( 
+  SELECT bands.band_id
+  	  FROM bands, band_musicians
+  	   WHERE band_musicians.musician_id = 2
+  	     AND bands.band_id = band_musicians.band_id )
+</code>
+
+===== Lecture Contents =====
+
+  * [[#What is a Relational Database?|An introduction to relational databases and SQL]]
+  * **[[#The Trouble with Databases|JDBC -- Java database connectivity API]]**
+  * [[#Immortal Objects]]
+  * [[#Persistence Patterns]]
+  * [[#Other forms of Enterprise Integration]]
+  
+===== The Trouble with Databases =====
+
+  * One of the major problems with databases has been the feature wars between the database companies.
+  * There is a "standard" database language, Structured Query Language (SQL-92), but you must usually know which database vendor you're working with despite the standard.
+  * JDBC is designed to be platform-independent, so you don't need to worry about the database you're using while you're programming.
+  * However, it's still possible to make vendor-specific calls from JDBC so you aren't restricted from doing what you must.
+===== A Word about SQL and Portability =====
+  * One place where programmers may need to use SQL type names is in the SQL ''TABLE CREATE'' statement when they are creating a new database table and defining the SQL type for each column.
+  * Significant variations between SQL types supported by different database products.
+  * E.g. large binary values:
+    * Oracle: ''LONG RAW'',
+    * Sybase: ''IMAGE''
+    * Informix: ''BYTE''
+    * DB2: ''LONG VARCHAR FOR BIT DATA''. 
+  * Therefore, if database portability is a goal you should try to use only generic SQL type identifiers.
+===== Design for Portability =====
+  * Reliance on a third party product can break the platform-independence of Java.
+  * You should try to limit the impact of such things by choice of suitable abstractions.
+  * E.g. 
+    * Isolate database-specific code in order to centralize any changes that you may need to perform to port to a new environment.
+    * Consider use of configuration files to specify database driver, table definition, query and update commands, etc that may vary.
+  * Use abstractions [see later]:
+    * map object attributes to database row
+    * map query result to collection
+    * Note when an object changes ... it will need to be updated in the database.
+
+===== What is JDBC? =====
+A single API for database access:
+  * JDBC is an SQL--level API.
+  * JDBC capitalizes on the experience of existing database APIs.
+  * JDBC is designed for simplicity.
+
+===== SQL-level API =====
+  * You construct SQL statements and embed them (as strings) inside Java API calls.
+    * You are using SQL.
+    * JDBC smoothly translates between world of the database and the world of the Java application.
+    * Results from the database are returned as Java objects.
+    * Access problems are thrown as exceptions.
+  * You can even completely hide the database from your application objects (as we shall see)
+
+===== Based on existing APIs =====
+  * The need to provide a universal access API is not new.
+  * Open Database Connectivity (ODBC) a standard API for databases on the windows platform provided some inspiration.
+  * One of the first drivers developed was the JDBC-ODBC bridge which makes it easy to take to a database under windows.
+  * Other inspiration comes from such APIs as the X/OPEN SQL Call Level Interface (CLI).
+  * By basing JDBC on such industry standards improved the chance of take up by the industry.
+===== Designed for Simplicity =====
+  * Simple and common tasks use simple interfaces.
+  * The method calls you make correspond to the logical operations you'd think of doing when gathering data from a database:
+    * connect to the database
+    * create a statement
+    * execute the query
+    * look at the result set.
+  * JDBC provides several other interfaces for handling more complex and unusual tasks.
+
+===== The Structure of JDBC =====
+
+{{  :at-m42:jdbc-structure.png?358|The Structure of JDBC}}
+
+  * Each Java interface is implemented differently by a database vendor. 
+  * The set of classes that implement the interface is called a driver.
+  * You only need to use the interface which is the same for all databases.
+===== Basic Classes and Interfaces of the JDBC API =====
+{{:at-m42:jdbc-api.png?657|Basic Classes and Interfaces of the JDBC API}}
+
+===== Databases and Drivers =====
+  * //Type 1// -- bridging technology. Access database through another database interface. E.g. JDBC-ODBC. Requires software to be installed on client machine.
+  * //Type 2// -- native API drivers. Driver calls C or C++ methods provided by vendor. Requires software to be installed on client machine.
+  * //Type 3// -- generic network API that accesses database on a server machine via a middleware application that translates client requests into database API on the server. No software needed on client.
+  * //Type 4// -- direct connection to network protocols built into database using Java sockets. Usually only available from the database vendor.
+
+===== JDBC Driver Managers =====
+  * To allow for platform independence, JDBC provides a driver manager that dynamically maintains all the driver objects that your database queries will need.
+  * If you have three different kinds of vendor databases to connect to, you'll need three different driver objects.
+  * The driver objects register themselves with the driver manager at the time of loading, and you can force the loading using ''Class.forName()''.
+
+===== Database URL =====
+  * To open a database, you must create a "database URL" that specifies: 
+  * That you're using JDBC with "''jdbc''". 
+  * The "subprotocol": the name of the driver or the name of a database connectivity mechanism. 
+  * The database identifier. This generally provides a logical name that is mapped by the database administration software to a physical directory where the database tables are located. 
+  * All this information is combined into one string, the "database URL."
+  * Examples:    
+
+  String dbUrl = "jdbc:odbc:CDs";  
+  jdbc:rmi://192.168.170.27:1099/jdbc:cloudscape:db 
+
+===== Making a Connection =====
+  * To connect to the database, call the static method ''DriverManager.getConnection( )'' and pass it the database URL, the user name, and a password to get into the database.
+  * You get back a ''Connection'' object that you can then use to query and manipulate the database.
+  * The following example opens a database of CD data and looks for a CD's that match a given theme as given on the command line.
+  * It selects only the CDs that match the category then prints out the CD data:
+  * 
+  * 
+  * 
+  * 
+
+===== Find CDs for a party =====
+
+See notes for listing.
+
+----
+
+<code java 1|Example 1: Database lookup (at-m42/Examples/lecture14/Lookup.java)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture14/Lookup.java
+</code>
+
+===== … define db attributes =====
+<code java>
+String dbUrl = "jdbc:derby:CDs";
+String user = "";
+String password = "";
+</code>
+
+----
+  * These values used to make the connection: **dbURL**: protocol "''jdbc''"; subprotocol "''derby''"; database id: "CDs"
+  * user and password are used for access control if database management system needs them.
+
+
+
+
+===== … load the driver =====
+
+<code java>
+Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 </code>
 
 ----
 
-This model does not take into account practicalities such as overdraft limits!
+  * This could throw ''ClassNotFoundException'' which we don't bother the catch!
+  * That's why it has to be declared as an exception that may be thrown by ''main()''.
 
-===== Use Case: Make a Transfer =====
-
-Now suppose I want to transfer £100 to my daughter’s account. Here’s the collaboration diagram:
-
-{{:at-m42:bank-collaboration.png|Use case: make a transfer}}
-
-===== So what's complex about that? =====
-
-  * In principle, this is a very simple business transaction, performed by my bank my behalf. 
-  * In Groovy it would be a two liner...
-<code groovy>
-    myAccount.withdraw(100.00)
-    daughtersAccount.deposit(100.00);
+===== … connect to database =====
+<code java>
+Connection c = DriverManager.getConnection(dbUrl, user, password);
 </code>
-   *  ... but what is really happening here?
 
-===== A Real Bank Transfer (1) =====
+----
 
-  * I have to log in (authenticate myself) to my bank.
-  * I must be authorized to access my bank account and to make a transfer.
-  * My daughter’s account has to be set up as an account that I can transfer funds to.
-  * **I must have sufficient funds**.
+  * Database driver knows how to connect to databases that it manages.
+  * Connection object represents the database for rest of session.
+  * Possible (and desirable) to pool connections if many clients may access same database simultaneously.
+  * Database management system is responsible for handling simultaneous updates.
 
-...
+===== … create a "statement" object =====
+<code java>
+Statement s = c.createStatement();
+</code>
 
-===== A Real Bank Transfer (2) =====
+----
 
-  * After the money is transferred there must be £400.00 in my account and -£900.00 in my daughter’s.
-  * If something goes wrong, I should have £500.00 in my account and my daughter’s overdraft will not have improved.
-  * My daughter and I do not have a bank account at the same bank.
+  * ''Statement'' represents and atomic interaction with the database.
+  * Can be used to query database, create tables, update records or delete records.
+  * SQL code is passed to statement object (as a ''String'').
+  * ''Statement'' object returns a ''ResultSet''.
+  * For efficiency, statements can be "compiled" by DBMS so that they run faster.
 
-...
+===== … execute query and return results =====
+<code java>
+ResultSet r = s
+  .executeQuery("SELECT albums.title, bands.band_name, albums.year\n"
+    + "  FROM bands INNER JOIN albums ON \n"
+    + "     bands.band_id = albums.artist \n"
+    + "  WHERE (((albums.category)='" + args[0] + "'))");
+</code>
 
-===== A Real Bank Transfer (3) =====
+----
 
-  * Both banks have to keep a record of this transaction.
-  * I would expect to see the transaction in my next statement (or immediately that funds have cleared if on-line), and so would my daughter.
+  * ''executeQuery()'' takes a ''String'' parameter
+  * String is SQL code in this case
+  * Returns a ''ResultSet'' (an '''Iterator'')
+  * Query term ''albums.category'' is taken from **arguments** to program.
+  * ''Result'' is fields: //albums.title//, //bands.band_name//, //albums.year//; for records in join of albums and bands whose //albums.catogory// field matches ''args[0]''.
+  * Easiest way to create a query is to use query by example with a database tool.
 
-===== Comments =====
+===== … process results =====
 
-  * On the [[#A Real Bank Transfer (1)|previous slide]], only the **highlighted** term is actually an application issue addressed in the business logic.
-  * All the rest have to addressed by the business tier at the two banks concerned.
-  * The issues illustrated are typical of those found in the business tier:
-    * //Transactions must be secure//
-    * //Transaction is distributed//
-    * //Data integrity must be assured//
-    * //There must be an audit trail//
+<code java>
+while (r.next()) {
+    // Capitalization doesn't matter:
+    System.out.println("Have a result!");
+    System.out.println(r.getString("Title") + " by "
+        + r.getString("bAND_NAME") + " released in "
+        + r.getString("YEAR") + ".");
+}
+</code>
+----
 
------
+  * ''r'' is an ''Iterator''. ''r.next()'' moves "cursor" to next result.
+  * Returns false if there is no next (query returned nothing) or have reached last record.
+  * You must call ''next()'' before first result is used.
+  * ''getXxxx(String //columnName//)'' gets item of type ''Xxxx'' for column named by ''String''. Most standard Java types (including ''Object'') can be returned.
+  * ''updateXxxx(String //columnName//, Xxxx //value//)'' can be used to update a record value.
+  
+===== … close down connection and clean up =====
+<code java>
+s.close();
+</code>
 
-**Notes**
+----
 
-//Transactions must be secure//: I must provide proof of identity (authentication) and be authorized to make the transfer. My bank must authenticate itself and be authorized to make a funds transfer to my daughter’s account.
+  * Closing the statement also closes the results set.
+  * We do not need to close the database connection explicitly as it's closed when the program exits.
+  * If you have a pool of connections you'd want to release your connection (returning it to the pool) when you've finished.
+  
+===== SQL Data-types and Java Data-types =====
 
-//Transaction is distributed//. Accounts are maintained in different machines. I access my bank across the internet, the banks access each other across the internet. 
+  * Should always use Java data-types and map these to database rather than the other way around.
 
-//Data integrity must be assured//: money can only be in my account or in my daughter’s.  It cannot be lost in transit. If a failure occurs, both accounts should roll-back to their original state. The object representing my account may not even be on the same server the next time I log in: but the balance has to be correct!
+^Java Type^SQL Types (from ''java.sql.Types'')^
+|''boolean''|''BIT''|
+|''byte''|''TINYINT''|
+|''short''|''SMALLINT''|
+|''int''|''INTEGER''|
+|''long''|''BIGINT''|
+|''float''|''REAL''|
+|''double''|''DOUBLE''|
+|''java.Math.BigDecimal''|''NUMERIC''|
+|''java.lang.String''|''VARCHAR or LONGVARCHAR''|
 
-//There must be an audit trail// for legislative and customer information purposes.
+===== SQL Data-types and Java Data-types (2) =====
+^Java Type^SQL Types (from ''java.sql.Types'')^
+|''byte[]''|''VARBINARY'' or ''LONGVARBINARY''|
+|''java.sql.Date''|''DATE''|
+|''java.sql.Time''|''TIME''|
+|''java.sql.Timestamp''|''TIMESTAMP''|
+|''java.sql.Blob''|''//BLOB//'' (SQL3 datatype)|
+|''java.sql.Clob''|''//CLOB//'' (SQL3 datatype)|
+|''java.sql.Array''|''//ARRAY//'' (SQL3 datatype)|
+|''java.sql.Ref''|''//REF//'' (SQL3 datatype)|
+|''java.sql.Struct''|''//STRUCT//'' (SQL3 datatype)|
 
-=====  Lecture Content =====
+===== What else does JDBC provide? =====
+  * Can call JDBC from a servlet or from an applet.
+  * It is possible to create a database and populate it from Java. Also possible to delete tables from a database.
+  * Select, update, delete queries supported.
+  * ''DatabaseMetaData'' interface is huge! It is provided to allow you to query the capabilities of a database from Java and work around database idiosyncrasies.
+  * Many more features provided for enterprise applications. Support for database transactions, rollback, etc.
 
-  * [[#An example]]
-  * **[[#The key business tier services]]**
-  * [[#The Java solution: Enterprise Java Beans]]
-  * [[#Reimplementing PerfectTime as a session bean]]
-  * [[#Is the Java solution a good solution?]]
+===== Transaction Logic (1) =====
+  * Often you need to issue many updates or inserts together as part of a single transaction
+    * New band: add all musicians in the band at the same time.
+  * Individual SQL statements may fail, e.g. because of a network problem.
+  * If we have a failure in the middle of a group of transactions you can be left with corrupt data.
+  * SQL allows you to group a set of commands that should be executed together into a transaction.	
 
+===== Transaction Logic (2) =====
+  * As //transaction// is one or more SQL statements that should be treated as a single unit of work.
+  * If one statement in the transaction fails, the whole transaction should be aborted, //including any statements that have been successfully executed//.
+  * If all the statements are successfully executed the changes can be made permanent.
+  * An abort is called a ''ROLLBACK'' -- database is left in the state it was in before transaction began.
+  * A transaction is made permanent with a ''COMMIT''.
+  * If not committed the database is not changed by a transaction!	
 
-===== The Key Business Tier Services =====
+===== Lecture Contents =====
 
-Having seen this simple example, we can straight away identify some key services provided to objects in the Business Tier:
-  * //Transaction support//
-  * //Persistence//
-  * //Security//
-  * //Transparent resource location//
-  * //Logging//
+  * [[#What is a Relational Database?|An introduction to relational databases and SQL]]
+  * [[#The Trouble with Databases|JDBC -- Java database connectivity API]]
+  * **[[#Immortal Objects]]**
+  * [[#Persistence Patterns]]
+  * [[#Other forms of Enterprise Integration]]
+  
 
-===== Transaction Support =====
+===== Immortal Objects =====
 
-The atomic ''withdraw'' and ''deposit'' methods and the entities representing the two bank accounts have to be protected inside the //transfer// transaction.
-  * When I start to transfer funds, my account is locked until the funds have been received. 
-  * When funds have been received, my balance will be reduced. 
-  * Similarly my daughter’s account is also protected.
-  * Only if the transaction succeeds is it //committed// and the database records for the accounts will be updated.
-  * If anything goes wrong, the whole transaction is //rolled back// (or undone).
+  * How to ensure that the state of your business objects survives (persists) beyond the ending of one process to the start of the next. E.g. to survive crashes and shutdown.
+  * Although you can use files for persistence, it doesn't scale well.
+  * These days you have to use a relational database. If you use Java to implement your application you have to use JDBC.
+  * How can persistence issues can be affectively hidden from the business objects that rely on it?
+  * Persistence is Last Step in a Transaction
+  * In distributed applications we need transactions to guarantee data integrity.
+  * Commit if successful. Rollback if fails.
+  * Transaction choreographs a persistence operation. 
+  * When the transaction is notified that it is complete it creates a persistence transaction which tells each object modified in the transaction to insert, update or delete itself in the persistent store.
+  * The persistence transaction makes sure that all data store accesses take place within a single data store transaction (i.e using the same connection object) and is committed at the end.
+  * The component model doesn't care about how the persistence is achieved. It only cares about the transaction.
+  * 
+  * Component Transaction and Persistence Transaction
+===== Lecture Contents =====
 
-===== Persistence =====
+  * **[[#What is a Relational Database?|An introduction to relational databases and SQL]]**
+  * [[#The Trouble with Databases|JDBC -- Java database connectivity API]]
+  * [[Immortal Objects]]
+  * [[Persistence Patterns]]
+  * [[Other forms of Enterprise Integration]]
+  
+===== Persistence Patterns =====
+  * In many applications it is natural to work directly with the relational model, issuing SQL queries and parsing result sets.
+  * This is known as the Transaction Script pattern: business logic is organized into procedures for each use case.
+  * Direct use of SQL is also well suited for aggregating queries and set-based updates (accessing large amounts of data or updating many tables in the same transaction)
+  * Another scenario is that you have simple queries returning small sets of rows (often in a single table), which receive selective updates.
+  * Little need for set-based updates
+  * Data entities mapped to persistent Java objects 
+  * Business logic deals with these objects rather than the tables and records.
+  * General term for latter is Object-Relational Mapping (ORM)
+  * 
+  * Patterns for ORM Strategies
+  * Active record – wraps a row in a database table, encapsulates the database access, and adds domain logic to the data.
+  * Data mapper – A layer of mappers that move data between objects and a database while keeping them independent of each other and the mapper itself.
+  * Query object – An object that represents a database query
+  * Unit of work – Maintains a list of objects effected by a business transaction and coordinates the writing of changes and the resolution of concurrency problems.
+  * 
+  * Persistence Frameworks
+  * You can "roll your own” persistence framework …
+  * See e.g. extended examples in Reese.
+  * … but it’s a non-trivial task and fraught with difficulties and traps.
+  * Better to use an existing framework. Many available!
+  * Most popular: CMP (more later), JDO (Java extension) and Hibernate (an open source framework).
+  * All implement Data Mapper, Query Object and Unit of Work patterns to provide Transparent Persistence for Java objects.
+  * The Object/Relational "Impedance Mismatch”
+  * For all but the simplest domain models, there is no direct match from relational database to object model.
+  * OO concepts such as class, polymorphism, and inheritance have no direct analogy in an RDMS.
+  * RDMS concepts such as normalized data, sets and efficient access have no direct relationship in the OO world.
+  * It’s best to keep the two worlds separate and in the domain of the experts.
+  * Use an ORM framework (if it’s appropriate) to provide the bridge between the two worlds.
+  * 
+  * Some Issues that the Developers of an ORM Have to be Aware Of
+  * Identity: ensuring a record in a database is unique in a global sense.
+  * Instantiated objects should be cached: avoids a further trip to the database if it is needed in two separate transactions.
+  * "Dirty” objects (objects that have been created or changed in a transaction) have to be committed to the database in a single atomic operation.
+  * Objects that have not been changed do not need to be written back to the database.
+  * Queries may result in large numbers of records being returned from a database:
+  * Usually returned as a collection
+  * However objects in the collection should not be instantiated unless it is needed.
+  * 
+  * 
+  * 
+  * 
+  * Choosing a Persistence Strategy
+  * Many enterprise applications need to use legacy databases, or share the database with other systems, so choices are limited!
+  * Despite the hype, it is rare for an enterprise to change its database supplier, so it is often not worth completely abstracting the details of a DBMS out of code.
+  * It is worth providing a data access layer so that your business logic does not talk directly JDBC but goes through a set of Data Access Objects. 
+  * If the database schema changes, it will be in the access layer that changes will be needed, not in the business logic.
+  * If the business logic changes, again, persistence code changes are limited to the access layer.
+  * Choosing a Persistence Strategy
+  * In some applications with a limited number of simple tables it will be quickest to use active record and talk directly to the database.
+  * If the application will require heavy use of set access, aggregation of data from many tables, or batch updates in many rows, a direct implementation using transaction script may be most efficient.
+  * ORM is a complex strategy which be of benefit only for complex domain models and or databases
+  * Choosing a Persistence Strategy
+  * ORM can be of benefit if:
+  * Your application has the typical CRUD – create, retrieve, update, delete – workflow for domain objects.
+  * Objects are found in large sets but are updated and deleted individually.
+  * A large number of objects exist but they are "read-mostly”
+  * There is a natural mapping between classes and fields and database tables and records
+  * There are no unusual requirements such as the need to used customized SQL optimizations.
+  * For Java programmers ORM has the advantage of keeping SQL out of the code. But that is why we have DB architects!
+  
+===== Lecture Contents =====
 
-  * The main purpose of persistence is to allow data to //survive// runs of the application.
-    * To survive a crash.
-    * To rollback to a known state after a failed transaction.
-    * Or simply to be stored in non-volatile memory.
-  * Your business objects want this to just happen!
-    * Transparent persistence is obviously important,
-but persistence should also be a key part of transaction management and is a cornerstone of data integrity.
-Security
-Business applications have to be secure.
-Agents have to authenticate themselves to the business tier so that they can be identified.
-Methods can only be called by agents authorized to call them.
-Agents may have different authorization: consider the authority a customer, payee, bank teller, bank manager or unauthorized third party may have to your account.
-Wider issues: security of communications, security of the business tier from unauthorized access, etc.
-Transparent resource location
-In systems like on-line banking there are many possible gateways to the bank account information:
-Bank’s own systems, Other banks, Traders making electronic funds transfers, ATMs, Internet banking, Mobile phones, Digital TVs etc.
-Whatever system is used, a single database record represents my bank account. 
-As server load on my bank’s system increases, extra machines are brought into use.
-All three tiers of the enterprise application may be replicated
-Wherever it is located, my bank account’s state should be consistent. 
-Logging
-Logging is required so that a record of each transaction is kept somewhere.
-Obvious use in managing an application server, but also necessary for other purposes:
-For example, telcos, banks and ISPs are legally required to keep records of  certain transactions.
-Customers need access to activity records (statements)
-Service providers need records for billing purposes
-Disputes will need to be resolved by consulting records.
-Logging can be as simple as a text file or may itself be supported by a persistent store.
+  * **[[#What is a Relational Database?|An introduction to relational databases and SQL]]**
+  * [[#The Trouble with Databases|JDBC -- Java database connectivity API]]
+  * [[Immortal Objects]]
+  * [[Persistence Patterns]]
+  * [[Other forms of Enterprise Integration]]
+  
+===== Other Forms of Enterprise Integration =====
 
+  * Enterprise integration is not just about databases and SQL.
+  * Enterprise information systems such as:
+  * Human Resources Systems
+  * Payroll systems
+  * Enterprise Resource Planning
+  * Business to Business Systems
+  * Enterprise communication systems
+  * Other "legacy” systems 
+  * 	also often have to be built in to enterprise applications.
+  * Main technologies are the Java Connectivity API and Web Services.
+  * May not be talking Java so CORBA and similar technologies come into play.
+===== Lecture Summary =====
 
-=====  Lecture Content =====
-
-  * [[#An example]]
-  * [[#The key business tier services]]
-  * **[[#The Java solution: Enterprise Java Beans]]**
-  * [[#Reimplementing PerfectTime as a session bean]]
-  * [[#Is the Java solution a good solution?]]
-
-
-So Business Tiers are ComplexWhat’s Java’s Solution?
-The Java 2 Enterprise Edition defines many APIs that can be used to build enterprise applications.
-We discussed some of these in the lecture on Distributed Application Architecture.
-For the particular requirements of the Business Tier, J2EE defines an architecture specified around Enterprise Java Beans (EJBs) and the EJB container.
-EJBs are the components which represent the business entities and business processes.
-The EJB container provides the business tier services.
-The Application Programming Model
-Components, Connectors and Connectors
-Three fundamental parts of an enterprise application.
-Components are the key focus of application developers,
-System vendors implement containers and connectors to conceal complexity and promote portability.
-J2EE Architecture
-EJB Components
-Elements of reusable business logic that adhere to the strict standards and design patterns defined in the EJB specification.
-Allows components to be portable.
-Allows other services:
-Security, caching and distributed transactions
-	to be performed on behalf of the components.
-Development is the responsibility of an EJB provider (that is a programmer).
-
-EJB Container
-EJB Container and Server: the run-time environment provided by the EJB Container/Server Provider. 
-Provides the services that the EJB needs such as:
-Java Naming and Directory Interface (JNDI): for lookup across networks
-Java Transaction API/Java Transaction Service (JTA/JTS): for controlling transactions
-CORBA and RMI/IIOP: for communication between components and with container
-JDBC for persistence of data
-Servlets and JSP for interaction with client (interface services)
-Security for access control and ensuring secure transactions
-
-Anatomy of an EJB
-An EJB consists of a number of pieces, including the bean itself, some interfaces, and an information file. Everything is packaged into a special jar file.
-Enterprise Bean
-Implements EJB interface, provides business logic.
-Home Interface
-Used as a factory for an EJB. Clients use home interface to find an instance of a bean or to create a new instance. 
-Remote Interface/Local Interface
-Interfaces to your EJB that can be used by remote objects (using RMI) or local objects (in the same JVM).
-Deployment Descriptor
-An XML file that describes the EJB. Can be used by the deployer to configure the EJB for a container.
-EJB-Jar File
-Packages Bean, Home, Remote, Local interfaces and deployment descriptor.
-EJB Operation
-EJB Container implements the Home and Remote interfaces
-Container thus responsible for managing the lifecycle of the bean (thru’ home interface) and for managing requests from clients via the remote interface, e.g. by sharing requests via threads or pooling.
-All requests are “proxied” through the EJB container which can then control transactions, security and caching behind the scenes.
-Types of EJBs
-Session Beans are used to represent use-cases or work flow on behalf of a client. They represent operations on the persistent data but not the data itself. Two types:
-Stateless session beans
-Simplest type of EJB component.
-No record of history with client so can be reused on the server side
-State has to be stored outside of the EJB.
-Statefull session beans
-Maintain state between invocations
-Pooled and cached by container
-Entity Beans
-Represent persistent data and its behaviour.
-Can be shared among clients.
-Managed saving and restoring of data by container ensures that data “lives on” between container invocations.
-Container managed persistence hands responsibility of maintaining the data to the container. Usually via a database. Persistence just happens!
-Bean managed persistence makes the bean provider responsible for persistence.
-Why So Complex?
-Container provides the Business Tier services to the beans.
-Any access to a business object has to be intercepted so that it can be authorized, controlled within a transaction, transparently persisted, and logged.
-This service is provided by the container via hooks in the remote or local interface and passed on to the bean itself only if allowed.
-The model assumes that client access will be remote via RMI, so we need to identify a “constructor” for the component via the home interface.
-
-=====  Lecture Content =====
-
-  * [[#An example]]
-  * [[#The key business tier services]]
-  * [[#The Java solution: Enterprise Java Beans]]
-  * **[[#Reimplementing PerfectTime as a session bean]]**
-  * [[#Is the Java solution a good solution?]]
-
-
-Developing an EJB
-The remote interface must be public. 
-The remote interface must extend the interface javax.ejb.EJBObject. 
-Each method in the remote interface must declare java.rmi.RemoteException in its throws clause in addition to any application-specific exceptions. 
-Any object passed as an argument or return value (either directly or embedded within a local object) must be a valid RMI-IIOP data type (this includes other EJB objects).
-Remote interface for the PerfectTime EJB
-	//# You must install the J2EE Java Enterprise//# Edition from java.sun.com and add j2ee.jar//# to your CLASSPATH in order to compile//# this file. See details at java.sun.com.// Remote Interface of PerfectTimeBeanimport java.rmi.*;import javax.ejb.*;public interface PerfectTime extends EJBObject {  public long getPerfectTime() throws RemoteException;}
-The Home interface
-Factory where the component will be created. 
-It can define create methods, to create instances of EJBs, 
-finder methods, which locate existing EJBs and are used for Entity Beans only.
-The Home Interface Specification
-The Home interface must be public. 
-The Home interface must extend the interface javax.ejb.EJBHome. 
-Each create method in the Home interface must declare java.rmi.RemoteException in its throws clause as well as a javax.ejb.CreateException. 
-The return value of a create method must be a Remote Interface. 
-The return value of a finder method (Entity Beans only) must be a Remote Interface or java.util.Enumeration or java.util.Collection. 
-Any object passed as an argument (either directly or embedded within a local object) must be a valid RMI-IIOP data type (this includes other EJB objects)
-
-Home interface for the PerfectTime EJB
-	// Home Interface of PerfectTimeBean.import java.rmi.*;import javax.ejb.*;public interface PerfectTimeHome extends EJBHome {  public PerfectTime create() throws    CreateException, RemoteException;}
-Business Logic
-You can now implement the business logic. When you create your EJB implementation class, you must follow these guidelines:
-The class must be public. 
-The class must implement an EJB interface (either javax.ejb.SessionBean or javax.ejb.EntityBean). 
-The class should define methods that map directly to the methods in the Remote interface. Note that the class does not implement the Remote interface; it mirrors the methods in the Remote interface but does not throw java.rmi.RemoteException. 
-Define one or more ejbCreate( ) methods to initialize your EJB. 
-The return value and arguments of all methods must be valid RMI-IIOP data types.
-PerfectTimeBean (Session Bean)
-	// Simple Stateless Session Bean// that returns current system time.import java.rmi.*;import javax.ejb.*;public class PerfectTimeBean implements SessionBean {  private SessionContext sessionContext;  //return current time  public long getPerfectTime() {    return System.currentTimeMillis();  }  // EJB methods  public void ejbCreate() throws CreateException {}  public void ejbRemove() {}  public void ejbActivate() {}  public void ejbPassivate() {}  public void setSessionContext(SessionContext ctx) {    sessionContext = ctx;  }
-  }
-Deployment Descriptor
-An XML file that describes the EJB component. Should be stored in a file called ejb-jar.xml.<?xml version="1.0" encoding="Cp1252"?><!DOCTYPE ejb-jar PUBLIC '-//Sun Microsystems, Inc.//DTD Enterprise JavaBeans 1.1//EN' 'http://java.sun.com/j2ee/dtds/ejb-jar_1_1.dtd'><ejb-jar>  <description>Example for Chapter 15</description>  <display-name></display-name>  <small-icon></small-icon>  <large-icon></large-icon>  <enterprise-beans>    <session>      <ejb-name>PerfectTime</ejb-name>      <home>PerfectTimeHome</home>      <remote>PerfectTime</remote>      <ejb-class>PerfectTimeBean</ejb-class>      <session-type>Stateless</session-type>      <transaction-type>Container</transaction-type>    </session>  </enterprise-beans>  <ejb-client-jar></ejb-client-jar></ejb-jar>
-Deploying the EJB
-The files must be archived inside a standard Java Archive (JAR) file. The deployment descriptors should be placed inside the /META-INF sub-directory of the Jar file.
-Once the EJB component is defined in the deployment descriptor, the deployer should then deploy the EJB component into the EJB Container.
-The deployment process is quite “GUI intensive” and specific to the individual EJB Container.
-The deployment process creates some client stubs for calling the EJB component. These classes should be placed on the classpath of the client application.
-When a client program wishes to invoke an EJB, it must look up the EJB component inside JNDI and obtain a reference to the home interface of the EJB component. The Home interface is used to create an instance of the EJB. 
-The Client
-Here a simple Java program but could just as easily be a servlet, a JSP or even a CORBA or RMI distributed object.// Client program for PerfectTimeBeanpublic class PerfectTimeClient {  public static void main(String[] args) throws Exception {    // Get a JNDI context using    // the JNDI Naming service:    javax.naming.Context context = new      javax.naming.InitialContext();    // Look up the home interface in the    // JNDI Naming service:    Object ref = context.lookup("perfectTime");    // Cast the remote object to the home interface:    PerfectTimeHome home = (PerfectTimeHome)      javax.rmi.PortableRemoteObject.narrow(        ref, PerfectTimeHome.class);
-The Client … cont
-    // Create a remote object from the home interface:    PerfectTime pt = home.create();    // Invoke getPerfectTime()    System.out.println(      "Perfect Time EJB invoked, time is: " +        pt.getPerfectTime());  } } 
-
-=====  Lecture Content =====
-
-  * [[#An example]]
-  * [[#The key business tier services]]
-  * [[#The Java solution: Enterprise Java Beans]]
-  * [[#Reimplementing PerfectTime as a session bean]]
-  * **[[#Is the Java solution a good solution?]]**
-
-
-
-===== Is the Java Solution a Good Solution? =====
-During 2004, the developer community decided that the answer is probably no.
-We will discuss this issue, and some of the alternatives in the final lecture.
-Eckel’s PerfectTime session EJB example gives a flavour of the complexity! To run the example, you’ll need an implementation of a J2EE container to which you can deploy the bean.
-It’s a good example of a bad design if nothing else!
-
-=====  Lecture Content =====
-
-  * [[#An example]]
-  * [[#The key business tier services]]
-  * [[#The Java solution: Enterprise Java Beans]]
-  * [[#Reimplementing PerfectTime as a session bean]]
-  * [[#Is the Java solution a good solution?]]
-
-
+  * [[#What is a Relational Database?|An introduction to relational databases and SQL]]
+  * [[#The Trouble with Databases|JDBC -- Java database connectivity API]]
+  * [[Immortal Objects]]
+  * [[Persistence Patterns]]
+  * [[Other forms of Enterprise Integration]]
 
 ----
 
