@@ -9,6 +9,8 @@ This folder contains all the EJB examples from [Lecture 14](/dokuwiki/at-m42:lec
 ### TimeHere as an Enterprise Jaba Bean
 
 * [TimeHere.java](TimeHere.java) &ndash; remote interface to `TimeHereBean`
+* [TimeHereHome.java](TimeHereHome.java) &ndash; home Interface of `TimeHereBean` (not required for EJB 3 containers).
+* [TimeHereBean.java](TimeHereBean.java) &ndash; simple Stateless Session Bean that returns current system time.
 
 
 ----
