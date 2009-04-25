@@ -1,6 +1,6 @@
 ====== Introduction to this Module ======
 
-This module is based on the structure and format of the module //AT-M42 Client-Server Programming in Java (Concurrent Systems and Enterprise Computing)// which has been delivered by Dr Rashid Mehmoud since 2007. AT-M42 is itself based on the module //EG-M42: Client Server Programming in Java// which was last delivered by Dr Chris Jobling in December 2006. 
+This module is based on the structure and format of the module //AT-M42: Distributed and Enterprise Systems in Java// which has been delivered by Dr Rashid Mehmoud since 2007. AT-M42 is itself based on the module //EG-M42: Client Server Programming in Java// which was last delivered by Dr Chris Jobling in December 2006. 
 
 I have taken the liberty of changing the module from the published description in two ways. 
   - Firstly I have decided to give the programming examples in **Groovy** which is a so-called //dynamic language//. Groovy is in fact a superset of the Java programming language that has the advantage of both being syntactically equivalent to Java while at the same time being easier to learn and use. At the same time, it is a very powerful and productive language. 

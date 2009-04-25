@@ -20,35 +20,47 @@ After completing this module you will be able to:
   * design and implement an enterprise computing application with a web interface using the Grails framework. 
 ===== Module Content: Lectures =====
 
-  * The keys to object-oriented programming on the Java platform: objects, composition & inheritance, polymorphism, inheritance, interfaces, threaded execution, exception handlers, java beans.
+  * The keys to object-oriented programming on the Java platform: objects and methods, collection classes, closures, composition & inheritance, polymorphism, interfaces, threaded execution, exception handling, components and properties, unit testing.
   * Enterprise infrastructure: TCP/IP and sockets; RMI; Web and HTTP; SQL and RDBMS. An introduction to the Java APIs to support these: sockets; RMI; Servlets and JSP; JDBC.
   * Software design patterns and system architecture. The three-tier enterprise architecture: presentation tier and web presentation, business tier and enterprise integration tier. The web container and enterprise java bean container.
+
+===== Module Content: Case Studies =====
+
+The development of an Adventure game:
+  * Using collection classes.
+  * Using methods, simple IO and closures.
+  * Using objects.
+  * Using classes and unit testing.
+Background for the project.
+
 ===== Module Content: Labs =====
 
 //First-hand experience of//
-  * objects
-  * composition & inheritance
-  * polymorphism
-  * threaded execution
-  * collections
-  * exception handlers
-  * java beans
-//Assessment// –- completed lab work.
+  * Basic building blocks: //objects, numbers and expressions; strings and regular expressions//.
+  * Collection classes: //lists, maps and ranges//.
+  * Methods and flow of control.
+  * Closures and files.
+  * Classes, inheritance and polymorphism.
+  * Unit testing.
+
+//Assessment// -- % completed lab work.
 
 ===== Module Content: Seminar =====
-Modern approaches to enterprise application development. 
-  * What’s new in Java 5
-  * Service Oriented Architectures
-  * Lightweight frameworks
-  * Dependency injection
-  * Aspect-oriented programming
-  * Web presentation frameworks
-  * Persistence frameworks
+Lifting the lid on Grails. 
+  * The architecture of Grails 
+  * Domain classes, controllers and views 
+  * Application services and plugins 
+  * Web Services 
+
+//Assessment// -- group mark
 
 ===== Module Content: Mini Project =====
 
   * The software development process: test-driven development, agile methods, continuous integration.
   * Case-study using the Grails framework. 
+
+//Assessment// -- group work.
+
 ===== Assessment 100% CA =====
 
   * //Part 1//: 20%: Assesses Learning Outcome 1.
@@ -56,7 +68,7 @@ Modern approaches to enterprise application development.
   * //Part 2//: 40% Assesses Learning Outcome 2 and 3. 
     * Seminar to discuss Modern approaches to enterprise application development. Group size 4-5 people.
   * //Part 3//: 40%: Assesses Learning Outcome 4. 
-    * An extended group design project to analyse, design and prototype a multi-tier multi-user adventure game. Assessment (a group mark) based on a presentation of the prototypes and documentation. Group size 4-5 people.
+    * An small group design project to analyse, design and prototype a multi-tier multi-user adventure game. Assessment (a group mark) based on a presentation of the prototypes and documentation. Group size 4-5 people.
 
 All work will be completed within the two weeks of the module and submitted by 5.00 pm Friday, 8th May.
 
@@ -64,17 +76,23 @@ All work will be completed within the two weeks of the module and submitted by 5
 
   * //Recommended Reading//:
     * K. Barclay and J. Savage, //Groovy Programming//, Morgan Kauffman, 2007. On Amazon.co.uk at http://bit.ly/qrUJY. 
+    * G. Rocher and J. Brown, //The Definitive Guide to Grails//, 2nd. Ed., Apress, 2009. On Amazon.co.uk at http://bit.ly/OkJsl.
+
   * //Further Reading//:
-Bruce Eckel, Thinking in Java (2nd Ed.), Prentice Hall, 2000. 
-Available in full in Word ’97, PDF and HTML form on the net: http://www.MindView.net. Local copy on course web.
-R. Johnson, J2EE Development Without EJB, Expert One-on-One , Hungry Minds, 2004.
-B.A. Tate and J. Gehtland, Spring: a developer’s notebook. O’Reilly, 2005. 
-M. Fowler, Patterns of Enterprise Application Architecture, Addison Wesley, 2003.
-See also reading list.
+    * Bruce Eckel, //Thinking in Java// (2nd Ed.), Prentice Hall, 2000. Available in full in Word ’97, PDF and HTML form on the net: http://www.MindView.net. 
+    * M. Fowler, //Patterns of Enterprise Application Architecture//, Addison Wesley, 2003.
+See also [[at-m42:recommended_reading|reading list]].
 
 
 ===== Software =====
+
+  * Java Platform Standard Edition 1.5+: http://java.sun.com.
+  * Groovy Programming Language and SDK: http://groovy.codehaus.org/.
+  * Grails Web Framework: http://grails.org/.
+
 ===== More Software =====
+
+  * [[http://tomcat.apache.org/|Apache Tomcat Web Server]] (for servlet examples)
 
 ----
 

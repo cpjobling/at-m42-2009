@@ -1,11 +1,11 @@
-====== The Lecture Course ======
+====== The Lecture Notes ======
 
 
   * [[lecture0|Lecture 0]]: About this Module
   * [[lecture1|Lecture 1]]: Introducing the Java Platform and the Module
+
 ===== Part 1: Programming the Java Platform =====
 
-  * [[Why Groovy?]]
   * Lecture 2: [[lecture2|Basic Building Blocks]]
   * Lecture 3: [[lecture3|Lists, Maps and Ranges]]
   * Lecture 4: [[lecture4|Simple IO and Case Study 1]]
@@ -22,11 +22,16 @@
   * Lecture 9: [[lecture9|Multi-Threading]]
   * Lecture 10: [[lecture10|Network Programming]]
   * Lecture 11: [[lecture11|Distributed Computing]]
-
 ===== Part 3: Enterprise Applications =====
 
   * [[part3|Java Platform for the Enterprise]]
-  * [[lecture12|Lecture 12]]: 
+  * Lecture 12: [[lecture12|Distributed Application Architecture]]
+  * Lecture 13: [[lecture13|Presentation-tier Services]]
+  * Lecture 14: Integration-tier services
+  * Lecture 15: [[lecture15|Business-tier Services]]
+
+  * Lecture 16: Grails
+  * Lecture 17: 
 
 ===== Additional Notes =====
 
