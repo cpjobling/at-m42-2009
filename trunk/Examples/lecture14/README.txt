@@ -11,6 +11,7 @@ This folder contains all the EJB examples from [Lecture 14](/dokuwiki/at-m42:lec
 * [TimeHere.java](TimeHere.java) &ndash; remote interface to `TimeHereBean`
 * [TimeHereHome.java](TimeHereHome.java) &ndash; home Interface of `TimeHereBean` (not required for EJB 3 containers).
 * [TimeHereBean.java](TimeHereBean.java) &ndash; simple Stateless Session Bean that returns current system time.
+* [ejb-jar.xml](ejb-jar.xml) &ndash; deployment descriptor for the TimeHereBean (not required in EJB 3 containers)
 
 
 ----

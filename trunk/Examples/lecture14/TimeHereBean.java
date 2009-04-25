@@ -1,8 +1,7 @@
 // Simple Stateless Session Bean
 // that returns current system time.
 
-import java.rmi.*;
-import javax.ejb.*;
+import javax.ejb.Stateless;
 
 @Stateless
 public class TimeHereBean implements TimeHere {
