@@ -1,3 +1,4 @@
+
 AT-M42 Client Server Programming for the Java Plaform
 ======================================================
 
@@ -17,5 +18,8 @@ This folder contains all the EJB examples from [Lecture 15](/dokuwiki/at-m42:lec
 ----
 
 [Home](/dokuwiki/at-m42:home) | [Lectures](/dokuwiki/at-m42:lectures) | [Lecture 15](/dokuwiki/at-m42:lecture15) | [Previous Examples](../lecture14/index.php) | [All Examples](../index.php) | [Next Examples](../lecture16/index.php) 
+  
+
+
   
 
