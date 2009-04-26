@@ -3,3 +3,7 @@
 	Order allow,deny
 	Deny from all
 </Files> 
+<Files wiki>
+	Order allow,deny
+	Deny from all
+</Files>

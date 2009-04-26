@@ -39,7 +39,7 @@ This convenience comes at a cost: Grails has fairly fixed ideas about how a web 
 
 We shall take the example that we have developed over the previous four case studies, and re-implement //Player// and //Item// administration for an adventure game in Grails.
 
-  * [[#Step 1: Install and Configure Grails]]
+  * [[at-m42:labs:setup#Install Grails|Step 1: Install and Configure Grails]] -- note Grails includes the run-time files for Groovy (''groovy-all-1.6.0.jar'') so you do not need to [[at-m42:labs:setup#Install Groovy|Groovy first]]!
 Step 2: Create domain class Item
 
 An index to the source code for all the examples in this case study is [[/~eechris/at-m42/Examples/case-study-05|available]].
