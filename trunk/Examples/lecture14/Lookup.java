@@ -8,24 +8,28 @@ import java.sql.Statement;
 
 public class Lookup {
 
+	static final String DB = "jdbc:derby:CDs";
+	static final String USER = "";
+	static final String PASSWORD = "";
+	static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
+		
 	public static void main(String[] args) throws SQLException,
 			ClassNotFoundException {
-		String dbUrl = "jdbc:derby:CDs";
-		String user = "";
-		String password = "";
+
 		// Load the driver (registers itself)
-		Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+		Class.forName(DRIVER);
 		System.out.println("Connection made");
-		Connection c = DriverManager.getConnection(dbUrl, user, password);
+		Connection c = DriverManager.getConnection(DB, USER, PASSWORD);
 		System.out.println("Connection: " + c);
 		Statement s = c.createStatement();
 		System.out.println("Statement: " + s);
-		// SQL code:
-		ResultSet r = s
-				.executeQuery("SELECT albums.title, bands.band_name, albums.year\n"
+		// SQL query
+		String QUERY = "SELECT albums.title, bands.band_name, albums.year\n"
 						+ "  FROM bands INNER JOIN albums ON \n"
 						+ "     bands.band_id = albums.artist \n"
-						+ "  WHERE (((albums.category)='" + args[0] + "'))");
+						+ "  WHERE (((albums.category)='" + args[0] + "'))"
+		// SQL code:
+		ResultSet r = s.executeQuery(QUERY);
 		System.out.println("ResultSet: " + r);
 		while (r.next()) {
 			// Capitalization doesn't matter:

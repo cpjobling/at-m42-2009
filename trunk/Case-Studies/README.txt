@@ -10,6 +10,7 @@ This folder contains the source code for the case studies for [AT-M42](/dokuwiki
 * [Case study 2](case-study-02): Methods and Closures
 * [Case study 3](case-study-03): Classes
 * [Case study 4](case-study-04): Inheritance
+* [Case Study 5](case-study-04); Grails
 
 ----
 

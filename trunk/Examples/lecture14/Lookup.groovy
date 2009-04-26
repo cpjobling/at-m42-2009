@@ -6,7 +6,7 @@ def PASSWORD = ''
 def DRIVER = 'org.apache.derby.jdbc.EmbeddedDriver'		
 
     // Connect to database
-def sql = Sql.newInstance(DB, USER, PASSWORD. DRIVER)
+def sql = Sql.newInstance(DB, USER, PASSWORD, DRIVER)
 
 def QUERY = """
 SELECT albums.title, bands.band_name, albums.year
