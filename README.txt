@@ -15,7 +15,7 @@ Quick links
 Using the source code
 ----------------------
 
-All the source code packaged as a Zip file (Windows Compressed Folder) can be downloaded from the Resources folder of the Blackboard course site.
+All the source code packaged as a Zip file (Windows Compressed Folder) can be downloaded from [at-m42-source.zip](at-m42-source.zip).
 
 The [Examples](Examples) and [Case-Studies](Case-Studies) folders contains source code for the examples presented in lectures and in the case-studies. To use these you will need access to the Java Standard Edition Development Kit (JDK) and Groovy. To run the examples for Lecture 13 you will need a suitable Web Container (I used and tested the code with Apache Tomcat). To run the examples in Lecture 14 you will need a suitable database engine. I used Apache Derby. For the fifth case study, and the project work, you will need to install and configure Grails. Links to the project sites for these tools is in the resources folder of the Blackboard course site.
 
