@@ -349,10 +349,6 @@ A single API for database access:
   * You get back a ''Connection'' object that you can then use to query and manipulate the database.
   * The following example opens a database of CD data and looks for a CD's that match a given theme as given on the command line.
   * It selects only the CDs that match the category then prints out the CD data:
-  * 
-  * 
-  * 
-  * 
 
 ===== Find CDs for a party =====
 
@@ -366,9 +362,10 @@ extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture14/Lookup.ja
 
 ===== … define db attributes =====
 <code java>
-String dbUrl = "jdbc:derby:CDs";
-String user = "";
-String password = "";
+static final String DB = "jdbc:derby:CDs";
+static final String USER = "";
+static final String PASSWORD = "";
+static final String DRIVER = "org.apache.derby.jdbc.EmbeddedDriver";
 </code>
 
 ----
@@ -381,7 +378,7 @@ String password = "";
 ===== … load the driver =====
 
 <code java>
-Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+Class.forName(DRIVER);
 </code>
 
 ----
@@ -391,12 +388,12 @@ Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
 
 ===== … connect to database =====
 <code java>
-Connection c = DriverManager.getConnection(dbUrl, user, password);
+Connection c = DriverManager.getConnection(DB, USER, PASSSWORD);
 </code>
 
 ----
 
-  * Database driver knows how to connect to databases that it manages.
+  * The atabase driver knows how to connect to databases that it manages.
   * Connection object represents the database for rest of session.
   * Possible (and desirable) to pool connections if many clients may access same database simultaneously.
   * Database management system is responsible for handling simultaneous updates.
@@ -416,11 +413,13 @@ Statement s = c.createStatement();
 
 ===== … execute query and return results =====
 <code java>
-ResultSet r = s
-  .executeQuery("SELECT albums.title, bands.band_name, albums.year\n"
-    + "  FROM bands INNER JOIN albums ON \n"
-    + "     bands.band_id = albums.artist \n"
-    + "  WHERE (((albums.category)='" + args[0] + "'))");
+// SQL query
+String QUERY = "SELECT albums.title, bands.band_name, albums.year\n"
+                + "  FROM bands INNER JOIN albums ON \n"
+                + "     bands.band_id = albums.artist \n"
+                + "  WHERE (((albums.category)='" + args[0] + "'))"
+// SQL code:
+ResultSet r = s.executeQuery(QUERY);
 </code>
 
 ----
@@ -462,6 +461,21 @@ s.close();
   * We do not need to close the database connection explicitly as it's closed when the program exits.
   * If you have a pool of connections you'd want to release your connection (returning it to the pool) when you've finished.
   
+=====  Simplified Queries with Groovy =====
+ 
+
+<code groovy 1|Example 2; Database lookup in Groovy (at-m42/Lectures/lecture14/Lookup.groovy)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture14/Lookup.groovy
+</code>
+
+----
+
+As with other examples we've seen in this course, the designers of Groovy have created a JDBC API that further simplifies the interaction with a JDBC-supported database (and as we'll see, takes this even further in the Grails framework).
+
+In this example we note immediately that the opening of a connection to a database is achieved in a single //factory method// ''def sql = Sql.newInstance(DB, USER, PASSWORD, DRIVER)''. Once we have the ''Sql'' object, we can use the ''eachRow'' method, which takes a closure, to process each row. Note also, that the results are returned as a Map, so we can refer to each field as ''r.band_name'' (or if you prefer ''%%r['band_name']%%'' rather than the more long-winded ''r.getString(%%"bAND_NAME"%%)''). Also, because Groovy is a dynamic language, we need not know, nor care, what the type of the field represents.
+
+Further more, the use of multi-line strings simplifies the creation of queries, and because ''String'' interpretation works, queries can easily be made //programmatic//.
+
 ===== SQL Data-types and Java Data-types =====
 
   * Should always use Java data-types and map these to database rather than the other way around.
@@ -522,116 +536,134 @@ s.close();
 
 ===== Immortal Objects =====
 
-  * How to ensure that the state of your business objects survives (persists) beyond the ending of one process to the start of the next. E.g. to survive crashes and shutdown.
+  * How to ensure that the state of your business objects survives (''persists'') beyond the ending of one process to the start of the next. E.g. to survive crashes and shutdown.
   * Although you can use files for persistence, it doesn't scale well.
   * These days you have to use a relational database. If you use Java to implement your application you have to use JDBC.
   * How can persistence issues can be affectively hidden from the business objects that rely on it?
-  * Persistence is Last Step in a Transaction
+===== Persistence is Last Step in a Transaction =====
   * In distributed applications we need transactions to guarantee data integrity.
-  * Commit if successful. Rollback if fails.
+    * Commit if successful. Rollback if fails.
   * Transaction choreographs a persistence operation. 
-  * When the transaction is notified that it is complete it creates a persistence transaction which tells each object modified in the transaction to insert, update or delete itself in the persistent store.
-  * The persistence transaction makes sure that all data store accesses take place within a single data store transaction (i.e using the same connection object) and is committed at the end.
+  * When the transaction is notified that it is complete it creates a //persistence transaction// which tells **each object modified in the transaction** to //insert//, //update// or //delete// itself in the persistent store.
+  * The persistence transaction makes sure that all data store accesses take place within a **single data store transaction** (i.e using the same connection object) and is **committed** at the end.
   * The component model doesn't care about how the persistence is achieved. It only cares about the transaction.
-  * 
-  * Component Transaction and Persistence Transaction
+  
+===== Component Transaction and Persistence Transaction =====
+{{:at-m42:persitence.png?417|Persistence transaction}}
+
 ===== Lecture Contents =====
 
-  * **[[#What is a Relational Database?|An introduction to relational databases and SQL]]**
+  * [[#What is a Relational Database?|An introduction to relational databases and SQL]]
   * [[#The Trouble with Databases|JDBC -- Java database connectivity API]]
-  * [[Immortal Objects]]
-  * [[Persistence Patterns]]
-  * [[Other forms of Enterprise Integration]]
+  * [[#Immortal Objects]]
+  * **[[#Persistence Patterns]]**
+  * [[#Other forms of Enterprise Integration]]
   
-===== Persistence Patterns =====
-  * In many applications it is natural to work directly with the relational model, issuing SQL queries and parsing result sets.
-  * This is known as the Transaction Script pattern: business logic is organized into procedures for each use case.
+
+===== Persistence Patterns: Transaction script =====
+In many applications it is natural to work directly with the relational model, issuing SQL queries and parsing result sets.
+  * This is known as the //[[http://martinfowler.com/eaaCatalog/transactionScript.html|Transaction Script]]// pattern((All patterns discussed in this lecture are from //Patterns of Enterprise Application Architecture//. See [[Recommended Reading]] for bibliographic details.)): business logic is organized into procedures for each use case.
   * Direct use of SQL is also well suited for aggregating queries and set-based updates (accessing large amounts of data or updating many tables in the same transaction)
-  * Another scenario is that you have simple queries returning small sets of rows (often in a single table), which receive selective updates.
+
+===== Persistence Patterns: ORM =====
+
+Another scenario is that you have simple queries returning small sets of rows (often in a single table), which receive selective updates.
   * Little need for set-based updates
   * Data entities mapped to persistent Java objects 
   * Business logic deals with these objects rather than the tables and records.
-  * General term for latter is Object-Relational Mapping (ORM)
-  * 
-  * Patterns for ORM Strategies
-  * Active record – wraps a row in a database table, encapsulates the database access, and adds domain logic to the data.
-  * Data mapper – A layer of mappers that move data between objects and a database while keeping them independent of each other and the mapper itself.
-  * Query object – An object that represents a database query
-  * Unit of work – Maintains a list of objects effected by a business transaction and coordinates the writing of changes and the resolution of concurrency problems.
-  * 
-  * Persistence Frameworks
-  * You can "roll your own” persistence framework …
-  * See e.g. extended examples in Reese.
-  * … but it’s a non-trivial task and fraught with difficulties and traps.
+General term for this pattern is Object-Relational Mapping (ORM)
+
+===== Patterns for ORM Strategies =====
+  * //[[http://martinfowler.com/eaaCatalog/activeRecord.html|Active record]]// – wraps a row in a database table, encapsulates the database access, and adds domain logic to the data.
+  * //[[http://martinfowler.com/eaaCatalog/dataMapper.html|Data mapper]]// – A layer of mappers that move data between objects and a database while keeping them independent of each other and the mapper itself.
+  * //[[http://martinfowler.com/eaaCatalog/queryObject.html|Query object]]// – An object that represents a database query
+  * //[[http://martinfowler.com/eaaCatalog/unitOfWork.html|Unit of work]]// – Maintains a list of objects effected by a business transaction and coordinates the writing of changes and the resolution of concurrency problems.
+===== Persistence Frameworks =====
+
+  * You can "roll your own" persistence framework ...
+
+  * ... but it's a non-trivial task and fraught with difficulties and traps.
   * Better to use an existing framework. Many available!
-  * Most popular: CMP (more later), JDO (Java extension) and Hibernate (an open source framework).
-  * All implement Data Mapper, Query Object and Unit of Work patterns to provide Transparent Persistence for Java objects.
-  * The Object/Relational "Impedance Mismatch”
+  * All implement //Data Mapper//, //Query Object// and //Unit of Work// patterns to provide **Transparent Persistence** for Java objects.
+
+----
+
+Reese (see [[Recommended Reading]]) gives an extended example of the development of a persistence framework.
+
+The most widely used persistence frameworks are: 
+  * Java EE Container Managed Persistence (CMP) (more later), 
+  * [[http://java.sun.com/jdo/index.jsp|Java Data objects]] (JDO) (Java extension), 
+  * [[http://www.hibernate.org/|Hibernate]] (a widely deployed open source framework) and 
+  * The "official" [[https://glassfish.dev.java.net/javaee5/persistence/#Java_Persistence_API|Java Persistence API]] (JPA) part of Java EE 5 and available as a standalone extension API for Java SE 6.
+
+===== The Object/Relational Impedance Mismatch =====
   * For all but the simplest domain models, there is no direct match from relational database to object model.
-  * OO concepts such as class, polymorphism, and inheritance have no direct analogy in an RDMS.
-  * RDMS concepts such as normalized data, sets and efficient access have no direct relationship in the OO world.
-  * It’s best to keep the two worlds separate and in the domain of the experts.
-  * Use an ORM framework (if it’s appropriate) to provide the bridge between the two worlds.
-  * 
-  * Some Issues that the Developers of an ORM Have to be Aware Of
-  * Identity: ensuring a record in a database is unique in a global sense.
-  * Instantiated objects should be cached: avoids a further trip to the database if it is needed in two separate transactions.
-  * "Dirty” objects (objects that have been created or changed in a transaction) have to be committed to the database in a single atomic operation.
+  * OO concepts such as class, //polymorphism//, and //inheritance// have no direct analogy in an RDMS.
+  * RDMS concepts such as //normalized data//, //sets// and //efficient access// have no direct relationship in the OO world.
+  * It's best to keep the two worlds separate and in the domain of the experts.
+  * Use an ORM framework (if it's appropriate) to provide the bridge between the two worlds.
+===== Some Issues that the Developers of an ORM Have to be Aware Of =====
+  * //Identity//: ensuring a record in a database is unique in a global sense.
+  * //Instantiated objects should be cached//: avoids a further trip to the database if it is needed in two separate transactions.
+  * "Dirty" objects (objects that have been created or changed in a transaction) //have to be committed to the database in a single atomic operation//.
   * Objects that have not been changed do not need to be written back to the database.
   * Queries may result in large numbers of records being returned from a database:
-  * Usually returned as a collection
-  * However objects in the collection should not be instantiated unless it is needed.
-  * 
-  * 
-  * 
-  * 
-  * Choosing a Persistence Strategy
+    * Usually returned as a collection
+    * However objects in the collection should not be instantiated unless it is needed.
+===== Choosing a Persistence Strategy (1) =====
   * Many enterprise applications need to use legacy databases, or share the database with other systems, so choices are limited!
   * Despite the hype, it is rare for an enterprise to change its database supplier, so it is often not worth completely abstracting the details of a DBMS out of code.
-  * It is worth providing a data access layer so that your business logic does not talk directly JDBC but goes through a set of Data Access Objects. 
-  * If the database schema changes, it will be in the access layer that changes will be needed, not in the business logic.
-  * If the business logic changes, again, persistence code changes are limited to the access layer.
-  * Choosing a Persistence Strategy
-  * In some applications with a limited number of simple tables it will be quickest to use active record and talk directly to the database.
-  * If the application will require heavy use of set access, aggregation of data from many tables, or batch updates in many rows, a direct implementation using transaction script may be most efficient.
+  * It is worth providing a data access layer so that your business logic does not talk directly JDBC but goes through a set of //Data Access Objects//. 
+    * If the database schema changes, it will be in the access layer that changes will be needed, not in the business logic.
+    * If the business logic changes, again, persistence code changes are limited to the access layer.
+===== Choosing a Persistence Strategy (2) =====
+  * In some applications with a limited number of simple tables it will be quickest to use //active record// and talk directly to the database.
+  * If the application will require heavy use of set access, aggregation of data from many tables, or batch updates in many rows, a direct implementation using //transaction script// may be most efficient.
   * ORM is a complex strategy which be of benefit only for complex domain models and or databases
-  * Choosing a Persistence Strategy
-  * ORM can be of benefit if:
+===== Choosing a Persistence Strategy (3) =====
+ORM can be of benefit if:
   * Your application has the typical CRUD – create, retrieve, update, delete – workflow for domain objects.
   * Objects are found in large sets but are updated and deleted individually.
-  * A large number of objects exist but they are "read-mostly”
+  * A large number of objects exist but they are "read-mostly"
   * There is a natural mapping between classes and fields and database tables and records
-  * There are no unusual requirements such as the need to used customized SQL optimizations.
+  * There are no unusual requirements such as the need to use customized SQL optimizations.
   * For Java programmers ORM has the advantage of keeping SQL out of the code. But that is why we have DB architects!
   
+
+
 ===== Lecture Contents =====
 
-  * **[[#What is a Relational Database?|An introduction to relational databases and SQL]]**
+  * [[#What is a Relational Database?|An introduction to relational databases and SQL]]
   * [[#The Trouble with Databases|JDBC -- Java database connectivity API]]
-  * [[Immortal Objects]]
-  * [[Persistence Patterns]]
-  * [[Other forms of Enterprise Integration]]
+  * [[#Immortal Objects]]
+  * [[#Persistence Patterns]]
+  * **[[#Other forms of Enterprise Integration]]**
   
 ===== Other Forms of Enterprise Integration =====
 
   * Enterprise integration is not just about databases and SQL.
-  * Enterprise information systems such as:
+  * Enterprise information systms also often have to be built in to enterprise applications.
+  * Main technologies for this form of integration is the Java Connectivity API and Web Services.
+  * May not be talking Java so CORBA and similar technologies may come into play.
+  
+----
+
+Some examples of enterprise information systems are:
+
   * Human Resources Systems
   * Payroll systems
   * Enterprise Resource Planning
   * Business to Business Systems
   * Enterprise communication systems
-  * Other "legacy” systems 
-  * 	also often have to be built in to enterprise applications.
-  * Main technologies are the Java Connectivity API and Web Services.
-  * May not be talking Java so CORBA and similar technologies come into play.
+  * Other //so-called// "legacy" systems 
+  
 ===== Lecture Summary =====
 
   * [[#What is a Relational Database?|An introduction to relational databases and SQL]]
   * [[#The Trouble with Databases|JDBC -- Java database connectivity API]]
-  * [[Immortal Objects]]
-  * [[Persistence Patterns]]
-  * [[Other forms of Enterprise Integration]]
+  * [[#Immortal Objects]]
+  * [[#Persistence Patterns]]
+  * [[#Other forms of Enterprise Integration]]
 
 ----
 

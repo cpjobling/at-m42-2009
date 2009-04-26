@@ -30,8 +30,9 @@
   * Lecture 14: [[lecture14|Enterprise Integration Tier Services]]
   * Lecture 15: [[lecture15|Business-tier Services]]
 
-  * Lecture 16: Grails
-  * Lecture 17: 
+===== Wrapping Up =====
+
+  * Lecture 16: Conclusions
 
 ===== Additional Notes =====
 
