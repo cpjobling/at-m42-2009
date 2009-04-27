@@ -72,7 +72,7 @@ The output is:
 
 Formatted output is achieved with the ''printf'' method call. The formal description of ''printf'' is:
 <code groovy>
-printf(Strinf format, List values)
+printf(String format, List values)
 </code>
 Example
 <code groovy l>
@@ -307,7 +307,7 @@ As with the ''List'' implementation, we can determine if ''Chris'' is carrying a
 ===== More Queries =====
 
 <code groovy l>
-def players = dng.keyset().sort()
+def players = dng.keySet().sort()
 def carriedItems = dng['Chris'].size()
 </code>
 

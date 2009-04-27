@@ -1,6 +1,6 @@
 ====== Introduction to this Module ======
 
-This module is based on the structure and format of the module //AT-M42: Distributed and Enterprise Systems in Java// which has been delivered by Dr Rashid Mehmoud since 2007. AT-M42 is itself based on the module //EG-M42: Client Server Programming in Java// which was last delivered by Dr Chris Jobling in December 2006. 
+This module is based on the structure and format of the module //AT-M42: Distributed and Enterprise Systems in Java// which has been delivered by Dr Rashid Mehmoud since 2007. AT-M42 is itself based on the module //EG-M42: Client Server Programming in Java// which was last delivered by Dr Chris Jobling in over the module slot that spanned the Christmas break of December 2005--January 2006. 
 
 I have taken the liberty of changing the module from the published description in two ways. 
   - Firstly I have decided to give the programming examples in **Groovy** which is a so-called //dynamic language//. Groovy is in fact a superset of the Java programming language that has the advantage of both being syntactically equivalent to Java while at the same time being easier to learn and use. At the same time, it is a very powerful and productive language. 
@@ -8,7 +8,7 @@ I have taken the liberty of changing the module from the published description i
 
 The reasons for these choices are firstly that the experience of the students enrolled on the class is such that Java would be too difficult to master in the two weeks available and secondly that use of high-level languages like Groovy and programming frameworks like Grails actually mirrors current trends in enterprise computing with both Java and the dot Net platforms.
 
-Neither of these decisions should detract from the value of the module as an introduction to "Client-Server Programming in Java." Groovy in fact compiles to Java bytecode which runs on the Java Virtual Machine (JVM) and is able to fully exploit the rich application programmer interfaces (APIs) provided by the Java Platform Standard and Enterprise Editions. Indeed, in crucial areas, Groovy actually extends the Java Platform APIs in ways that make them easier to use. Similarly, Grails leverages the state-of-the-art enterprise frameworks //Spring// and //Hibernate// in a way that encourages and exploits industry best-practices for enterprise development on the Java platform.
+Neither of these decisions should detract from the value of the module as an introduction to "Distributed and Enterprise Systems in Java." Groovy in fact compiles to Java bytecode which runs on the Java Virtual Machine (JVM) and is able to fully exploit the rich application programmer interfaces (APIs) provided by the Java Platform Standard and Enterprise Editions. Indeed, in crucial areas, Groovy actually extends the Java Platform APIs in ways that make them easier to use. Similarly, Grails leverages the state-of-the-art enterprise frameworks //Spring// and //Hibernate// in a way that encourages and exploits industry best-practices for enterprise development on the Java platform.
 
 Thus I hope that the addition of the word //Platform// to the published module title will add value to the module content rather than detracting from it.
 

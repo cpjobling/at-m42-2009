@@ -7,7 +7,6 @@ println 'Start'
 
 for ( count in 1..LIMIT ) {
     println "count: ${count}"
-    count++
 }
 
 println 'Done'
