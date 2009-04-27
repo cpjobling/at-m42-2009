@@ -185,7 +185,7 @@ in the examples;
 In Groovy use the ''def'' keyword:
 <code groovy>
 def count = 0     // define and initialize
-count = count = 1 // increase current value by one
+count = count + 1 // increase current value by one
 </code>
 
 ----
@@ -193,6 +193,7 @@ count = count = 1 // increase current value by one
 
 Variables have names by which they can be referenced. These names are known as //identifiers//. A Grrovy identifier must obey the following rule
 > //An identifier is a case-sensitive combination of letters and digits, the first of which must be a letter. The underscore character (''_'') is considered to be a letter. An identifier must not be a Groovy keyword.//
+
 ===== Increment and Decrement Operators =====
 //Unary operators// add one or delete one from the argument.
   * //post-increment// and //post-decrement//
@@ -494,7 +495,7 @@ A //regular expression// is a pattern that is used to find sub-strings in text.
   * The ''String'' method ''matches'' method returns ''true'' if the recipient ''String'' matches the given regular expression pattern.
 <code groovy>
 assert 'abc'.matches(/abc/) == true
-assert 'abc'.maches(/bc/) == false
+assert 'abc'.matches(/bc/) == false
 </code>
   * The method ''replaceAll'' replaces all regular expression matches inside the ''String'' with the replacement specified by the closure.
 <code groovy>
