@@ -42,6 +42,26 @@ class MagicalItem extends Item {
    def potency = 0
 }
 
+class Game {
+    
+    Item findItem(name) {
+        def item = items.find { entry -> entry.key == name }
+        return (item == null) ? null : item.value
+    }
+    
+    // See example 12
+    void addItem(Item item) {
+        items[item.name] = item
+    }
+ 
+// ----properties -----------------------------
+
+    def name             // name of game
+    def items = [ : ]    // items in the game
+    
+}
+    
+
 def displayGame(game) {
     println "Game: ${game.name}"
     println '==========================='
