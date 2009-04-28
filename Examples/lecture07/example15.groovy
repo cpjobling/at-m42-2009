@@ -7,13 +7,32 @@ class Player {
 	def funds
 }
 
+class Game {
+    
+    AbstractItem findItem(name) {
+        def item = items.find { entry -> entry.key == name }
+        return (item == null) ? null : item.value
+    }
+    
+    // See example 12
+    void addItem(AbstractItem item) {
+        items[item.name] = item
+    }
+ 
+// ----properties -----------------------------
+
+    def name             // name of game
+    def items = [ : ]    // items in the game
+    
+}
+
 interface Portable {
 
-    Boolean abstract canCarry(Player player)  // deferred method
+    abstract Boolean canCarry(Player player)  // deferred method
 
 }
 
-abstract class AbstractItem implements portable {
+abstract class AbstractItem implements Portable {
 
     String toString() { 							// redefinition
         return "Item: ${name} has value ${value}"
