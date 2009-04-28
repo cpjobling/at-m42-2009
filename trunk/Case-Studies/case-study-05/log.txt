@@ -1,0 +1,102 @@
+e:\dev\at-m42-2009\Case-Studies\case-study-05>grails create-app game
+Welcome to Grails 1.1 - http://grails.org/
+Licensed under Apache Standard License 2.0
+Grails home is set to: d:\java\applications\grails-1.1
+
+Base Directory: E:\dev\at-m42-2009\Case-Studies\case-study-05
+Running script d:\java\applications\grails-1.1\scripts\CreateApp_.groovy
+Environment set to development
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\src
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\src\java
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\src\groovy
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\controllers
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\services
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\domain
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\taglib
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\utils
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\views
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\views\layouts
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\i18n
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\conf
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\test
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\test\unit
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\test\integration
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\scripts
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\web-app
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\web-app\js
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\web-app\css
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\web-app\images
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\web-app\META-INF
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\lib
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\conf\spring
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\conf\hibernate
+[propertyfile] Creating new property file: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\application.properties
+     [copy] Copying 1 resource to E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+    [unjar] Expanding: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-shared-files.jar into E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+   [delete] Deleting: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-shared-files.jar
+     [copy] Copying 1 resource to E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+    [unjar] Expanding: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app-files.jar into E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+   [delete] Deleting: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app-files.jar
+     [move] Moving 1 file to E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+     [move] Moving 1 file to E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+     [move] Moving 1 file to E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+     [copy] Copying 1 file to e:\home\cpjobling\.grails\1.1\plugins
+Installing plug-in hibernate-1.1
+    [mkdir] Created dir: e:\home\cpjobling\.grails\1.1\projects\game\plugins\hibernate-1.1
+    [unzip] Expanding: e:\home\cpjobling\.grails\1.1\plugins\grails-hibernate-1.1.zip into e:\home\cpjobling\.grails\1.1\projects\game\plugins\hibernate-1.1
+Executing hibernate-1.1 plugin post-install script ...
+Plugin hibernate-1.1 installed
+Created Grails Application at E:\dev\at-m42-2009\Case-Studies\case-study-05/game
+
+e:\dev\at-m42-2009\Case-Studies\case-study-05>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
