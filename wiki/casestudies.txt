@@ -7,7 +7,7 @@ These case studies are designed for self study.
   * [[at-m42:casestudies:cs02|Case Study 2]]: Adventure Game (Methods and Closures)
   * [[at-m42:casestudies:cs03|Case Study 3]]: Adventure Game (Objects)
   * [[at-m42:casestudies:cs04|Case study 4]]: Adventure Game (Inheritance)
-  * [[at-m42:casestudies:cs05|Case Study 5]]: Adventure Game (Grails)
+  * [[at-m42:casestudies:cs05|Video]]: Getting Started with Grails (presented by Jason Rudolph, Grails committer and author of [[http://www.infoq.com/minibooks/grails|Getting Started with Grails]]). 
 
 ----
 

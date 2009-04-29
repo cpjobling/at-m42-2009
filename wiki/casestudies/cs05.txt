@@ -2,7 +2,7 @@
 
 In this case study, we re-develop part of the adventure game in the Grails web framework. This will demonstrate the productivity gains possible from a good, well-design application development framework, and further emphasizes the power of the Groovy programming language and the so-called lightweight enterprise frameworks. The presentation has been designed as an //aide-memoir// of the development process that will be demonstrated live in the final lecture of the first week of the module.
 
-The presentation was inspired by case-study presented in Chapter 16 "Seeing the Grails Light" from //Groovy in Action// and was also influenced by Chapter 11 "Working with Grails" from //Groovy Recipes//((See [[Recommended Reading]] for full bibliographic details)). 
+The presentation was inspired by case-study presented in Chapter 16 "Seeing the Grails Light" from //Groovy in Action// and was also influenced by Chapter 11 "Working with Grails" from //Groovy Recipes//((See [[at-m42:Recommended Reading]] for full bibliographic details)). 
 
 ===== A Short Introduction to Grails =====
 
@@ -40,59 +40,106 @@ This convenience comes at a cost: Grails has fairly fixed ideas about how a web 
 We shall take the example that we have developed over the previous four case studies, and re-implement //Player// and //Item// administration for an adventure game in Grails.
 
   * [[at-m42:labs:setup#Install Grails|Step 1: Install and Configure Grails]] -- note Grails includes the run-time files for Groovy (''groovy-all-1.6.0.jar'') so you do not need to [[at-m42:labs:setup#Install Groovy|Groovy first]]!
-Step 2: Create domain class Item
+  * [[#Step 2: Create project]]
 
-An index to the source code for all the examples in this case study is [[/~eechris/at-m42/Examples/case-study-05|available]].
+An index to the source code for all the examples in this case study is [[/~eechris/at-m42/Case-Studies/case-study-05|available]].
 
-===== Step 1: Install and Configure Grails =====
+==== Step 2: Create project ====
 
-===== Iteration I: Specification and Map Implementation =====
+The first step in any system development with Grails is the creation of a project. In my case, this will be //game// project. Change to the development directory then issue the command ''grails create-app game'':
+<cli prompt='>'>
+e:\dev\at-m42-2009\Case-Studies\case-study-05>grails create-app game
+Welcome to Grails 1.1 - http://grails.org/
+Licensed under Apache Standard License 2.0
+Grails home is set to: d:\java\applications\grails-1.1
 
-  * Add and remove items to/from the location
-  * Record the picking up and dropping of an item by a player
-  * Display details of the current location
-  * Display the items being carried by a given player
-  * Display the number of players who are carrying a particular item
+Base Directory: E:\dev\at-m42-2009\Case-Studies\case-study-05
+Running script d:\java\applications\grails-1.1\scripts\CreateApp_.groovy
+Environment set to development
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\src
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\src\java
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\src\groovy
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\controllers
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\services
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\domain
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\taglib
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\utils
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\views
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\views\layouts
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\i18n
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\conf
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\test
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\test\unit
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\test\integration
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\scripts
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\web-app
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\web-app\js
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\web-app\css
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\web-app\images
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\web-app\META-INF
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\lib
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\conf\spring
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\conf\hibernate
+[propertyfile] Creating new property file: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\application.properties
+     [copy] Copying 1 resource to E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+    [unjar] Expanding: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-shared-files.jar into E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+   [delete] Deleting: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-shared-files.jar
+     [copy] Copying 1 resource to E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+    [unjar] Expanding: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app-files.jar into E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+   [delete] Deleting: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app-files.jar
+     [move] Moving 1 file to E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+     [move] Moving 1 file to E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+     [move] Moving 1 file to E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+     [copy] Copying 1 file to e:\home\cpjobling\.grails\1.1\plugins
+Installing plug-in hibernate-1.1
+    [mkdir] Created dir: e:\home\cpjobling\.grails\1.1\projects\game\plugins\hibernate-1.1
+    [unzip] Expanding: e:\home\cpjobling\.grails\1.1\plugins\grails-hibernate-1.1.zip into e:\home\cpjobling\.grails\1.1\projects\game\plugins\hibernate-1.1
+Executing hibernate-1.1 plugin post-install script ...
+Plugin hibernate-1.1 installed
+Created Grails Application at E:\dev\at-m42-2009\Case-Studies\case-study-05/game
 
-<code groovy>
-def banquetingRoom = [
-  'bread' : ['Chris', 'John'], 
-  'fork' : ['Chris'], 
-  'sword' : ['John', 'Sally'], 
-  'magic amulet' : ['Sally'], 
-  'apple' : []
-]
-</code>
+e:\dev\at-m42-2009\Case-Studies\case-study-05>
+</cli>
 
-<code groovy>
-def addItem(location, item) {
-    location[item] = []
-}
-</code>
+As you can see, //grails// creates a large number of directories and files in the folder //game// which will also be the name of the project: ''game'' will be the name of the application in the web-application URL, the name of the generated WAR file (generated for deployment in Tomcat or some other application container), and a number of other things. It can be overriden in the the ''game\application.properties'' file that is generated along with the rest of the standard directory structure. As you can see in Listing 1 and in Figure 2, //convention over configuration// comes into play before you write a single line of code.
+<code|Listing 1: application.properties (at-m42/Case-Studies/case-study-05/game/application.properties)>
+extern> http://www.cpjobling.org.uk/~eechris/at-m42/Case-Studies/case-study-05/game/application.properties
+</code> 
 
-<code groovy>
-readNumberOfPlayersHoldingItem(location, item) {
-   return location[item].size()
-}
-</code>
+{{:at-m42:casestudies:grails-files.png|The files generated by grails create-app}}
 
-<code groovy 1| A simple adventure game (at-m42/Examples/case-study-02/location1.groovy)>
-extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/case-study-02/location1.groovy
-</code>
+**Figure 2**: The files generated by ''grails create-app''
 
-===== Iteration II: Implementation of a Text-based User Interface =====
+An explanation of what all these files are is shown in Table 1.
 
-<code groovy 1| Text-based user interface (at-m42/Examples/case-study-02/location2.groovy)>
-extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/case-study-02/location2.groovy
-</code>
+*Table 2*: Directory structure of the ''game'' project (reproduced from //Groovy in Action//, Table 16.1 )
 
-===== Iteration III: Implementation With Closures =====
+^ Directory ^ Content ^
+| ''grails-app'' | The grails-specific part of the web application |
+| <html>&ndash;&ndash;</html>''conf'' | Configuration data sources and bootstrapping |
+| <html>&ndash;&ndash;</html>''controllers'' | All Grails controllers; initially empty |
+| <html>&ndash;&ndash;</html>''domain'' | All Grails domain classes (models); initially empty |
+| <html>&ndash;&ndash;</html>''i18n'' | Message bundles for internationalization |
+| <html>&ndash;&ndash;</html>''services'' | All Grails service classes; initially empty |
+| <html>&ndash;&ndash;</html>''taglib'' | All Grails tag libraries |
+| <html>&ndash;&ndash;</html>''views'' | All Grails views (GSP or JSP); initially empty |
+| <html>&ndash;&ndash;&ndash;&ndash;</html>''layouts'' | All sitemesh layouts |
+| ''grails-tests'' | All Grails unit tests; initially empty |
+| ''hibernate'' | Optional Hibernate configuration and mapping files |
+| ''lib'' | Additional libraries as jar files |
+| ''spring'' | Spring configuration file(s) |
+| ''src'' | | 
+| <html>&ndash;&ndash;</html>''groovy'' | Additional Groovy sources; initially empty |
+| <html>&ndash;&ndash;</html>''java'' | Additional Java sources; initially empty |
+| ''web-app'' | Web application document root directory |
+| <html>&ndash;&ndash;</html>''css'' | Resource directory for Cascading Style Sheets |
+| <html>&ndash;&ndash;</html>''images'' | Resource directory for images |
+| <html>&ndash;&ndash;</html>''js'' | Resource directory for JavaScript files |
+| <html>&ndash;&ndash;</html>''WEB-INF'' | J2EE meta information (web.xml, and so on) |
+| <html>&ndash;&ndash;&ndash;&ndash;</html>''classes'' | Target for compiled classes; initially empty |
+| <html>&ndash;&ndash;&ndash;&ndash;</html>''tld'' | Resource directory for compiled tag libraries |
 
-<code groovy 1| Implementation with closures (at-m42/Examples/case-study-02/location3.groovy)>
-extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/case-study-02/location3.groovy
-</code>
-
-===== Exercises =====
 
 
 ----

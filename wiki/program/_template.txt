@@ -1,0 +1,26 @@
+===== Day 1 =====
+
+Programme for Monday 27th April 2009.
+
+This is the plan for day 1. All timings are approximate as some lectures and activities may overrun and others take less time than scheduled. All times use the 24 hour clock. 
+
+Lectures will normally be 50 minutes and time for a 10--15 minute break will be allowed between lectures that run consecutively. Unless otherwise stated, all lectures will be held in Faraday lecture room F. Lab work will be held in the PLM lab, Talbot building.
+
+The links on this page are to the lecture notes or associated materials. 
+
+
+
+^ Scheduled Time ^ Activity ^ Title ^
+|  11.30--11.45  | Lecture 0	| [[at-m42:lecture0|About this Module ]] |
+|  11.45--12.30  | Lecture 1	| [[at-m42:lecture1|Introducing the Java Platform and the Module]] |
+|  12.30--13.30  | Lunch  |  |
+|  13.30--14.30  | Lecture 2 | [[at-m42:lecture2|Basic Building Blocks]] |
+|  14.30--15.30  | Lecture 3  | [[at-m42:lecture3|Lists, Maps and Ranges]] |
+|  15.30--16.30  | Lecture 4  | [[at-m42:lecture4|Simple IO and Case Study 1]] |
+|  16.30--17.30  | Lecture 5  | [[at-m42:lecture5|Methods and Flow of Control]] |
+|  17.30  |	End of Day 1 | | 
+
+
+----
+
+[[at-m42:home|Home]] | [[at-m42:program:day1|Previous Day]] | [[at-m42:program|Program]] | [[at-m42:program:day2|Next Day]]

@@ -1,0 +1,25 @@
+===== Day 2 =====
+
+Programme for Tuesday 28th April 2009.
+
+This is the plan for day 2. All timings are approximate as some lectures and activities may overrun and others take less time than scheduled. All times use the 24 hour clock. 
+
+Lectures will normally be 50 minutes and time for a 10--15 minute break will be allowed between lectures that run consecutively. Unless otherwise stated, all lectures will be held in Faraday lecture room F. Lab work will be held in the PLM lab, Talbot building.
+
+The links on this page are to the lecture notes or associated materials. 
+
+
+
+^ Scheduled Time ^ Activity ^ Title ^
+|  09.00--12.00  | Lab 1  | [[at-m42:labs:lab1|Exercises from Lectures 2 to 5.]] |
+|  12.00--14.00  | Free	| |
+|  14.00--15.00  | Lecture 6(a) | [[at-m42:lecture6#closures|Closures]] |
+|  15.00--16.00  | Free  |  |
+|  16.00--16.30  | Lecture 6(b)  | [[at-m42:lecture6#files|Files]] |
+|  16.30--17.30  | Lecture 7  | [[at-m42:lecture7|Classes and Inheritance]] |
+|  17.30  |	End of Day 2 | | 
+
+
+----
+
+[[at-m42:home|Home]] | [[at-m42:program:day1|Previous Day]] | [[at-m42:program|Program]] | [[at-m42:program:day3|Next Day]]

@@ -1,0 +1,9 @@
+===== Day 8 =====
+
+Programme for Wednesday 6th May 2009.
+
+There are no timetabled activities for Day 8. Please use the time for research and project development.
+
+----
+
+[[at-m42:home|Home]] | [[at-m42:program:day7|Previous Day]] | [[at-m42:program|Program]] | [[at-m42:program:day9|Next Day]]

@@ -1,0 +1,30 @@
+
+====== Program ======
+
+===== Week 1: Mostly Lectures and Labs =====
+
+  * [[at-m42:day1|Day 1]]
+  * [[at-m42:day2|Day 2]]
+  * [[at-m42:day3|Day 3]]
+  * [[at-m42:day4|Day 4]]
+  * [[at-m42:day5|Day 5]]
+
+===== Week 2: Mostly Project Work and Self-Directed Learning =====
+
+  * [[Day 6]]
+  * [[Day 7]]
+  * [[Day 8]]
+  * [[Day 9]]
+  * [[Day 10]]
+
+===== Module Calendar =====
+
+Provided by [[http://www.google.com/|Google Calendar]]:
+<html>
+<iframe src="http://www.google.com/calendar/embed?src=mmeuafsm4le0q4j9ovd1vuc5gg%40group.calendar.google.com&ctz=Europe/London" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>
+</html>
+
+
+----
+
+[[Home]]

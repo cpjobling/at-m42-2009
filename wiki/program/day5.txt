@@ -1,0 +1,25 @@
+===== Day 5=====
+
+Programme for Friday 1st May 2009.
+
+This is the plan for day 5. All timings are approximate as some lectures and activities may overrun and others take less time than scheduled. All times use the 24 hour clock. 
+
+Lectures will normally be 50 minutes and time for a 10--15 minute break will be allowed between lectures that run consecutively. Unless otherwise stated, all lectures will be held in Faraday lecture room F. Lab work will be held in the PLM lab, Talbot building.
+
+The links on this page are to the lecture notes or associated materials. 
+
+
+
+^ Scheduled Time ^ Activity ^ Title ^
+|  09.00--11.00  | Workshop	| Project Workshop (Faraday F)|
+|  11.00--12.00  | Free	|  |
+|  12.00--13.00  | Lecture 12 | [[at-m42:lecture12|Distributed Application Architecture]] |
+|  14.00--15.00  | Lecture 13 | [[at-m42:lecture13|Presentation Tier Services]] |
+|  15.00--16.00  | Lecture 14  | [[at-m42:lecture14|Enterprise-Integration Tier Services]] |
+|  16.00--17.00  | Video | Getting Started with Grails (Jason Rudolph) |
+|  17.00  |	End of Day 5 | | 
+
+
+----
+
+[[at-m42:home|Home]] | [[at-m42:program:day4|Previous Day]] | [[at-m42:program|Program]] | [[at-m42:program:day7|Next Day]]

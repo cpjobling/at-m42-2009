@@ -1,0 +1,25 @@
+===== Day 7 =====
+
+**Note**: Day 6, Monday 4th May is a UK public holiday. There will be no lectures and only limited facilities for working on campus. I suggest that you use it as a personal research day.
+
+Programme for Tuesday 5th May 2009.
+
+This is the plan for day 7. All timings are approximate as some lectures and activities may overrun and others take less time than scheduled. All times use the 24 hour clock. 
+
+Lectures will normally be 50 minutes and time for a 10--15 minute break will be allowed between lectures that run consecutively. Unless otherwise stated, all lectures will be held in Faraday lecture room F.
+
+The links on this page are to the lecture notes or associated materials. 
+
+
+
+^ Scheduled Time ^ Activity ^ Title ^
+|  09.00--10.00  | Lecture 15	| [[at-m42:lecture15|Business Tier Services]] |
+|  10.00--11.00  | Lecture 16	| [[at-m42:lecture16|Critical Review of Enterprise Java and Module Conclusions]] |
+|  11.00--12.00  | Free  |  |
+|  12:00--13.00  | Lecture 17 | Spare Lecture Slot: Used for Overflow if Needed |
+|  13:00--17.00  | Directed Self Study  | Research for Seminar. Project Design, Development and Documentation. |
+
+
+----
+
+[[at-m42:home|Home]] | [[at-m42:program:day5|Previous Day]] | [[at-m42:program|Program]] | [[at-m42:program:day8|Next Day]]
