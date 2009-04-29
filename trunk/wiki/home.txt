@@ -2,6 +2,7 @@
 ===== Module Content =====
 
   * [[Introduction]]
+  * [[Program]]
   * [[lectures|The Lecture Notes]]
   * [[/~eechris/at-m42/Examples/|The Examples]]
   * [[labs|Lab Work]]

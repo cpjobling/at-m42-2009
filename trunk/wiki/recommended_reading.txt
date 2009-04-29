@@ -7,7 +7,8 @@ There is no single text book that covers all the material presented in this cour
 
   * K. Barclay and J. Savage, //Groovy Programming: An Introduction for Java Developers//, Morgan Kaufmann, 2007. A very well written introduction that is pitched at just the right level for beginners to programming and as well as those with knowledge of another language. I have to confess that, in order to meet the deadline for this module, I freely //stole// examples and text from this text !
   * D. Koenig (wth contributions from A. Glover, P. King, G. Laforge and J. Skeet, //Groovy in Action//, Manning, 2007. Considered by many to be the essential tutorial and reference for the Groovy language. An essential text for those wishing to move on from //learning// to //applying// Groovy.  
-  * G. Rocher and J. Brown, //The Definitive Guide to Grails//, 2nd. Ed., Apress 2009. Written by the principle developer of Grails so definately //the// definitive text!  
+  * G. Rocher and J. Brown, //The Definitive Guide to Grails//, 2nd. Ed., Apress 2009. Written by the principle developer of Grails so definitely //the// definitive text!  
+  * J. Rudolph, //Getting Started with Grails//, InfoQ.com.  Available as a [[http://www.infoq.com/minibooks/grails|free electronic book]] and as a print-on-demand book from Lulu.com. Describes an earlier release of Grails, Rocher and Brown is more up to date.
 
 ===== The Java Programming Language =====
 

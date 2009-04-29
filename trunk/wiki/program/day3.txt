@@ -1,0 +1,21 @@
+===== Day 3 =====
+
+Programme for Wednesday 29th April 2009.
+
+This is the plan for day 3. All timings are approximate as some lectures and activities may overrun and others take less time than scheduled. All times use the 24 hour clock. 
+
+Lab work will be held in the PLM lab, Talbot building.
+
+The links on this page are to the associated materials. 
+
+
+
+^ Scheduled Time ^ Activity ^ Title ^
+|  09.00--12.00  | Lab 2	| [[at-m42:labs|Lab 2: Supporting Lectures 1--7]] |
+|  12.00--14.00  | Self Directed Study	|  |
+|  14.00-17.00   | Free | |
+
+
+----
+
+[[at-m42:home|Home]] | [[at-m42:program:day2|Previous Day]] | [[at-m42:program|Program]] | [[at-m42:program:day4|Next Day]]

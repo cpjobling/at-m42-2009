@@ -1,0 +1,25 @@
+===== Day 4 =====
+
+Programme for Thursday 30th April 2009.
+
+This is the plan for day 4. All timings are approximate as some lectures and activities may overrun and others take less time than scheduled. All times use the 24 hour clock. 
+
+Lectures will normally be 50 minutes and time for a 10--15 minute break will be allowed between lectures that run consecutively. Unless otherwise stated, all lectures will be held in Faraday lecture room F. Lab work will be held in the PLM lab, Talbot building.
+
+The links on this page are to the lecture notes or associated materials. 
+
+
+
+^ Scheduled Time ^ Activity ^ Title ^
+|  09.00--12.00  | Lab 3	| [[at-m42:labs|Labs Supporting Lectures 1-8]] and [[at-m42:casestudies|Case Studies]] |
+|  12.00--13.00  | Lecture 8	| [[at-m42:lecture8|Unit Testing]] |
+|  13.00--14.00  | Lunch  |  |
+|  14.00--15.00  | Lecture 9 | [[at-m42:lecture9|Multithreading]] |
+|  15.00--16.00  | Lecture 10  | [[at-m42:lecture10|Network programming]] |
+|  16.00--17.00  | Lecture 11  | [[at-m42:lecture11|Distributed computing]] |
+|  17.00  |	End of Day 4 | | 
+
+
+----
+
+[[at-m42:home|Home]] | [[at-m42:program:day3|Previous Day]] | [[at-m42:program|Program]] | [[at-m42:program:day5|Next Day]]

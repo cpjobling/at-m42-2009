@@ -1,0 +1,9 @@
+===== Day 9 =====
+
+Programme for Thursday 7th May 2009.
+
+There are no timetabled activities for Day 9. Please use the time for research and project development.
+
+----
+
+[[at-m42:home|Home]] | [[at-m42:program:day8|Previous Day]] | [[at-m42:program|Program]] | [[at-m42:program:day10|Assessment Day]]

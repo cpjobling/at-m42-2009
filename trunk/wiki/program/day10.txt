@@ -1,0 +1,19 @@
+===== Day 10: Assessment Day =====
+
+Programme for Friday 8th May 2009.
+
+This is the plan for assessment day. A more detailed timetable will be issued nearer the time.
+
+
+
+^ Scheduled Time ^ Activity ^ Title ^
+| 09.00--12.00  | Seminar (Faraday F)| Each group will make a 20--30 minute presentation and 20 minutes will be allowed for questions. All group members to contribute. Order will be the same as the seminar title list that is published on Blackboard. Presentations will be uploaded to Blackboard afterwards. |
+| 14.00--15.30  | Project (PLM Lab)| Each group will have up to 15 minutes to present their project (software, designs, documentation) and 15 minutes will be allowed for questions. Order of assessment will be decided by lot. Copies of all materials presented are to be provided for scrutiny by the external examiner.|
+| 16.00--17.30 | Lab Work (PLM) | Each student will be assessed for percentage lab work completed. As a check against collusion and plagiarism, each individual will be questioned on a sample of the exercises submitted. Order will be alphabetical by the enrolment list. A timetable will be published on this page by Thursday. |
+
+Preliminary grades will be published on the Blackboard Grade Book for AT-M42 by end-of-day on Monday 11th May. Those grades will be subject to moderation and confirmation by the appropriate examination boards, external examiners and the University's awards board and will be for feedback only.
+
+
+----
+
+[[at-m42:home|Home]] | [[at-m42:program:day9|Previous Day]] | [[at-m42:program|Program]] 
