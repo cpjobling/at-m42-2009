@@ -62,8 +62,7 @@ class GameTest extends GroovyTestCase {
 
      /**
       * Test that the addition of an Item with the same id as one
-      * already present in the Game results in no change in the number
-      * of items in the inventory.
+      * already present in the Game results in no change in items in the inventory
       * Uncomment to activate test
       */
      /*
