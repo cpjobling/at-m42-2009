@@ -39,8 +39,10 @@ This convenience comes at a cost: Grails has fairly fixed ideas about how a web 
 
 We shall take the example that we have developed over the previous four case studies, and re-implement //Player// and //Item// administration for an adventure game in Grails.
 
-  * [[at-m42:labs:setup#Install Grails|Step 1: Install and Configure Grails]] -- note Grails includes the run-time files for Groovy (''groovy-all-1.6.0.jar'') so you do not need to [[at-m42:labs:setup#Install Groovy|Groovy first]]!
+  * [[at-m42:labs:setup#Install Grails|Step 1: Install and Configure Grails]] -- note Grails includes the run-time files for Groovy (''groovy-all-1.6.0.jar'') so you do not need to [[at-m42:labs:setup#Install Groovy|install Groovy]] first!
   * [[#Step 2: Create project]]
+  * [[#Step 3: Run Application]]
+  * [[#Step 4: Create First Domain Class]]
 
 An index to the source code for all the examples in this case study is [[/~eechris/at-m42/Case-Studies/case-study-05|available]].
 
@@ -139,9 +141,79 @@ An explanation of what all these files are is shown in Table 1.
 | <html>&ndash;&ndash;</html>''WEB-INF'' | J2EE meta information (web.xml, and so on) |
 | <html>&ndash;&ndash;&ndash;&ndash;</html>''classes'' | Target for compiled classes; initially empty |
 | <html>&ndash;&ndash;&ndash;&ndash;</html>''tld'' | Resource directory for compiled tag libraries |
+==== Step 3: Run Application ====
 
+<cli prompt=">">
+e:\dev\at-m42-2009\Case-Studies\case-study-05\game>grails run-app
+Welcome to Grails 1.1 - http://grails.org/
+Licensed under Apache Standard License 2.0
+Grails home is set to: d:\java\applications\grails-1.1
 
+Base Directory: E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+Running script d:\java\applications\grails-1.1\scripts\RunApp.groovy
+Environment set to development
+    [mkdir] Created dir: e:\home\cpjobling\.grails\1.1\projects\game\classes
+  [groovyc] Compiling 6 source files to e:\home\cpjobling\.grails\1.1\projects\game\classes
+    [mkdir] Created dir: e:\home\cpjobling\.grails\1.1\projects\game\resources\grails-app\i18n
+[native2ascii] Converting 11 files from E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\i18n to e:\home\cpjobling\.grails\1.1\projects\game\resources\grails-app\i18n
+     [copy] Copying 1 file to e:\home\cpjobling\.grails\1.1\projects\game\classes
+     [copy] Copied 2 empty directories to 2 empty directories under e:\home\cpjobling\.grails\1.1\projects\game\resources
+Running Grails application..
+Server running. Browse to http://localhost:8080/game
+</cli>
 
+Now connect to http://localhost:8080/game.
+
+{{:at-m42:casestudies:hello-grails.png|Hello Grails page.}}
+
+ **Figure 3**: Welcome to Grails.
+
+==== Step 4: Create First Domain Class ====
+
+Run command ''grails creat-domain-class Item''
+<cli prompt=">">
+e:\dev\at-m42-2009\Case-Studies\case-study-05\game>grails create-domain-class Item
+Welcome to Grails 1.1 - http://grails.org/
+Licensed under Apache Standard License 2.0
+Grails home is set to: d:\java\applications\grails-1.1
+
+Base Directory: E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+Running script d:\java\applications\grails-1.1\scripts\CreateDomainClass.groovy
+Environment set to development
+Created DomainClass for Item
+Created Tests for Item
+e:\dev\at-m42-2009\Case-Studies\case-study-05\game>
+</cli>
+
+Creates a domain class ''Item.groovy'':
+<code groovy 1|Listing 2: Domain class Item.groovy (at-m42/Case-Studies/case-study-05/game/grails-app/domain/Item.groovy)>
+class Item {
+
+    static constraints = {
+    }
+}
+</code> 
+
+It also creates a ''GroovyTestCase'' class:
+<code groovy 1|Listing 3: Test class for domain class Item.groovy (at-m42/Case-Studies/case-study-05/game/test/unit/ItemTests.groovy)>
+import grails.test.*
+
+class ItemTests extends GrailsUnitTestCase {
+    protected void setUp() {
+        super.setUp()
+    }
+
+    protected void tearDown() {
+        super.tearDown()
+    }
+
+    void testSomething() {
+
+    }
+}
+</code> 
+
+Unit test and integration tests can be run automatically from the command line using ''grails test-app''. This will run unit tests //and// integration tests and report the results, formatted in HTML, in ''game/test/reports/html/index.html''. With such great support, it'd be a crime not to write unit tests!
 ----
 
 [[at-m42:home|Home]] | [[at-m42:lectures|Lectures]] | [[at-m42:casestudies:cs04|Previous Case Study]] | [[at-m42:casestudies|Case Studies]]

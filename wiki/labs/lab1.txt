@@ -234,7 +234,7 @@ Ammend exercise 4.2 to take the parameters in two lists like ''[pounds, shilling
 
 <code groovy>
 gcd(n, m) = n              if n == m
-gcd(n, m) = gcd(n, n - m)  if n < m
+gcd(n, m) = gcd(n, m - n)  if n < m
 gcd(n, m) = gcd(n - m, m)  otherwise
 </code>
 
@@ -268,7 +268,7 @@ These exercises support the first part of [[at-m42:lecture6#closures|Lecture 6]]
 
 A software house is contracted to develop Groovy, Java and C# projects. Each project has one or more programmers involved, with perhaps the same individual associated with more than one project. For example, the following shows Chris, Renate and Paul involved with the Groovy project:
 <code groovy>
-def softwareHouse = ['Goovy' : ['Chris', 'Renate', 'Paul'],
+def softwareHouse = ['Groovy' : ['Chris', 'Renate', 'Paul'],
                      'Java' : ['Chris', 'Paul'],
                      'C#' ; ['Javier']
                      ]

@@ -1,21 +1,23 @@
 
 ====== Program ======
 
+This page summarizes the planned program of activities for the module. All timings are approximate and subject to adjustment as circumstances dictate. Any major unplanned changes will be announced on the Blackboard site and by email.
+
 ===== Week 1: Mostly Lectures and Labs =====
 
-  * [[at-m42:day1|Day 1]]
-  * [[at-m42:day2|Day 2]]
-  * [[at-m42:day3|Day 3]]
-  * [[at-m42:day4|Day 4]]
-  * [[at-m42:day5|Day 5]]
+  * [[at-m42:program:day1|Day 1]]
+  * [[at-m42:program:day2|Day 2]]
+  * [[at-m42:program:day3|Day 3]]
+  * [[at-m42:program:day4|Day 4]]
+  * [[at-m42:program:day5|Day 5]]
 
 ===== Week 2: Mostly Project Work and Self-Directed Learning =====
 
-  * [[Day 6]]
-  * [[Day 7]]
-  * [[Day 8]]
-  * [[Day 9]]
-  * [[Day 10]]
+  * Day 6: Pubic Holiday -- No Classes
+  * [[at-m42:program:day7|Day 7]]
+  * [[at-m42:program:day8|Day 8]]
+  * [[at-m42:program:day9|Day 9]]
+  * [[at-m42:program:day10|Day 10]]
 
 ===== Module Calendar =====
 
