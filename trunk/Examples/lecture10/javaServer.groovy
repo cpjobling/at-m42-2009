@@ -1,7 +1,7 @@
 // Very simple server that just echoes whatever the client sends.
 
 def server = new ServerSocket(ClientServer.PORT)
-println "Started: ${s}"
+println "Started: ${server}"
 try {
     // Blocks until a connection occurs:
     socket = server.accept()

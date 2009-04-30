@@ -26,7 +26,7 @@ This lecture explores the use of the JUnit testing framework within the Groovy e
 
 ----
 
-Unit testing is a programming activity, and so each unit test involves the internal coding details of the class under test. This is known as //white box testing// to suggest that we can "look inside2 the class to see its internal workings. The alternative is //black box testing// which, as its name suggests, does not look inside the class. Its purpose is to check the overall effect of a method without any knowledge of how it is internally coded. The use case (functional) tests in [[at-m42:casestudies:cs02|Case Study 2]] and [[at-m42:casestudies:cs03|Case Study 3]] are examples of black box testing.
+Unit testing is a programming activity, and so each unit test involves the internal coding details of the class under test. This is known as //white box testing// to suggest that we can "look inside" the class to see its internal workings. The alternative is //black box testing// which, as its name suggests, does not look inside the class. Its purpose is to check the overall effect of a method without any knowledge of how it is internally coded. The use case (functional) tests in [[at-m42:casestudies:cs02|Case Study 2]] and [[at-m42:casestudies:cs03|Case Study 3]] are examples of black box testing.
 
 ===== Class to be tested (outline) =====
 
@@ -306,7 +306,7 @@ This shows us that two tests have passed. Although they appear rather simple thi
 ===== Pose a question =====
 
   * Unit testing is all about using our experience as programmers to detect and correct possible failures in our code. 
-  * To illustrate, let's ask the question: "What happens if we attempt to add an item with the same id ans one already in the game?"
+  * To illustrate, let's ask the question: "What happens if we attempt to add an item with the same id as one already in the game?"
 
 ===== Add another unit test =====
  
@@ -366,8 +366,7 @@ Note that although for space reasons it isn't shown, you need to add ''def item3
 
      /**
       * Test that the addition of an Item with the same id as one
-      * already present in the Game results in no change in the number
-      * of items in the inventory
+      * already present in the Game results in no change in items in the inventory
       */
      void testAddItem_4() {
          game.addItem(satchel)
@@ -404,7 +403,7 @@ Tests run: 4,  Failures: 1,  Errors: 0
 </pre>
 </html>
 
-Now the test report informs us that the fourth test method failed (hence the four dots and the F) It goes on to give more information about the failure. Although it does not concern us here, note that i an unexpected exception occurs, an error, not a failure is reported.
+Now the test report informs us that the fourth test method failed (hence the four dots and the F) It goes on to give more information about the failure. Although it does not concern us here, note that if an unexpected exception occurs, an error, not a failure is reported.
 
 ===== Correct error =====
 
@@ -568,7 +567,7 @@ extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/PlayerTes
 extern> http://www.cpjobling.org.uk/~eechris/at-m42/Examples/lecture08/runAllTests2.groovy
 </code>
 
-===== Extending LibraryTest =====
+===== Extending GameTest =====
 
 In [[at-m42:casestudies:cs03#iteration_iiaugment_the_model|Iteration II]] of [[at-m42:casestudies:cs03|Case Study 3]] we extended the ''Game'' class to allow players to be registered with the game. We should test these methods (see notes and Lab exercises)
 

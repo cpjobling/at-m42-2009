@@ -14,7 +14,7 @@ class GameTest extends GroovyTestCase {
             description : 'a maths text book')    
         satchel = new Item (id : 2, name : 'satchel', value : 10,
             description : 'a carrier for school books and pencils')
-        //uncomment later: item3 = new Item (id : 2, name : 'a different satchel', value : 10)
+        item3 = new Item (id : 2, name : 'a different satchel', value : 10)
     }
     
     /**
@@ -48,7 +48,6 @@ class GameTest extends GroovyTestCase {
       * of items in the inventory.
       * Uncomment to activate test
       */
-     /*
      void testAddItem_3() {
          game.addItem(book)
          game.addItem(satchel)
@@ -57,15 +56,13 @@ class GameTest extends GroovyTestCase {
          def post = game.inventory.size()
          
          assertTrue('one more item than expected', post == pre)
-     } 
-     */     
+     }     
 
      /**
       * Test that the addition of an Item with the same id as one
       * already present in the Game results in no change in items in the inventory
       * Uncomment to activate test
       */
-     /*
      void testAddItem_4() {
          game.addItem(satchel)
          game.addItem(item3)
@@ -74,33 +71,30 @@ class GameTest extends GroovyTestCase {
          
          assertToString(actual, expected)
      }      
-     */
      
      /**
       * Test that successfully adding an Item to the Game
       * is detected
       * uncoment to activate
       */
-     /*
      void testAddItem_5() {
          def success = game.addItem(satchel)
          
          assertTrue('addition should succeed', success)
      }      
-     */
+
       /**
       * Test that unsuccessfully attempting to add Item with the same 
       * id as one already present in the Game is detected.
       * uncoment to activate
       */
-      /*
       void testAddItem_6() {
          game.addItem(satchel)
          def success = game.addItem(item3)
          
          assertFalse('addition should fail', success)
      }
-     */      
+     
       
 // ----- properties --------------------------
 
@@ -108,5 +102,5 @@ class GameTest extends GroovyTestCase {
     
     def book
     def satchel
-    // uncomment later: def item3
+    def item3
 }

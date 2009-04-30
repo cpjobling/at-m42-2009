@@ -2,8 +2,13 @@
 
 class Game {
 
-    void addItem(Item item) {
-        inventory[item.id] = item
+Boolean addItem(Item item) {
+        if ( ! inventory.containsKey(item.id) ) {
+            inventory[item.id] = item
+            return true
+        } else {
+            return false
+        }
     }
 
     void displayInventory() {
