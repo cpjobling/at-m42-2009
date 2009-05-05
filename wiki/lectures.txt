@@ -32,7 +32,7 @@
 
 ===== Wrapping Up =====
 
-  * Lecture 16: Conclusions
+  * Lecture 16: [[lecture16|Conclusions]]
 
 ===== Additional Notes =====
 
