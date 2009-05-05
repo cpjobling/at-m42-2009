@@ -1,0 +1,493 @@
+~~SLIDESHOW~~
+
+====== Wrapping up! ======
+
+State-of-the-Art Report and Conclusions
+
+
+===== State-of-the-Art Report and Conclusions =====
+
+  * Critique of EJB
+  * Lightweight enterprise frameworks
+  * Other enterprise technologies
+  * Predicting future developments((Actually we only present what we predicated back in 2005!))
+
+----
+
+  * In this final lecture we conclude our discussion of the distributed application architectures with a critique of the Business Tier services as defined by the EJB standard.
+  * We present an alternative to EJB in the form of a so-called “lightweight” framework and introduce the Spring Framework as an example of this new thinking.
+  * For completeness, we also mention other technologies for enterprise applications that are not Java based, including a brief comparison of .NET and Java EE.
+  * Finally we give some predictions of technologies that will be getting press in the Enterprise Applications community over the next year or two and finish with a one-slide review of the whole module.
+
+
+===== Contents =====
+
+  * **[[#The Trouble with EJB]]**
+  * [[#Better, Faster, Lighter Java|Lightweight Containers]]
+  * [[#Bigger Role for XML|Other Important Enterprise Technologies]]
+  * [[#Alternatives to Java]]
+  * [[#Gazing into my Crystal Ball|Things to Watch]]
+  * [[#Module Summary]]
+
+
+===== The Trouble with EJB =====
+
+  * EJB specifications developed by enterprise software suppliers.
+  * Concerns address needs of EJB container developers.
+  * Needs of the poor component supplier were a low priority!
+
+----
+
+The EJB specification was developed by Sun and a working group representing the developers of Enterprise Containers. Thus the issues addressed are mostly the concerns of someone who will be expected to host an enterprise component.
+
+Example concerns:
+  * How will I know that I can control access?
+  * How will I provide access to the services I need to support?
+  * How will the component be deployed?
+  * How will the component be distributed?
+  * How can I guarantee data integrity, security and resource management?
+
+===== A Missed Target =====
+
+  * A principle that framework developers should have as a mantra: "Simple things should be simple, difficult things possible."
+  * EJB as it was initially architected made "simple things difficult, difficult things impossible :-)"
+
+----
+
+
+The whole idea of EJB was to enable the developer to concentrate on developing business entities and business logic in the secure knowledge that the container will handle all the difficult Business Tier services. 
+
+Unfortunately this “simplicity” came at a high price and was not simple at all!
+
+===== Workarounds and Fixes =====
+
+To make EJB development easier for developers, a number of "fixes" have been developed. Here are two examples
+  * XDoclet (an open source project)
+  * IDE Support
+
+----
+
+Xdoclet uses annotations, similar to JavaDoc tags
+  * to identify the type of EJB a class is going to implement,
+  * to tag the methods that will be part of the //Home// and //Remote// interface of a EJB
+  * to specify whether a bean will be deployed as a local or remote component or both,
+  * to identify the //transactions// a method can be involved in, and the fields that are to be //persistent//.
+
+A code generator parses this information and creates the various interfaces and the deployment descriptor for the bean as part of the build process. 
+
+//IDE Support// -- most of the EJB container suppliers also provide tools to make development and deployment of EJB components easy in their environment.
+
+Of course these are designed for the specific container and (probably) won't work with a competitor's product...
+
+... and many have an "Enterprise" price tag!
+
+Unfortunately, the availability of such fixes and workarounds only illustrate that the EJB specification writers got it wrong!
+
+===== Some Fallacies Exposed =====
+
+
+  * There is a clear need for thick clients.
+  * Objects in the business tier have to be remote.
+  * Entity objects should be kept separate from session objects.
+  * You have to use Servlets and JSP in an Enterprise Application.
+  * Lifecycle methods have to be implemented in a bean.
+  * Deployment has to be defined in a separate file.
+  * The container has to manage persistence.
+
+----
+
+Johnson, in his book((Rod Johnson, //Expert one-on-one J2EE Design and Development//, Wrox Press (Wiley), 2003.)) exposed the fallacies listed on this slide and developed in the next few slides. 
+
+===== “There is a clear need for thick clients” =====
+
+  * "thin" web clients rather than "thick" clients are most often used to access enterprise applications.
+  * web clients communication with business logic with HTTP rather than RMI
+
+----
+
+When Java EE was designed, the assumption was that the main application would be the provision of remote services to intelligent “thick clients”. In fact, it has happened that Web Clients became the most prevalent: a web browser talks to a web container using HTTP not RMI. Does the web container need to talk to the EJB container using RMI? Only if they are running on separate servers! 
+
+===== Is there a need for RMI? =====
+
+{{:at-m42:rmi.png?698|Is there a need for RMI?}}
+
+----
+
+RMI a special case rather than the general rule?
+
+===== “Objects in the business tier have to be remote” =====
+
+  * Objects in the business tier only have to be remote if:
+    * You expect to call them from a remote client using RMI
+    * You expect to have to deploy your business objects over a range of servers
+  * RMI adds a significant overhead.
+
+----
+
+A large number of the so called //[[http://www.corej2eepatterns.com/|Core J2EE Patterns]]// are designed to minimise communication over RMI! If your business objects are in the same JVM as your presentation services, a local call (using object reference) will be orders of magnitude quicker.
+
+===== Removing the Remote Interfaces =====
+
+{{:at-m42:rmi-gone.png?698|Removing the Remote Interfaces}}
+
+===== “Entity objects should be kept separate from session objects” =====
+  * Conventional wisdom advocates that business object state should be kept in Entity EJBs and transactions handled by Session EJBs.
+  * However, this encourages the separation of data from operations on that data—a clear violation of the fundamental OO principle of encapsulation!
+  * Isn't it better to use standard OO and encapsulate data and objects in a single object?
+===== Don't separate data and methods =====
+{{:at-m42:objects.png?698|Don't separate data and methods}}
+
+===== “You have to use Servlets and JSP in an Enterprise Application” =====
+  * This is as false as that “there will be thick clients.”
+  * User interfaces are that part of the application that changes most often.
+  * Servlets and JSP too low level!
+
+----
+
+Web interaction is sufficiently complex that direct use of Servlets and JSPs is often counter-productive. If it succeeds, the result is often difficult to maintain and extend. This is a big problem, because user interfaces often change most often! It is better, and in the end more productive, to use one of the MVC frameworks to simplify the development of presentation services and to properly demarcate presentation from logic.
+
+===== “Lifecycle methods have to be implemented in a bean” =====
+  * You don't have to provide call-back methods in order to execute business logic in a controlled manner.
+  * In fact, making an EJB implement the lifecycle method interface means that it can only run inside an EJB container!
+  * It is also difficult to test!
+
+----
+
+All you need is to know where a method (e.g. transaction) should start, and where it finishes. This can be done declaratively outside the class.
+Standard Java reflection allows a container to look inside a class to decide where to interject a container service.
+
+===== “Deployment has to be defined in a separate file” =====
+  * The information needed for deployment of a business tier component could be provided by introspection.
+  * This is used successfully for ordinary JavaBeans. 
+
+----
+
+It is surprising that more use wasn’t made of introspection in the EJB container implementation.
+
+===== “The container has to manage persistence” =====
+
+  * The container doesn’t have to be responsible for persistence.
+  * Any mechanism, such as ORM and Transparent Persistence could be used.
+
+----
+
+Transparent persistence frameworks handle updates by recording “sessions” and updating as a unit of work. A declarative transaction only needs to be informed of how to manage a persistence layer’s session to be able to include persistence operation in a transaction.
+
+===== A Lightweight Java EE Application =====
+{{:at-m42:lightweight.png?698|A Lightweight Java EE Application}}
+
+===== Contents =====
+
+  * [[#The Trouble with EJB]]
+  * **[[#Better, Faster, Lighter Java|Lightweight Containers]]**
+  * [[#Other Important Enterprise Technologies]]
+  * [[#Alternatives to Java]]
+  * [[#Gazing into my Crystal Ball|Things to Watch]]
+  * [[#Module Summary]]
+
+
+===== Better, Faster, Lighter Java =====
+
+  * Sometimes you need the full power of EJB
+  * Often though you don't!
+  * We shall briefly highlight the features of one of an emerging group of "lightweight" enterprise containers.
+----
+
+The point of this discussion is not to state that there are no conditions under which the full power of the EJB specification should be used. However, the reality is that many of the situations that EJB’s architecture is designed to support, do not occur that often in practice! A number of so-called “light weight” containers have started to emerge to address these issues. We shall briefly highlight the feature of one of these.
+
+===== The Spring Framework =====
+
+  * Spring was developed by Rod Johnson
+  * Open source licence since February 2003.
+
+----
+
+The principles that underlay Spring were described by Rd Johnson in his book //Expert one-on-one J2EE Design and Development//, Wrox Press (Wiley), 2003. The Spring Framework developed from source code developed on projects and for this book Since it was "open-sourced" in 2003, Spring has seen rapid development (version 2.5.6 was released last October) and it is the subject of a number of books. It is also the framework on which Grails was constructed. 
+
+===== Yet another framework? =====
+“I believe that Spring is unique((Quoted from Johnson)), for several reasons: 
+  * Spring focuses around providing a way to manage your business objects.
+  * Spring is both comprehensive and modular. 
+  *  Spring has a layered architecture: you can choose which parts to use.
+  * Spring is an ideal framework for test driven projects. 
+  * Spring addresses most infrastructure concerns of typical applications. It also goes places other frameworks don't.”
+
+===== Spring Features (1) =====
+
+  * Organizes [business] tier objects.
+  * Eliminates the proliferation of Singletons which reduces testability and object orientation.
+  * Eliminates the need to use a variety of custom properties file formats, by handling configuration in a consistent way throughout applications and projects. 
+  * Facilitates good programming practice by reducing the cost of programming to interfaces, rather than classes, almost to zero.
+
+===== Spring Features (2) =====
+
+  * Most business objects in Spring applications have no dependency on Spring.
+  * Applications built using Spring are very easy to unit test. 
+  * Makes the use of EJB an implementation choice. 
+  * Provides an alternative to EJB that's appropriate for many web applications.
+  * Provides a consistent framework for data access, whether using JDBC or an O/R mapping product such as Hibernate. 
+
+===== Interesting Technologies in Spring (2) =====
+
+  * Makes extensive use of ordinary JavaBeans (equivalent to Groovy classes)((In fact Groovy objects can be substituted for JavaBeans))
+  * Provides declarative transactions
+  * Supports Aspect-Oriented Programming (AOP)
+  * Makes the “wiring” of components (that is deployment) simple by use of a technique called Inversion of Control (IoC) or dependency injection.
+
+----
+
+Supports Aspect-Oriented Programming (AOP)
+  * essentially a mechanism for stating that a particular service (e.g. transactions, logging, access control) should be executed before, during or  after the execution of a particular application method. Such “Aspects” can be declared outside of the classes which will participate in the service.
+===== Interesting Technologies in Spring (2) =====
+
+  * Provides a database abstraction layer which separates business logic from persistence issues.
+  * Provides an  MVC framework to reduce the need for Servlets and JSPs.
+
+----
+
+Spring is designed to support ORM frameworks such as JDO and Hibernate and supports other MVC frameworks via a user interface abstraction layer.
+
+===== More on Spring =====
+
+  * There is much more to Spring than I can cover here.
+  * It is the basis for Grails
+  * I’ll be interested to see what your seminar reveals.
+===== Contents =====
+
+  * [[#The Trouble with EJB]]
+  * [[#Better, Faster, Lighter Java|Lightweight Containers]]
+  * **[[#Bigger Role for XML|Other Important Enterprise Technologies]]**
+  * [[#Alternatives to Java]]
+  * [[#Gazing into my Crystal Ball|Things to Watch]]
+  * [[#Module Summary]]
+
+===== Bigger Role for XML? =====
+
+  * Java is marketed as a “write-once run anywhere” language that can run on any platform.
+  * XML is a language for defining meta data (self describing data) that can be distributed to and manipulated on any platform.
+  * Combined, Java and XML provide an interesting and powerful platform on which to build client-side and server-side services.
+
+----
+
+**Client Side XML**
+  * XML is the next generation mark-up language for document and information delivery over the web.
+  * Combined with style information (XSL) and hypertext linking (Xlink/XPointer) XML can be rendered for display on Internet Explorer 5.x and Netscape 6.x browsers.
+  * The Document-Object Model (DOM) allows the XML to be manipulated using scripting.
+ * XML can be used to customize the user interface of a browser (e.g in Mozilla).
+  * XHTML is a definition of  HTML as an XML application.
+  * XML is used for multimedia technologies such as MathML, SMIL, SVG, etc.
+
+**Server Side XML**
+
+  * XML is already used for configuration and deployment (e.g. in the servlets platform and Java EE).
+  * In technologies like SOAP it is used to describe the interfaces provided by remote objects, the data to be passed and as an envelope for data transfer (over HTTP).
+  * XML can be used to describe documents on the server-side and these be manipulated into HTML when delivered to browsers that cannot support XML themselves.
+  * XML allows support for multiple views of the same information: e.g. full graphics, tailored for browser, text-only, WAP, etc.
+  * Can be readily combined with technologies like JSP/ASP to further separate user interface services from business logic.
+  * XML is natural for defining database schemas.
+  * Can be used for defining components and to mediate the persistent storage of active objects.
+  * Can be used for information interchange from business to business.
+  * Is perhaps overused for deployment!
+===== Document Delivery Frameworks =====
+  * Most interesting development in this area is perhaps Apache Cocoon.
+  * Cocoon is a 100% pure Java publishing framework that relies on new W3C technologies (such as DOM, XML, and XSL) to provide web content.
+
+-----
+
+Does this using:
+  * XML: for self describing documents
+  * XSL: for formatting text for display
+  * XSLT: for converting from XML to XML (e.g. XML to XHTML)
+  * XSP: for encoding scripts in XML and separating presentation from logic
+  * Built on top of Jakarta Tomcat servlet engine and closely linked to the Apache web server.
+
+===== Networks for Devices =====
+
+  * The gradual encroachment of network-aware devices:
+    * Set-top boxes for video-on-demand, cable and TV internet.
+    * Local area networks in the home
+    * Providing services and ease of connection
+  * Mobile phones and PDAs with internet connectibility
+  * Emergence of wireless technologies like BlueTooth and FireWire
+  * General convergence of communications and computing
+
+----
+
+Supported (in Java) by developments like JINI, PersonalJava, Java with real-time extensions and JavaCard.
+
+===== Peer-to-Peer Networking =====
+
+  * Success of Napster and similar networking techniques have rekindled interest in this issue. Neighbouring computing resources talk directly to each other after a discovery service has put them in contact with each other.
+  * Potential for eliminating the server (at least as a large central resource).
+    * Bad news for sellers of large central computing systems and servers.
+  * The only mode of operation that is sensible for technologies like BlueTooth which have to configure themselves according to the environment that they find themselves in.
+  * In Java JINI may (oneday) be an important technology for this type of application.
+===== Contents =====
+
+  * [[#The Trouble with EJB]]
+  * [[#Better, Faster, Lighter Java|Lightweight Containers]]
+  * [[#Bigger Role for XML|Other Important Enterprise Technologies]]
+  * **[[#Alternatives to Java]]**
+  * [[#Gazing into my Crystal Ball|Things to Watch]]
+  * [[#Module Summary]]
+
+
+===== Alternatives to Java =====
+
+Just because Java can handle many aspects of the modern client-server platform does not necessarily mean that it is the best way to handle such applications in all cases. 
+
+Some competing technologies worth considering:
+  * Scripting languages
+  * Microsoft .NET
+
+===== Scripting Languages =====
+
+  * Java is relatively poor at handling text (see Servlet examples)
+  * Not the easiest language for web-site development
+  * Not particularly well adapted to use in rapid application development and prototyping
+  * Difficult to use as a glue language for “components”
+  * Better languages for these applications are arguably scripting languages like Perl, Python, Ruby, Groovy, TCL/Tk, Visual Basic for Applications and in the browser Javascript or VBScript.  
+  * In many applications the best solution may be a multi-language solution rather than a single language solution.
+  * Infrastructure technologies: TCP/IP, HTTP, XML/HTML, make this relatively easy in any combination of languages and/or platforms.
+
+===== Groovy and Grails =====
+
+  * Groovy … a scripting language that is compatible with Java
+    * provides full access to that Java Platform APIs
+    * Simplified collection syntax (lists, maps, ranges and regular expressions)
+    * Closures and easier to use iteration, file, multithreading and networking APIs through closures.
+  * Grails … a web application framework built on Spring.
+    * DRY, convention over configuration, “full stack” enterprise development.
+    * We’ll hear more in your seminar
+===== Multi-Language Enterprise Applications =====
+
+  * User interface services:
+    * Web forms and JavaScript, TCL/Tk, Visual Basic, Active-X
+  * Text handling:
+    * Perl, Python, JPython, JRuby, Groovy
+  * Middle-tier
+    * EJB, DCOM, XSL, XSP, JSP, ASP, SOAP, RESTful services
+  * Business-to-business
+    * XML, SOAP, RESTful services
+  * Database
+    * Perl-DBI, Python, ADO, JDBC, GORM
+
+===== Microsoft .NET =====
+
+Software development and application delivery platform for the new century. Contains:
+  * C#
+  * “common language runtime”
+  * base components
+  * ASP+
+  * Win Forms and Web Forms
+  * ADO+
+  
+----
+
+**Notes**
+
+**C#** is a “new” language for writing classes and components, that integrates elements of C, C++, and Java, and adds additional features, like metadata tags, related to component development. 
+
+The “**common language runtime**”, runs bytecodes in an Internal Language (IL) format. Code and objects written in one language can, ostensibly, be compiled into the IL runtime, once an IL compiler is developed for the language. 
+
+The set of **base components**, accessible from the common language runtime, that provide various functions (networking, containers, etc.) is equivalent to the Java Platform APIs. 
+
+**ASP+**, is a new version of ASP that supports compilation of ASPs into the common language runtime (and therefore writing ASP scripts using any language with an IL binding)
+
+**Win Forms and Web Forms**, new UI component frameworks accessible from Visual Studio.
+ 
+**ADO+**, a new generation of ADO data access components that use XML.
+
+===== How do .NET and Java EE compare? =====
+
+See notes
+
+----
+
+^.NET^Java EE^Key differences^
+|C# programming language | Java programming language | C# and Java both derive from C and C++. Most significant features (e.g., garbage collection, hierarchical namespaces) are present in both. C# borrows some of the component concepts from COM and VB, adds some of its own (like metadata tags), but incorporates these features into the syntax differently. Java runs on any platform with a Java VM. C# only runs in Windows for the foreseeable future. C# is implicitly tied into the IL common language runtime, and is run as just-in-time (JIT) compiled bytecodes or compiled entirely into native code. Java code runs as Java Virtual Machine (VT) bytecodes that are either interpreted in the VM or JIT compiled, or can be compiled entirely into native code. |
+|.NET common components (aka the “.NET Framework SDK”)|Java core API|High-level .NET components will include support for distributed access using XML and SOAP (see ADO+ below). |
+|Active Server Pages+ (ASP+) |Java ServerPages (JSP) | ASP+ will use Visual Basic, C#, and possibly other languages for code snippets. All get compiled into native code through the common language runtime (as opposed to being interpreted each time, like ASPs). JSPs use Java code (snippets, or JavaBean references), compiled into Java bytecodes (either on-demand or batch-compiled, depending on the JSP implementation).IL Common Language Runtime allows code in multiple languages to use a shared set of components, on Windows. Underlies nearly all of .NET framework (common components, ASP+, etc.). |
+|IL Common Language Runtime|Java Virtual Machine and CORBA IDL and ORB|Java's Virtual Machine spec allows Java bytecodes to run on any platform with a compliant JVM. CORBA allows code in multiple languages to use a shared set of objects, on any platform with an ORB available. Not nearly as tightly integrated into Java EE framework. Similar web components (e.g., based on JSP) not available in Java standard platform, some proprietary components available through Java IDEs etc.|
+|Win Forms and Web Forms|Java Swing/Java Server Faces|Win Forms and Web Forms RAD development supported through the MS Visual Studio IDE - no other IDE support announced at this writing. Swing and JSF support available in many Java IDEs and tools.|
+|ADO+ and SOAP-based Web Services|JDBC, EJB, JMS and Java XML Libraries (XML4J, JAXP)|ADO+ is built on the premise of XML data interchange (between remote data objects and layers of multi-tier apps) on top of HTTP (AKA, SOAP). .NET's web services in general assume SOAP messaging models. EJB, JDBC, etc. leave the data interchange protocol at the developer's discretion, and operate on top of either HTTP, RMI/JRMP or IIOP.|
+
+===== How do they Stack Up? =====
+
+  * Both .NET and Java EE offer a similar shopping list of features. 
+
+----
+.Net
+  * The .NET core works on Windows only but theoretically supports development in many languages
+  * .Net's SOAP capabilities will allow components on other platforms to exchange data messages with .NET components.
+  * The core components of the framework (IL runtime environment, ASP+ internals, Win Forms and Web Forms component "contracts", etc.) will be proprietary. Full platform may only be available from Microsoft. 
+
+Java EE
+  * Java EE works on any platform with a compliant Java VM and a compliant set of required platform services.
+  * All of the specifications that define the Java EE platform are published and reviewed publicly, and numerous vendors offer compliant products and development environments.
+  * Java EE is a single-language platform((This is no longer true since Java has become open to scripting languages such as JRuby, Jython, Scala, and Groovy)). Calls from/to objects in other languages are possible through CORBA, but CORBA support is not a ubiquitous part of the platform. 
+
+
+===== Contents =====
+
+  * [[#The Trouble with EJB]]
+  * [[#Better, Faster, Lighter Java|Lightweight Containers]]
+  * [[#Bigger Role for XML|Other Important Enterprise Technologies]]
+  * [[#Alternatives to Java]]
+  * **[[#Gazing into my Crystal Ball|Things to Watch]]**
+  * [[#Module Summary]]
+
+===== Gazing into my Crystal Ball =====
+
+Back in 2005 I made some predications:{{  :at-m42:crystal-ball.png|}}
+  * A 4th edition of Eckel’s book covering the new language features in Java 1.5 came true.
+  * Consolidation and wide acceptance of MVC and ORM frameworks came true.
+  * The rise of lightweight frameworks largely happened and Ruby on Rails bought forth even more "lightweightness".
+  * Penetration of AOP into mainstream OO development hasn't quite happened yet.
+  * EJB 3.0 came out (see next slide)
+  * One of you will get rich marketing yourself as a Java EE architect -- may still come true! 
+
+----
+
+When I have some time I may update this presentation to bring it up to the state-of-the-art in 2009.
+
+===== EJB 3.0 =====
+
+Recognising that the interests of developers where poorly served by the last versions of the EJB specification, Sun set up a working group to develop version 3.0 of the specifications.
+
+The final spec is now in general release:
+  * Inspired by XDoclet (itself inspired by .NET) EJB 3.0 makes extensive use of annotations (a new feature of Java 1.5) to reduce the need for so many interface files. 
+  * Business components are standard Java Objects. 
+  * It includes ORM for persistence support in the form of the Java Persistence API (JPA) which is similar to Hibernate in design.
+  * EJB version 3 was released in May 2006.
+  * The reference implementation is the open source Glassfish container.
+===== Contents =====
+
+  * [[#The Trouble with EJB]]
+  * [[#Better, Faster, Lighter Java|Lightweight Containers]]
+  * [[#Bigger Role for XML|Other Important Enterprise Technologies]]
+  * [[#Alternatives to Java]]
+  * [[#Gazing into my Crystal Ball|Things to Watch]]
+  * **[[#Module Summary]]**
+
+
+===== Module Summary =====
+
+  * Have presented the Java platform in some detail via the medium of Groovy
+  * Considered advanced platform features:
+    * Multithreading
+    * Network and Distributed Programming
+    * Enterprise Java
+  * Discussed some of the disadvantages of Java EE and introduced some hot topics for the future.
+===== Thank you for your patience and long attention! =====
+
+===== The End! =====
+
+===== It's Been Emotional! =====
+{{:at-m42:emotional.png|}}
+
+
+
+----
+
+[[Home]] | [[lecture15|Previous Lecture]] | [[Lectures]] 

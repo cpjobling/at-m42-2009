@@ -43,6 +43,8 @@ We shall take the example that we have developed over the previous four case stu
   * [[#Step 2: Create project]]
   * [[#Step 3: Run Application]]
   * [[#Step 4: Create First Domain Class]]
+  * [[#Step 5: Add some properties and a Controller]]
+  * Further steps ... to be written!
 
 An index to the source code for all the examples in this case study is [[/~eechris/at-m42/Case-Studies/case-study-05|available]].
 
@@ -214,6 +216,61 @@ class ItemTests extends GrailsUnitTestCase {
 </code> 
 
 Unit test and integration tests can be run automatically from the command line using ''grails test-app''. This will run unit tests //and// integration tests and report the results, formatted in HTML, in ''game/test/reports/html/index.html''. With such great support, it'd be a crime not to write unit tests!
+
+==== Step 4: Add some properties and a Controller ====
+
+Each domain class is simply a Plain-Old-Groovy-Object with one major difference. If we add some properties, these will be automatically persisted to a database.
+<code groovy 1|Listing 4: Item class with properties (at-m42/Case-Studies/case-study-05/game/grails-app/domain/Item.groovy)>
+class Item {
+
+    static constraints = {
+    }
+    
+    String name
+    String description
+    Integer weight
+
+    String toString() { return "${name}" }
+}
+</code> 
+
+If we now add a controller, we will be able to create some objects via the web interface.
+<cli prompt=">">
+e:\dev\at-m42-2009\Case-Studies\case-study-05\game>grails create-controller Item
+
+Welcome to Grails 1.1 - http://grails.org/
+Licensed under Apache Standard License 2.0
+Grails home is set to: d:\java\applications\grails-1.1
+
+Base Directory: E:\dev\at-m42-2009\Case-Studies\case-study-05\game
+Running script d:\java\applications\grails-1.1\scripts\CreateController.groovy
+Environment set to development
+Created Controller for Item
+    [mkdir] Created dir: E:\dev\at-m42-2009\Case-Studies\case-study-05\game\grails-app\views\item
+Created Tests for Item
+e:\dev\at-m42-2009\Case-Studies\case-study-05\game>
+</cli>
+
+As you can see this creates a new controller
+<code groovy 1|Listing 5: ItemController class (at-m42/Case-Studies/case-study-05/game/grails-app/controllers/ItemController.groovy)>
+class ItemController {
+
+    def index = { }
+}
+</code>
+It also creates another ''GroovyTestCase'', ''ItemControllerTests'', for testing the ''ItemController'', and an empty folder for ''Item'' //views// (''game/grails-app/views/item'').
+
+Before we use this, we'll make Grails generate the necessary views "on-the-fly" by replacing ''def index = {}'' with ''def scaffold = Item'':
+<code groovy 1|Listing 6: ItemController class with dynamic scaffolding (at-m42/Case-Studies/case-study-05/game/grails-app/controllers/ItemController.groovy)>
+class ItemController {
+
+    def scaffold = Item
+}
+</code>
+
+I found that at this step, I had to stop the running grails application, run ''grails clean'' then restart the server!
+
+After this runs, you will be able to browse to http://localhost:8080/game/item/list and start adding, editing and deleting items. All the necessary view code is generated automatically for you by Grails at run-time.
 ----
 
 [[at-m42:home|Home]] | [[at-m42:lectures|Lectures]] | [[at-m42:casestudies:cs04|Previous Case Study]] | [[at-m42:casestudies|Case Studies]]

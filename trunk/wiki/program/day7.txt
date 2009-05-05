@@ -13,11 +13,11 @@ The links on this page are to the lecture notes or associated materials.
 
 
 ^ Scheduled Time ^ Activity ^ Title ^
-|  09.00--10.00  | Lecture 15	| [[at-m42:lecture15|Business Tier Services]] |
-|  10.00--11.00  | Lecture 16	| [[at-m42:lecture16|Critical Review of Enterprise Java and Module Conclusions]] |
-|  11.00--12.00  | Free  |  |
-|  12:00--13.00  | Lecture 17 | Spare Lecture Slot: Used for Overflow if Needed |
-|  13:00--17.00  | Directed Self Study  | Research for Seminar. Project Design, Development and Documentation. |
+|  09.00--10.00  | Lecture 14	| [[at-m42:lecture14#Immortal Objects|Business Tier Services (concluded)]] |
+|  10.00--11.00  | Lecture 15	| [[at-m42:lecture15|Business-tier services]] |
+|  11.00--14.00  | Directed Self Study  | Research for Seminar. Project Design, Development and Documentation. |
+|  14:00--15.00  | Lecture 16 | [[at-m42:lecture16|Module Conclusions]] |
+|  15:00--17.00  | Directed Self Study  | Research for Seminar. Project Design, Development and Documentation. |
 
 
 ----
